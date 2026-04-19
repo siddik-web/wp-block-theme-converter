@@ -1,0 +1,349 @@
+# HTML to WordPress Block Conversion Map
+
+## Quick Lookup Table
+
+| HTML Element | WP Block | Notes |
+|--------------|----------|-------|
+| `<section>` | `core/group` | Use `tagName: "section"` |
+| `<article>` | `core/group` | Use `tagName: "article"` |
+| `<header>` (page) | Template part | `parts/header.html` |
+| `<header>` (within content) | `core/group` | Use `tagName: "header"` |
+| `<footer>` (page) | Template part | `parts/footer.html` |
+| `<footer>` (within content) | `core/group` | Use `tagName: "footer"` |
+| `<nav>` | `core/navigation` | Native nav block |
+| `<aside>` | `core/group` | Use `tagName: "aside"` |
+| `<main>` | `core/group` | Use `tagName: "main"` |
+| `<div class="container">` | `core/group` | `"layout":{"type":"constrained"}` |
+| `<div class="row">`, `<div class="grid">` | `core/columns` OR `core/group` | Use grid layout for grids, columns for flex |
+| `<div class="flex">` | `core/group` | `"layout":{"type":"flex"}` |
+| `<h1>`–`<h6>` | `core/heading` | Set `level` |
+| `<p>` | `core/paragraph` | |
+| `<a class="btn">` | `core/button` | |
+| `<button>` | `core/button` | |
+| `<img>` | `core/image` | Set `sizeSlug` |
+| `<ul>` / `<ol>` | `core/list` | |
+| `<li>` | `core/list-item` | |
+| `<blockquote>` | `core/quote` | |
+| `<pre>` / `<code>` | `core/code` or `core/preformatted` | |
+| `<hr>` | `core/separator` | |
+| `<table>` | `core/table` | |
+| `<details>` / `<summary>` | `core/details` | Native (WP 6.3+) |
+| `<form>` | Pattern + plugin | Recommend Contact Form 7 / Gravity Forms |
+| `<video>` | `core/video` | |
+| `<audio>` | `core/audio` | |
+| `<iframe>` (YouTube/Vimeo) | `core/embed` | |
+| Icons (inline SVG) | `core/html` | OR custom block style |
+| Carousel / Slider | Pattern + Swiper enqueued | |
+| Modal | Interactivity API pattern | See `modern-blocks.md` |
+| Tabs | Interactivity API pattern | See `modern-blocks.md` |
+| Accordion | `core/details` (native, WP 6.3+) | |
+| Hero with background image | `core/cover` | |
+| Posts list | `core/query` (Query Loop) | |
+| Product list | `woocommerce/product-collection` | WC required |
+| Single post content | `core/post-content` | |
+| Featured image | `core/post-featured-image` | |
+| Post title | `core/post-title` | |
+| Post date | `core/post-date` | |
+| Post author | `core/post-author` | |
+| Post categories | `core/post-terms {"term":"category"}` | |
+| Post tags | `core/post-terms {"term":"post_tag"}` | |
+| Comments | `core/comments` | |
+
+## Detailed Conversion Examples
+
+### Section with Container
+
+**HTML:**
+```html
+<section class="hero">
+  <div class="container">
+    <h1>Welcome</h1>
+    <p>Lorem ipsum.</p>
+  </div>
+</section>
+```
+
+**Block markup:**
+```html
+<!-- wp:group {"tagName":"section","layout":{"type":"constrained"}} -->
+<section class="wp-block-group">
+    <!-- wp:heading {"level":1} -->
+    <h1 class="wp-block-heading">Welcome</h1>
+    <!-- /wp:heading -->
+
+    <!-- wp:paragraph -->
+    <p>Lorem ipsum.</p>
+    <!-- /wp:paragraph -->
+</section>
+<!-- /wp:group -->
+```
+
+### Two-Column Grid
+
+**HTML:**
+```html
+<div class="grid grid-cols-2 gap-8">
+  <div>Column 1</div>
+  <div>Column 2</div>
+</div>
+```
+
+**Block markup:**
+```html
+<!-- wp:columns -->
+<div class="wp-block-columns">
+    <!-- wp:column -->
+    <div class="wp-block-column">
+        <!-- wp:paragraph --><p>Column 1</p><!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:column -->
+
+    <!-- wp:column -->
+    <div class="wp-block-column">
+        <!-- wp:paragraph --><p>Column 2</p><!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:column -->
+</div>
+<!-- /wp:columns -->
+```
+
+OR using grid layout (WP 6.3+):
+```html
+<!-- wp:group {"layout":{"type":"grid","columnCount":2}} -->
+<div class="wp-block-group">
+    <!-- wp:paragraph --><p>Column 1</p><!-- /wp:paragraph -->
+    <!-- wp:paragraph --><p>Column 2</p><!-- /wp:paragraph -->
+</div>
+<!-- /wp:group -->
+```
+
+### Button (Primary)
+
+**HTML:**
+```html
+<a href="/shop" class="btn btn-primary">Shop Now</a>
+```
+
+**Block markup:**
+```html
+<!-- wp:buttons -->
+<div class="wp-block-buttons">
+    <!-- wp:button {"backgroundColor":"primary","textColor":"background"} -->
+    <div class="wp-block-button">
+        <a class="wp-block-button__link has-background-color has-primary-background-color has-text-color wp-element-button" href="/shop">
+            <?php esc_html_e( 'Shop Now', 'theme-slug' ); ?>
+        </a>
+    </div>
+    <!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+```
+
+### Image with Alt
+
+**HTML:**
+```html
+<img src="/images/hero.jpg" alt="Hero image" class="rounded-lg">
+```
+
+**Block markup (in pattern):**
+```html
+<!-- wp:image {"sizeSlug":"large","style":{"border":{"radius":"1rem"}}} -->
+<figure class="wp-block-image size-large">
+    <img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/hero.jpg" alt="<?php esc_attr_e( 'Hero image', 'theme-slug' ); ?>"/>
+</figure>
+<!-- /wp:image -->
+```
+
+Note: The `border-radius` inline style is auto-generated by WordPress from the block attribute `style.border.radius`. This is the correct approach — set it in the block JSON attributes, NOT as a manual `style=""` attribute.
+
+### Hero with Background Image
+
+**HTML:**
+```html
+<section class="hero" style="background-image: url('/bg.jpg'); padding: 6rem 0;">
+  <div class="container">
+    <h1>Welcome</h1>
+  </div>
+</section>
+```
+
+**Block markup:**
+```html
+<!-- wp:cover {"url":"<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/bg.jpg","dimRatio":50,"minHeight":600,"minHeightUnit":"px"} -->
+<div class="wp-block-cover" style="min-height:600px">
+    <span aria-hidden="true" class="wp-block-cover__background has-background-dim-50 has-background-dim"></span>
+    <img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/bg.jpg" data-object-fit="cover"/>
+    <div class="wp-block-cover__inner-container">
+        <!-- wp:heading {"level":1,"textAlign":"center","textColor":"background"} -->
+        <h1 class="wp-block-heading has-text-align-center has-background-color has-text-color"><?php esc_html_e( 'Welcome', 'theme-slug' ); ?></h1>
+        <!-- /wp:heading -->
+    </div>
+</div>
+<!-- /wp:cover -->
+```
+
+### Query Loop (Blog Posts)
+
+**HTML:**
+```html
+<div class="posts">
+  <article>
+    <h2><a href="/post1">Post 1</a></h2>
+    <p>Excerpt...</p>
+  </article>
+  <!-- repeat -->
+</div>
+```
+
+**Block markup:**
+```html
+<!-- wp:query {"queryId":1,"query":{"perPage":9,"postType":"post","order":"desc","orderBy":"date"},"layout":{"type":"grid","columnCount":3}} -->
+<div class="wp-block-query">
+    <!-- wp:post-template -->
+        <!-- wp:post-featured-image {"sizeSlug":"large"} /-->
+
+        <!-- wp:post-title {"isLink":true,"level":2} /-->
+
+        <!-- wp:post-excerpt /-->
+
+        <!-- wp:post-date /-->
+    <!-- /wp:post-template -->
+
+    <!-- wp:query-pagination -->
+        <!-- wp:query-pagination-previous /-->
+        <!-- wp:query-pagination-numbers /-->
+        <!-- wp:query-pagination-next /-->
+    <!-- /wp:query-pagination -->
+
+    <!-- wp:query-no-results -->
+        <!-- wp:paragraph -->
+        <p><?php esc_html_e( 'No posts found.', 'theme-slug' ); ?></p>
+        <!-- /wp:paragraph -->
+    <!-- /wp:query-no-results -->
+</div>
+<!-- /wp:query -->
+```
+
+### Card with Hover
+
+**HTML:**
+```html
+<div class="card">
+  <img src="/img.jpg" alt="Product">
+  <h3>Product Name</h3>
+  <p>$49</p>
+  <a href="/buy">Buy</a>
+</div>
+```
+
+**Block markup (with custom block style):**
+```html
+<!-- wp:group {"className":"is-style-card-elevated","layout":{"type":"constrained"}} -->
+<div class="wp-block-group is-style-card-elevated">
+    <!-- wp:image {"sizeSlug":"medium"} -->
+    <figure class="wp-block-image size-medium">
+        <img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/img.jpg" alt="<?php esc_attr_e( 'Product', 'theme-slug' ); ?>"/>
+    </figure>
+    <!-- /wp:image -->
+
+    <!-- wp:heading {"level":3} -->
+    <h3 class="wp-block-heading"><?php esc_html_e( 'Product Name', 'theme-slug' ); ?></h3>
+    <!-- /wp:heading -->
+
+    <!-- wp:paragraph -->
+    <p>$49</p>
+    <!-- /wp:paragraph -->
+
+    <!-- wp:buttons -->
+    <div class="wp-block-buttons">
+        <!-- wp:button -->
+        <div class="wp-block-button">
+            <a class="wp-block-button__link wp-element-button" href="/buy"><?php esc_html_e( 'Buy', 'theme-slug' ); ?></a>
+        </div>
+        <!-- /wp:button -->
+    </div>
+    <!-- /wp:buttons -->
+</div>
+<!-- /wp:group -->
+```
+
+The `is-style-card-elevated` class triggers a registered block style with hover/elevation CSS.
+
+### Navigation Menu
+
+**HTML:**
+```html
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+</nav>
+```
+
+**Block markup:**
+```html
+<!-- wp:navigation {"layout":{"type":"flex","setCascadingProperties":true,"justifyContent":"right"}} -->
+<!-- wp:navigation-link {"label":"Home","url":"/"} /-->
+<!-- wp:navigation-link {"label":"About","url":"/about"} /-->
+<!-- wp:navigation-link {"label":"Contact","url":"/contact"} /-->
+<!-- /wp:navigation -->
+```
+
+### Spacer / Whitespace
+
+**HTML:**
+```html
+<div style="height: 4rem;"></div>
+```
+
+**Block markup:**
+```html
+<!-- wp:spacer {"height":"4rem"} -->
+<div style="height:4rem" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- /wp:spacer -->
+```
+
+## Color Class Conversion
+
+When source HTML uses Tailwind-like color classes, convert to block attributes:
+
+| Tailwind | WP Block Attribute |
+|----------|-------------------|
+| `text-primary` | `{"textColor":"primary"}` |
+| `bg-secondary` | `{"backgroundColor":"secondary"}` |
+| `text-white` | `{"textColor":"background"}` (assuming light bg) |
+
+Then in the rendered HTML class list:
+- `has-text-color has-primary-color`
+- `has-background has-secondary-background-color`
+
+## Font Size Class Conversion
+
+| Tailwind | WP Block Attribute |
+|----------|-------------------|
+| `text-sm` | `{"fontSize":"small"}` |
+| `text-base` | `{"fontSize":"medium"}` |
+| `text-lg` / `text-xl` | `{"fontSize":"large"}` |
+| `text-2xl` / `text-3xl` | `{"fontSize":"x-large"}` |
+| `text-4xl` / `text-5xl` | `{"fontSize":"xx-large"}` |
+| `text-6xl`+ | `{"fontSize":"huge"}` |
+
+## What CANNOT Be Direct Block Markup
+
+These need patterns + JS or recommend plugins:
+
+- **Forms with backend submission** → Recommend Contact Form 7, Gravity Forms, WPForms, or Block Bindings
+- **Mega menus with custom layouts** → Use core navigation + custom CSS, or recommend a navigation plugin
+- **Custom post type loops with complex filtering** → Use Query Loop with custom queries via `pre_get_posts`
+- **Realtime data (stock prices, weather)** → Custom block via `register_block_type()` with PHP render callback
+- **Authentication-aware UI** → Conditional patterns via PHP rendering
+
+## Pitfalls
+
+1. **DON'T** convert every `<div>` to `core/group` — sometimes a simple `<div>` inside a `core/html` block is fine for static markup
+2. **DON'T** use `core/html` as an escape hatch for everything — defeats the purpose of FSE
+3. **DON'T** forget the `wp-block-{name}` class on the wrapper element — required for block styles to apply
+4. **DON'T** put custom classes in `className` block attribute when there's a registered style variation — use `is-style-{name}` instead
