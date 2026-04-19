@@ -211,7 +211,7 @@ Every theme generated follows these non-negotiable rules:
 2. **Provide design tokens upfront** if your CSS doesn't use custom properties
 3. **For 10+ page projects**, expect 3 turns and have time to "continue" between them
 4. **For WooCommerce themes**, ensure WooCommerce will be installed on the target site
-5. **Validate theme.json** at https://validator.poet.so/theme-json before deploying
+5. **Validate theme.json** at https://www.jsonschemavalidator.net/ (paste your theme.json and use `https://schemas.wp.org/trunk/theme.json` as the schema URL) before deploying
 
 ## Troubleshooting
 
@@ -229,7 +229,7 @@ Every theme generated follows these non-negotiable rules:
 - Ensure no trailing commas
 - Verify `version: 3` (not 1 or 2)
 - Check that all `fontFace.src` paths actually exist
-- Use https://validator.poet.so/theme-json
+- Validate online at https://www.jsonschemavalidator.net/ using schema URL `https://schemas.wp.org/trunk/theme.json`
 
 ## Contributing
 
