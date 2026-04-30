@@ -19,8 +19,8 @@
         <!-- /wp:query -->
 
         For homepage / static templates, use patterns:
-        <!-- wp:pattern {"slug":"{{theme-slug}}/hero"} /-->
-        <!-- wp:pattern {"slug":"{{theme-slug}}/features"} /-->
+        <!-- wp:pattern {"slug":"{{THEME_SLUG}}/hero"} /-->
+        <!-- wp:pattern {"slug":"{{THEME_SLUG}}/features"} /-->
     -->
 
 </main>

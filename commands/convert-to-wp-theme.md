@@ -22,7 +22,7 @@ Respond with a short acknowledgment, then check if these inputs are present in t
 | Build system | Default: Vite 6 with HMR |
 | Design tokens | Extract from source CSS (don't ask) |
 
-If any **required** input is missing, ask using the `ask_user_input_v0` tool with at most 3 questions in one batch. For optional inputs, use sensible defaults from `references/defaults.md` and note them in "Decisions Made".
+If any **required** input is missing, ask the user directly in your response with at most 3 clearly numbered questions in one batch. For optional inputs, use sensible defaults from `references/defaults.md` and note them in "Decisions Made".
 
 ### Step 2: Produce Conversion Plan
 

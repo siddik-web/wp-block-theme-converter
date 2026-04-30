@@ -319,6 +319,7 @@ Reference implementations in `examples/`:
 14. **Don't hardcode WP version in "Tested Up To"** — always verify the current stable WordPress release before setting this value
 15. **Don't add speculative features** — no "just in case" patterns, no dark mode unless asked, no WooCommerce support unless asked (Principle 2)
 16. **Don't silently pick an interpretation** — if the source HTML is ambiguous, ask; don't guess and generate 50 files based on an assumption (Principle 1)
+17. **Don't use Section Styles without bumping `Requires at least` to 6.6** — `styles.blocks.*.variations` is silently ignored on WP < 6.6; Section Styles shipped in WP 6.6
 
 ---
 

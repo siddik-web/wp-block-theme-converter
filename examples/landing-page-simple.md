@@ -121,11 +121,12 @@ Total estimated output: ~3,500 lines. Well within single-turn limits. Deliver ev
 <!-- wp:group {"tagName":"section","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"surface","layout":{"type":"constrained"}} -->
 <section class="wp-block-group has-surface-background-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
 
-    <!-- wp:heading {"textAlign":"center","level":1,"fontSize":"huge","style":{"typography":{"fontWeight":"700","letterSpacing":"-0.03em","lineHeight":"1.05"}}} -->
-    <h1 class="wp-block-heading has-text-align-center has-huge-font-size" style="font-weight:700;letter-spacing:-0.03em;line-height:1.05">
+    <!-- wp:heading {"textAlign":"center","level":1,"fontSize":"huge"} -->
+    <h1 class="wp-block-heading has-text-align-center has-huge-font-size">
         <?php esc_html_e( 'Build better, ship faster.', 'acme-saas' ); ?>
     </h1>
     <!-- /wp:heading -->
+    {{!-- h1 typography (font-weight, letter-spacing, line-height) comes from theme.json styles.elements.h1 — not inline overrides --}}
 
     <!-- wp:paragraph {"align":"center","fontSize":"large","textColor":"muted","style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
     <p class="has-text-align-center has-muted-color has-text-color has-large-font-size" style="margin-top:var(--wp--preset--spacing--40)">

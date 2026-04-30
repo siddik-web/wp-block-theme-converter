@@ -56,7 +56,7 @@ After Claude generates the theme, run through these checks. Provide this checkli
 - [ ] No hardcoded spacing (use `var(--wp--preset--spacing--*)`)
 - [ ] All custom classes prefixed with theme slug
 - [ ] No `!important` declarations (or only as last resort)
-- [ ] `editor.css` mirrors frontend `style.css` for editor parity
+- [ ] `editor.css` mirrors all visual CSS from `style.css` — excluding site-level layout (header/footer positioning), print styles, and animation keyframes. Per-block CSS loaded via `wp_enqueue_block_style()` auto-applies to both.
 - [ ] Stylelint passes:
   ```bash
   npx stylelint "assets/css/**/*.css"

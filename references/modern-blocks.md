@@ -134,6 +134,16 @@ store( '{{themeSlugCamel}}', {
 | `data-wp-each` | Loop over array | `data-wp-each="state.items"` |
 | `data-wp-key` | Unique key in loops | `data-wp-key="context.item.id"` |
 
+### Context Scope
+
+Context is **DOM-tree scoped**. Each element with `data-wp-context` creates its own scope for its subtree:
+
+- Nested `data-wp-context` elements merge with the parent context, with child values shadowing parent values.
+- Two sibling elements each with `data-wp-context` have isolated state — changing `isOpen` in one does NOT affect the other.
+- `state` (from `store()`) is global across all instances; `context` (from `data-wp-context`) is instance-local.
+
+Use `context` for per-instance state (e.g., "is THIS card open?"). Use `state` for shared state (e.g., "is the global menu open?").
+
 ### Migration from Alpine.js
 
 | Alpine.js | Interactivity API |
@@ -479,6 +489,25 @@ In the pattern's block markup, mark editable attributes:
 ```
 
 This is particularly useful for card patterns, testimonial patterns, and pricing tier patterns where the structure is fixed but content varies.
+
+---
+
+## Pattern Overrides vs Block Bindings — Which to Use
+
+Both features let block content vary per use, but they solve different problems:
+
+| Scenario | Use |
+|----------|-----|
+| Editor wants to type different text/swap an image per page instance | **Pattern Overrides** |
+| Value comes from post meta, custom fields, or a registered data source | **Block Bindings** |
+| Pattern is synced (reusable block) but needs per-placement variation | **Pattern Overrides** |
+| Content is dynamic and should NOT be editable in the block editor | **Block Bindings** |
+| Displaying ACF field, options table, or external API data | **Block Bindings** |
+| Card grid where each card has a different title/image but same layout | **Pattern Overrides** |
+
+**Key distinction:** Pattern Overrides are an *editor* affordance — a human customizes the value in Site Editor. Block Bindings are a *developer* affordance — the value is pulled programmatically from a data source.
+
+**Available since:** Pattern Overrides → WP 6.6 | Block Bindings → WP 6.5
 
 ---
 

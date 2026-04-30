@@ -42,13 +42,39 @@
                     "slug": "heading",
                     "name": "Heading",
                     "fontFamily": "{{HEADING_FONT_STACK}}",
-                    "fontFace": []
+                    "fontFace": [
+                        {
+                            "src": ["file:./assets/fonts/{{HEADING_FONT_FILE_SLUG}}/{{HEADING_FONT_FILE_SLUG}}-regular.woff2"],
+                            "fontWeight": "400",
+                            "fontStyle": "normal",
+                            "fontDisplay": "swap"
+                        },
+                        {
+                            "src": ["file:./assets/fonts/{{HEADING_FONT_FILE_SLUG}}/{{HEADING_FONT_FILE_SLUG}}-700.woff2"],
+                            "fontWeight": "700",
+                            "fontStyle": "normal",
+                            "fontDisplay": "swap"
+                        }
+                    ]
                 },
                 {
                     "slug": "body",
                     "name": "Body",
                     "fontFamily": "{{BODY_FONT_STACK}}",
-                    "fontFace": []
+                    "fontFace": [
+                        {
+                            "src": ["file:./assets/fonts/{{BODY_FONT_FILE_SLUG}}/{{BODY_FONT_FILE_SLUG}}-regular.woff2"],
+                            "fontWeight": "400",
+                            "fontStyle": "normal",
+                            "fontDisplay": "swap"
+                        },
+                        {
+                            "src": ["file:./assets/fonts/{{BODY_FONT_FILE_SLUG}}/{{BODY_FONT_FILE_SLUG}}-700.woff2"],
+                            "fontWeight": "700",
+                            "fontStyle": "normal",
+                            "fontDisplay": "swap"
+                        }
+                    ]
                 },
                 {
                     "slug": "mono",

@@ -10,7 +10,7 @@ User types `/scaffold-wp-theme` followed by basic theme info.
 
 ### Step 1: Gather Minimum Inputs
 
-Use `ask_user_input_v0` for these (single batch):
+Ask the user these questions in your response (one batch):
 
 1. **Theme name** — free text
 2. **Style preset** — single select: "Minimal blog", "Editorial magazine", "Portfolio", "Business landing", "WooCommerce store"

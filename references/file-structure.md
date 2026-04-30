@@ -183,3 +183,36 @@ Each is a partial theme.json that overrides the base. WordPress merges them. Use
 - Build tooling (`package.json`, `vite.config.js`)
 - Linting configs (`phpcs.xml`, `.eslintrc.json`, `.stylelintrc.json`)
 - Style variations in `/styles/`
+
+---
+
+## Vite Build Pipeline (src/ vs assets/)
+
+When using Vite 6 (the default), source files live in `src/` and compiled output lands in `assets/`. **PHP enqueue paths always point to `assets/`, never `src/`.**
+
+```
+src/                        ← Developer edits these
+├── css/
+│   ├── style.css           → compiles to assets/css/style.css
+│   └── editor.css          → compiles to assets/css/editor.css
+├── js/
+│   ├── main.js             → compiles to assets/js/main.js
+│   ├── interactions.js     → compiles to assets/js/interactions.js (Interactivity API)
+│   └── editor.js           → compiles to assets/js/editor.js (block editor)
+└── fonts/                  → copied to assets/fonts/ during build
+
+assets/                     ← WordPress reads these (git-committed)
+├── css/
+│   ├── style.css
+│   ├── editor.css
+│   └── blocks/             ← per-block CSS files (manually authored, not compiled)
+├── js/
+├── fonts/
+└── images/
+```
+
+**Key rules:**
+- Run `npm run build` after any source change before committing.
+- Run `npm run dev` during development for HMR (Vite creates `.vite-dev-running` sentinel; WordPress detects this and serves assets from the Vite dev server).
+- `assets/` should be committed to git so the theme works without a build step on first activation.
+- Block CSS files in `assets/css/blocks/` are authored directly (not compiled from `src/`) and loaded via `wp_enqueue_block_style()`.

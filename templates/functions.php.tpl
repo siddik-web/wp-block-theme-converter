@@ -27,7 +27,7 @@ require_once {{THEME_SLUG_UPPER}}_DIR . '/inc/block-variations.php';
 /**
  * Optional: Load Block Bindings API sources.
  * Uncomment if your theme uses the Block Bindings API for dynamic data.
- * See references/modern-blocks.md for implementation guide.
+ * See: https://developer.wordpress.org/block-editor/reference-guides/block-api/block-bindings/
  */
 // require_once {{THEME_SLUG_UPPER}}_DIR . '/inc/block-bindings.php';
 

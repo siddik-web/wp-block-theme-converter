@@ -549,11 +549,14 @@ To ensure the editor matches the frontend, follow this process:
 **Goal:** Make the theme deployable and discoverable.
 
 **`readme.txt`** (WordPress.org format):
+
+> **Before generating:** Check https://wordpress.org/download/ for the current stable WP release and set `{{TESTED_UP_TO}}` to that version. Never hardcode a version number here.
+
 ```
 === Theme Name ===
 Contributors: {{authorslug}}
 Requires at least: 6.5
-Tested up to: 6.7
+Tested up to: {{TESTED_UP_TO}}
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later

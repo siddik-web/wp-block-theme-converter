@@ -17,6 +17,17 @@ From the HTML, infer:
 - **Keywords** — 3-5 search keywords
 - **Theme slug** — ask if not in conversation context (default: "my-theme")
 - **Text domain** — same as theme slug
+- **Block Types** — controls where the pattern appears in the inserter. Pick from:
+
+| Pattern context | Block Types value |
+|-----------------|-------------------|
+| General page content (hero, CTA, features, etc.) | `core/post-content` |
+| Inside a Query Loop (post card, archive item) | `core/query` |
+| WooCommerce product grid item | `woocommerce/product-template` |
+| WooCommerce single product | `woocommerce/product-details` |
+| Header / navigation patterns | `core/template-part/header` |
+| Footer patterns | `core/template-part/footer` |
+| No specific insertion context (general-purpose) | Omit the line entirely |
 
 ### Step 2: Convert HTML to Block Markup
 
@@ -43,7 +54,7 @@ Use this exact structure (template at `templates/pattern-header.php.tpl`):
  * Categories: {{category}}, featured
  * Keywords: {{keyword1}}, {{keyword2}}, {{keyword3}}
  * Viewport Width: 1400
- * Block Types: core/post-content
+ * Block Types: {{BLOCK_TYPE}}
  * Description: {{One-line description of the pattern}}
  */
 ?>
