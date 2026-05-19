@@ -274,6 +274,7 @@ Read these on-demand based on the task:
 | `references/validation-checklist.md` | Post-generation verification | After all files |
 | `references/custom-blocks.md` | Custom block development (block.json schema, edit.js patterns, render.php, deprecations) | When `/wp-block` is invoked |
 | `references/content-migration.md` | Classic-to-block conversion, WP-CLI commands, ACF bindings, CPT templates, page builder migration | When `/wp-migrate` is invoked |
+| `references/asset-optimization.md` | Fonts (subsetting, preload, self-hosting), images (WebP, lazy load, LCP), per-block CSS, JS deferral, Core Web Vitals | During Phase 8 (Performance) |
 
 ## Templates
 
