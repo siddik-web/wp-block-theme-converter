@@ -279,6 +279,7 @@ Read these on-demand based on the task:
 | `references/plugin-compatibility.md` | Plugin detection, CSS conflict resolution, plugin-specific hooks, caching compat | When `/wp-plugin-theme` is invoked |
 | `references/interactivity-api-advanced.md` | Shared store, server hydration, pagination, optimistic UI, ARIA live regions, focus traps, async actions, testing | When Interactivity API work is complex (shared state, async fetch, focus management) |
 | `references/accessibility.md` | Skip links, semantic HTML, color contrast, focus management, ARIA patterns, forms, motion, dark mode, screen reader testing | During Phase 8 (Accessibility) or when a11y question arises |
+| `references/ci-cd.md` | GitHub Actions workflows, PHPCS config, ESLint/Stylelint config, Theme Check, accessibility scan, SSH deployment | When user asks about CI/CD, automated testing, or deployment pipelines |
 
 ## Templates
 
@@ -291,6 +292,7 @@ Reusable boilerplate files in `templates/`:
 - `templates/template-skeleton.html.tpl` — Empty FSE template skeleton
 - `templates/package.json.tpl` — Build tooling package.json
 - `templates/vite.config.js.tpl` — Vite 6 config for WP integration
+- `templates/github-actions-ci.yml.tpl` — GitHub Actions CI workflow (PHPCS, ESLint, Stylelint, Vite build)
 
 ## Examples
 
