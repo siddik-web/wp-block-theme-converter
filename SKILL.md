@@ -1,6 +1,6 @@
 ---
 name: wp-block-theme-converter
-description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, or building WooCommerce-compatible block themes. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, or /wp-block. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
+description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, or building WooCommerce-compatible block themes. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, or /wp-migrate. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
 license: MIT
 ---
 
@@ -113,6 +113,7 @@ Trigger this skill when the user wants to:
 | `/wp-theme-json` | Generate theme.json from a design system / CSS custom properties | `commands/wp-theme-json.md` |
 | `/wp-template` | Convert single HTML page into FSE template | `commands/wp-template.md` |
 | `/wp-block` | Scaffold a custom block (block.json, edit.js, save.js/render.php, CSS) | `commands/wp-block.md` |
+| `/wp-migrate` | Migrate existing WP content (Classic Editor, ACF, widgets, CPTs, shortcodes) to block theme | `commands/wp-migrate.md` |
 
 When the user types one of these commands, read the corresponding command file in `commands/` and execute the workflow defined there.
 
@@ -272,6 +273,7 @@ Read these on-demand based on the task:
 | `references/woocommerce.md` | WooCommerce themes | When needed |
 | `references/validation-checklist.md` | Post-generation verification | After all files |
 | `references/custom-blocks.md` | Custom block development (block.json schema, edit.js patterns, render.php, deprecations) | When `/wp-block` is invoked |
+| `references/content-migration.md` | Classic-to-block conversion, WP-CLI commands, ACF bindings, CPT templates, page builder migration | When `/wp-migrate` is invoked |
 
 ## Templates
 
