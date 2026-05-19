@@ -277,6 +277,7 @@ Read these on-demand based on the task:
 | `references/content-migration.md` | Classic-to-block conversion, WP-CLI commands, ACF bindings, CPT templates, page builder migration | When `/wp-migrate` is invoked |
 | `references/asset-optimization.md` | Fonts (subsetting, preload, self-hosting), images (WebP, lazy load, LCP), per-block CSS, JS deferral, Core Web Vitals | During Phase 8 (Performance) |
 | `references/plugin-compatibility.md` | Plugin detection, CSS conflict resolution, plugin-specific hooks, caching compat | When `/wp-plugin-theme` is invoked |
+| `references/interactivity-api-advanced.md` | Shared store, server hydration, pagination, optimistic UI, ARIA live regions, focus traps, async actions, testing | When Interactivity API work is complex (shared state, async fetch, focus management) |
 
 ## Templates
 
