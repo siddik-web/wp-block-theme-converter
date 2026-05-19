@@ -1,6 +1,6 @@
 ---
 name: wp-block-theme-converter
-description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, or building WooCommerce-compatible block themes. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, or /wp-variation. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
+description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, or building WooCommerce-compatible block themes. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, /wp-variation, or /wp-classic-to-fse. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
 license: MIT
 ---
 
@@ -116,6 +116,7 @@ Trigger this skill when the user wants to:
 | `/wp-migrate` | Migrate existing WP content (Classic Editor, ACF, widgets, CPTs, shortcodes) to block theme | `commands/wp-migrate.md` |
 | `/wp-plugin-theme` | Declare plugin dependencies and generate plugin-specific CSS / compatibility code | `commands/wp-plugin-theme.md` |
 | `/wp-variation` | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap | `commands/wp-variation.md` |
+| `/wp-classic-to-fse` | Convert an existing WordPress classic theme (PHP templates) to FSE block theme | `commands/wp-classic-to-fse.md` |
 
 When the user types one of these commands, read the corresponding command file in `commands/` and execute the workflow defined there.
 
@@ -282,6 +283,8 @@ Read these on-demand based on the task:
 | `references/accessibility.md` | Skip links, semantic HTML, color contrast, focus management, ARIA patterns, forms, motion, dark mode, screen reader testing | During Phase 8 (Accessibility) or when a11y question arises |
 | `references/ci-cd.md` | GitHub Actions workflows, PHPCS config, ESLint/Stylelint config, Theme Check, accessibility scan, SSH deployment | When user asks about CI/CD, automated testing, or deployment pipelines |
 | `references/backward-compatibility.md` | Feature availability by WP version, conditional feature loading, PHP compatibility, version strategy | When `Requires at least` is below 6.5 or user asks about older WP support |
+| `references/e2e-testing.md` | Playwright setup, block render tests, visual regression, a11y scans, CI integration | When user asks about automated browser tests or visual regression |
+| `references/i18n.md` | All i18n functions, plural forms, context strings, JS translations, .pot generation, RTL | During Phase 9 (i18n) or when multilingual questions arise |
 
 ## Templates
 
@@ -295,6 +298,14 @@ Reusable boilerplate files in `templates/`:
 - `templates/package.json.tpl` — Build tooling package.json
 - `templates/vite.config.js.tpl` — Vite 6 config for WP integration
 - `templates/github-actions-ci.yml.tpl` — GitHub Actions CI workflow (PHPCS, ESLint, Stylelint, Vite build)
+- `templates/patterns/hero.php.tpl` — Hero with CTA pattern
+- `templates/patterns/features-grid.php.tpl` — Three-column features grid pattern
+- `templates/patterns/testimonials.php.tpl` — Three testimonials pattern
+- `templates/patterns/pricing-table.php.tpl` — Three-tier pricing table pattern
+- `templates/patterns/cta-section.php.tpl` — Call-to-action section pattern
+- `templates/patterns/faq-accordion.php.tpl` — FAQ accordion (native details block) pattern
+- `templates/patterns/team-grid.php.tpl` — Four-column team grid pattern
+- `templates/patterns/stats-row.php.tpl` — Key statistics/metrics row pattern
 
 ## Examples
 
