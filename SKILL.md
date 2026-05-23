@@ -107,16 +107,16 @@ Trigger this skill when the user wants to:
 
 | Command | Purpose | Reference File |
 |---------|---------|----------------|
-| `/convert-to-wp-theme` | Full conversion of HTML/CSS/JS project to complete block theme | `commands/convert-to-wp-theme.md` |
-| `/scaffold-wp-theme` | Create empty block theme scaffold (no source conversion) | `commands/scaffold-wp-theme.md` |
-| `/wp-pattern` | Convert single HTML section into a registered block pattern | `commands/wp-pattern.md` |
-| `/wp-theme-json` | Generate theme.json from a design system / CSS custom properties | `commands/wp-theme-json.md` |
-| `/wp-template` | Convert single HTML page into FSE template | `commands/wp-template.md` |
-| `/wp-block` | Scaffold a custom block (block.json, edit.js, save.js/render.php, CSS) | `commands/wp-block.md` |
-| `/wp-migrate` | Migrate existing WP content (Classic Editor, ACF, widgets, CPTs, shortcodes) to block theme | `commands/wp-migrate.md` |
-| `/wp-plugin-theme` | Declare plugin dependencies and generate plugin-specific CSS / compatibility code | `commands/wp-plugin-theme.md` |
-| `/wp-variation` | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap | `commands/wp-variation.md` |
-| `/wp-classic-to-fse` | Convert an existing WordPress classic theme (PHP templates) to FSE block theme | `commands/wp-classic-to-fse.md` |
+| [`/convert-to-wp-theme`](commands/convert-to-wp-theme.md) | Full conversion of HTML/CSS/JS project to complete block theme | `commands/convert-to-wp-theme.md` |
+| [`/scaffold-wp-theme`](commands/scaffold-wp-theme.md) | Create empty block theme scaffold (no source conversion) | `commands/scaffold-wp-theme.md` |
+| [`/wp-pattern`](commands/wp-pattern.md) | Convert single HTML section into a registered block pattern | `commands/wp-pattern.md` |
+| [`/wp-theme-json`](commands/wp-theme-json.md) | Generate theme.json from a design system / CSS custom properties | `commands/wp-theme-json.md` |
+| [`/wp-template`](commands/wp-template.md) | Convert single HTML page into FSE template | `commands/wp-template.md` |
+| [`/wp-block`](commands/wp-block.md) | Scaffold a custom block (block.json, edit.js, save.js/render.php, CSS) | `commands/wp-block.md` |
+| [`/wp-migrate`](commands/wp-migrate.md) | Migrate existing WP content (Classic Editor, ACF, widgets, CPTs, shortcodes) to block theme | `commands/wp-migrate.md` |
+| [`/wp-plugin-theme`](commands/wp-plugin-theme.md) | Declare plugin dependencies and generate plugin-specific CSS / compatibility code | `commands/wp-plugin-theme.md` |
+| [`/wp-variation`](commands/wp-variation.md) | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap | `commands/wp-variation.md` |
+| [`/wp-classic-to-fse`](commands/wp-classic-to-fse.md) | Convert an existing WordPress classic theme (PHP templates) to FSE block theme | `commands/wp-classic-to-fse.md` |
 
 When the user types one of these commands, read the corresponding command file in `commands/` and execute the workflow defined there.
 
@@ -306,6 +306,7 @@ Reusable boilerplate files in `templates/`:
 - `templates/patterns/faq-accordion.php.tpl` — FAQ accordion (native details block) pattern
 - `templates/patterns/team-grid.php.tpl` — Four-column team grid pattern
 - `templates/patterns/stats-row.php.tpl` — Key statistics/metrics row pattern
+- `templates/patterns/woocommerce-product-card.php.tpl` — WooCommerce product card for Query Loop (requires WooCommerce 8.0+)
 
 ## Examples
 

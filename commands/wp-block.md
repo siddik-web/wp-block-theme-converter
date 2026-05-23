@@ -58,6 +58,8 @@ Supports: [list]
 
 ### Step 3: Generate block.json
 
+> For the complete `block.json` schema — all properties, every attribute type, deprecated API versions — see [`references/custom-blocks.md`](../references/custom-blocks.md).
+
 ```json
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",

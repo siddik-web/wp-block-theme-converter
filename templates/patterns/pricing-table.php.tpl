@@ -94,8 +94,8 @@
                     <!-- /wp:paragraph -->
                 </div>
                 <!-- /wp:group -->
-                <!-- wp:separator {"className":"is-style-wide","style":{"color":{"background":"rgba(255,255,255,0.25)"},"spacing":{"margin":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}}} -->
-                <hr class="wp-block-separator is-style-wide" style="background-color:rgba(255,255,255,0.25);margin-block:var(--wp--preset--spacing--40)"/>
+                <!-- wp:separator {"className":"is-style-wide pricing-featured-divider","style":{"spacing":{"margin":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}}} -->
+                <hr class="wp-block-separator is-style-wide pricing-featured-divider" style="margin-block:var(--wp--preset--spacing--40);opacity:0.25"/>
                 <!-- /wp:separator -->
                 <!-- wp:list {"style":{"spacing":{"padding":{"left":"0"}}},"className":"pricing-features","textColor":"background"} -->
                 <ul class="wp-block-list pricing-features has-background-color has-text-color" style="padding-inline-start:0">

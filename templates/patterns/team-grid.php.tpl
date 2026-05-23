@@ -42,7 +42,11 @@
             <div class="wp-block-group">
                 <!-- wp:image {"align":"center","width":160,"height":160,"scale":"cover","className":"team-photo","style":{"border":{"radius":"50%"}}} -->
                 <figure class="wp-block-image aligncenter team-photo" style="border-radius:50%">
-                    <img src="" alt="<?php printf( esc_attr__( '%s photo', '{{text-domain}}' ), esc_attr( $member['name'] ) ); ?>" width="160" height="160" style="object-fit:cover"/>
+                    <?php
+                    /* translators: %s: team member name */
+                    $alt = sprintf( esc_attr__( '%s photo', '{{text-domain}}' ), esc_attr( $member['name'] ) );
+                    ?>
+                    <img src="" alt="<?php echo $alt; ?>" width="160" height="160" style="object-fit:cover"/>
                 </figure>
                 <!-- /wp:image -->
                 <!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"},"style":{"spacing":{"rowGap":"4px"}}} -->

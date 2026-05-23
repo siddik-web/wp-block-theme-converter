@@ -28,6 +28,7 @@ Pull Request → CI checks (fast, < 5 min)
   ├── PHP lint (PHPCS)
   ├── JS lint (ESLint)
   ├── CSS lint (Stylelint)
+  ├── theme.json validation (ajv-cli against WP schema)
   └── Build (Vite)
 
 Merge to main → Full test (< 15 min)
@@ -41,6 +42,50 @@ Tag / Release → Deploy
   ├── Create theme zip
   └── Deploy to staging → production
 ```
+
+### theme.json Validation
+
+Validate `theme.json` against the WordPress schema on every PR to catch structural errors early. Add this job to your CI workflow:
+
+```yaml
+validate-theme-json:
+  name: Validate theme.json
+  runs-on: ubuntu-latest
+
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install ajv-cli
+      run: npm install -g ajv-cli ajv-formats
+
+    - name: Download theme.json schema
+      run: curl -sSL https://schemas.wp.org/trunk/theme.json -o /tmp/theme-schema.json
+
+    - name: Validate theme.json
+      run: ajv validate -s /tmp/theme-schema.json -d theme.json --strict=false
+```
+
+For local development, add a Makefile target:
+
+```makefile
+validate-theme-json:
+	@curl -sSL https://schemas.wp.org/trunk/theme.json -o /tmp/theme-schema.json
+	@ajv validate -s /tmp/theme-schema.json -d theme.json --strict=false \
+	  && echo "theme.json valid" || exit 1
+```
+
+Or using WP-CLI on a local WordPress installation:
+
+```bash
+wp theme-json validate --theme={{theme-slug}}
+```
+
+---
 
 ### Files Required in Theme Root
 
@@ -703,6 +748,7 @@ cat ci_deploy_key
 - [ ] PHP lint job (PHPCS) passes
 - [ ] JS lint job (ESLint) passes
 - [ ] CSS lint job (Stylelint) passes
+- [ ] theme.json validation job (ajv-cli) passes
 - [ ] Build job (Vite) passes and uploads artifacts
 - [ ] Deploy workflow triggers on release tag
 - [ ] Theme zip excludes development files

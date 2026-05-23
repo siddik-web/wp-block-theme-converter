@@ -32,7 +32,7 @@
                 <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
                 <div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)">
                     <!-- wp:image {"width":48,"height":48,"scale":"cover","style":{"border":{"radius":"50%"}}} -->
-                    <figure class="wp-block-image" style="border-radius:50%"><img src="" alt="<?php esc_attr_e( 'Alex Johnson avatar', '{{text-domain}}' ); ?>" width="48" height="48" style="object-fit:cover"/></figure>
+                    <figure class="wp-block-image" style="border-radius:50%"><img src="" alt="<?php echo esc_attr__( 'Alex Johnson avatar', '{{text-domain}}' ); ?>" width="48" height="48" style="object-fit:cover"/></figure>
                     <!-- /wp:image -->
                     <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"rowGap":"0"}}} -->
                     <div class="wp-block-group">
@@ -64,7 +64,7 @@
                 <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
                 <div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)">
                     <!-- wp:image {"width":48,"height":48,"scale":"cover","style":{"border":{"radius":"50%"}}} -->
-                    <figure class="wp-block-image" style="border-radius:50%"><img src="" alt="<?php esc_attr_e( 'Maria Santos avatar', '{{text-domain}}' ); ?>" width="48" height="48" style="object-fit:cover"/></figure>
+                    <figure class="wp-block-image" style="border-radius:50%"><img src="" alt="<?php echo esc_attr__( 'Maria Santos avatar', '{{text-domain}}' ); ?>" width="48" height="48" style="object-fit:cover"/></figure>
                     <!-- /wp:image -->
                     <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"rowGap":"0"}}} -->
                     <div class="wp-block-group">
@@ -96,7 +96,7 @@
                 <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
                 <div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)">
                     <!-- wp:image {"width":48,"height":48,"scale":"cover","style":{"border":{"radius":"50%"}}} -->
-                    <figure class="wp-block-image" style="border-radius:50%"><img src="" alt="<?php esc_attr_e( 'James Kim avatar', '{{text-domain}}' ); ?>" width="48" height="48" style="object-fit:cover"/></figure>
+                    <figure class="wp-block-image" style="border-radius:50%"><img src="" alt="<?php echo esc_attr__( 'James Kim avatar', '{{text-domain}}' ); ?>" width="48" height="48" style="object-fit:cover"/></figure>
                     <!-- /wp:image -->
                     <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"rowGap":"0"}}} -->
                     <div class="wp-block-group">
