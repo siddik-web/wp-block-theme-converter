@@ -3,7 +3,7 @@
 A Claude skill for converting any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing).
 
 **Author:** Md Siddiqur Rahman
-**Version:** 1.0.0
+**Version:** 2.0.0
 **License:** MIT
 
 ---
@@ -19,6 +19,8 @@ Converts static HTML/CSS/JavaScript projects into complete, production-ready Wor
 - ✅ Translation-ready (i18n)
 - ✅ WooCommerce-compatible (optional)
 - ✅ WordPress.org Theme Directory submission-ready
+- ✅ CI/CD pipeline ready (GitHub Actions)
+- ✅ E2E tested (Playwright)
 
 ## Custom Slash Commands
 
@@ -29,6 +31,11 @@ Converts static HTML/CSS/JavaScript projects into complete, production-ready Wor
 | `/wp-pattern` | Convert single HTML section into a registered block pattern |
 | `/wp-theme-json` | Generate theme.json from CSS custom properties / design tokens |
 | `/wp-template` | Convert single HTML page into FSE template |
+| `/wp-block` | Scaffold a custom block (block.json, edit.js, save.js/render.php, CSS) |
+| `/wp-migrate` | Migrate existing WP content (Classic Editor, ACF, widgets, CPTs, shortcodes) to block theme |
+| `/wp-plugin-theme` | Declare plugin dependencies and generate plugin-specific CSS / compatibility code |
+| `/wp-variation` | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap |
+| `/wp-classic-to-fse` | Convert an existing WordPress classic theme (PHP templates) to FSE block theme |
 
 ## Installation
 
@@ -101,44 +108,87 @@ Convert this hero section into a WP block pattern:
 </section>
 ```
 
+### Example: Custom Block
+
+```
+/wp-block
+
+Scaffold a "Testimonial Slider" custom block with server-side rendering,
+an edit.js with InspectorControls, and per-block CSS.
+```
+
+### Example: Classic Theme Migration
+
+```
+/wp-classic-to-fse
+
+Convert my existing classic PHP theme to a full FSE block theme.
+The theme uses a custom page builder and ACF fields.
+```
+
 ## Skill Structure
 
 ```
 wp-block-theme-converter/
-├── SKILL.md                       # Main entry point
-├── README.md                      # This file
+├── SKILL.md                              # Main entry point
+├── README.md                             # This file
 │
-├── commands/                      # Slash command definitions
+├── commands/                             # Slash command definitions
 │   ├── convert-to-wp-theme.md
 │   ├── scaffold-wp-theme.md
+│   ├── wp-block.md
+│   ├── wp-classic-to-fse.md
+│   ├── wp-migrate.md
 │   ├── wp-pattern.md
+│   ├── wp-plugin-theme.md
+│   ├── wp-template.md
 │   ├── wp-theme-json.md
-│   └── wp-template.md
+│   └── wp-variation.md
 │
-├── references/                    # Detailed reference docs
-│   ├── defaults.md                # Default values for placeholders
-│   ├── methodology.md             # 10-phase conversion methodology
-│   ├── modern-blocks.md           # WordPress 6.5+ features (Interactivity API, Block Bindings, etc.)
-│   ├── file-structure.md          # Required output directory layout
-│   ├── block-conversion-map.md    # HTML → WP block lookup table
-│   ├── theme-json-schema.md       # theme.json v3 reference
-│   ├── quality-rules.md           # Non-negotiable do's and don'ts
-│   ├── multi-turn-strategy.md     # Splitting large projects
-│   ├── woocommerce.md             # WC-specific theming
-│   └── validation-checklist.md    # Post-generation checks
+├── references/                           # Detailed reference docs
+│   ├── defaults.md                       # Default values for placeholders
+│   ├── methodology.md                    # 10-phase conversion methodology
+│   ├── modern-blocks.md                  # WordPress 6.5+ features (Interactivity API, Block Bindings, etc.)
+│   ├── file-structure.md                 # Required output directory layout
+│   ├── block-conversion-map.md           # HTML → WP block lookup table
+│   ├── theme-json-schema.md              # theme.json v3 reference
+│   ├── quality-rules.md                  # Non-negotiable do's and don'ts
+│   ├── multi-turn-strategy.md            # Splitting large projects
+│   ├── woocommerce.md                    # WC-specific theming
+│   ├── validation-checklist.md           # Post-generation checks
+│   ├── custom-blocks.md                  # Custom block development (block.json, edit.js, render.php)
+│   ├── content-migration.md              # Classic-to-block, WP-CLI, ACF, CPTs, page builder migration
+│   ├── asset-optimization.md             # Fonts, images, WebP, lazy load, Core Web Vitals
+│   ├── plugin-compatibility.md           # Plugin detection, CSS conflicts, caching compat
+│   ├── interactivity-api-advanced.md     # Shared store, server hydration, async, focus traps
+│   ├── accessibility.md                  # WCAG 2.1 AA, ARIA, skip links, screen reader testing
+│   ├── ci-cd.md                          # GitHub Actions, PHPCS, ESLint, Stylelint, deployment
+│   ├── backward-compatibility.md         # Feature availability by WP version, conditional loading
+│   ├── e2e-testing.md                    # Playwright, visual regression, a11y scans, CI integration
+│   └── i18n.md                           # i18n functions, plural forms, JS translations, RTL
 │
-├── templates/                     # Reusable boilerplate
+├── templates/                            # Reusable boilerplate
 │   ├── style.css.tpl
 │   ├── theme.json.tpl
 │   ├── functions.php.tpl
 │   ├── pattern-header.php.tpl
 │   ├── template-skeleton.html.tpl
 │   ├── package.json.tpl
-│   └── vite.config.js.tpl
+│   ├── vite.config.js.tpl
+│   ├── github-actions-ci.yml.tpl
+│   └── patterns/
+│       ├── hero.php.tpl
+│       ├── features-grid.php.tpl
+│       ├── testimonials.php.tpl
+│       ├── pricing-table.php.tpl
+│       ├── cta-section.php.tpl
+│       ├── faq-accordion.php.tpl
+│       ├── team-grid.php.tpl
+│       └── stats-row.php.tpl
 │
-└── examples/                      # Worked examples
-    ├── northaven-ecommerce.md     # Multi-aesthetic WooCommerce theme
-    └── landing-page-simple.md     # Simple SaaS landing page
+└── examples/                             # Worked examples
+    ├── northaven-ecommerce.md            # Multi-aesthetic WooCommerce theme
+    └── landing-page-simple.md           # Simple SaaS landing page
 ```
 
 ## How It Works
@@ -177,6 +227,15 @@ The skill automatically detects large projects and splits delivery across 3 turn
 
 Triggered when source has 10+ HTML pages OR WooCommerce OR multiple style variations.
 
+### Behavioral Principles
+
+Every output is governed by four non-negotiable principles:
+
+1. **Think Before Coding** — surface assumptions, present tradeoffs, ask before guessing
+2. **Simplicity First** — minimum code that solves the problem; no speculative features
+3. **Surgical Changes** — touch only what the task requires; don't improve adjacent code
+4. **Goal-Driven Execution** — define verifiable success criteria before writing any file
+
 ## Quality Guarantees
 
 Every theme generated follows these non-negotiable rules:
@@ -188,6 +247,7 @@ Every theme generated follows these non-negotiable rules:
 - ❌ NO direct database queries
 - ❌ NO Alpine.js for interactions the Interactivity API can handle
 - ❌ NO physical CSS directional properties (use logical properties for RTL)
+- ❌ NO speculative features the user didn't ask for
 - ✅ All strings translation-ready
 - ✅ Semantic HTML via `tagName`
 - ✅ theme.json as single source of truth
@@ -197,6 +257,7 @@ Every theme generated follows these non-negotiable rules:
 - ✅ Per-block CSS loading via `wp_enqueue_block_style()`
 - ✅ Font preloading for critical fonts
 - ✅ Section Styles for coordinated dark/highlight sections
+- ✅ Editor parity — all frontend CSS mirrored in editor.css
 
 ## Compatibility
 
@@ -211,7 +272,8 @@ Every theme generated follows these non-negotiable rules:
 2. **Provide design tokens upfront** if your CSS doesn't use custom properties
 3. **For 10+ page projects**, expect 3 turns and have time to "continue" between them
 4. **For WooCommerce themes**, ensure WooCommerce will be installed on the target site
-5. **Validate theme.json** at https://www.jsonschemavalidator.net/ (paste your theme.json and use `https://schemas.wp.org/trunk/theme.json` as the schema URL) before deploying
+5. **For classic theme migrations**, use `/wp-classic-to-fse` which handles ACF, CPTs, and page builder content
+6. **Validate theme.json** at https://www.jsonschemavalidator.net/ using schema URL `https://schemas.wp.org/trunk/theme.json` before deploying
 
 ## Troubleshooting
 
@@ -230,6 +292,15 @@ Every theme generated follows these non-negotiable rules:
 - Verify `version: 3` (not 1 or 2)
 - Check that all `fontFace.src` paths actually exist
 - Validate online at https://www.jsonschemavalidator.net/ using schema URL `https://schemas.wp.org/trunk/theme.json`
+
+### "Classic theme migration isn't picking up my ACF fields"
+- Use `/wp-migrate` with the ACF field group export (JSON) attached
+- The `references/content-migration.md` documents all supported field types and Block Bindings strategies
+
+### "My custom block isn't showing in the editor"
+- Ensure `block.json` is in the correct directory and registered via `register_block_type()`
+- Check the browser console for JS errors from `edit.js`
+- Run `npm run build` if using a build step — the editor loads the compiled assets
 
 ## Contributing
 
