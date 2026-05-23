@@ -37,3 +37,14 @@ require_once {{THEME_SLUG_UPPER}}_DIR . '/inc/block-variations.php';
 if ( class_exists( 'WooCommerce' ) ) {
     require_once {{THEME_SLUG_UPPER}}_DIR . '/inc/woocommerce.php';
 }
+
+/**
+ * Optional: Load Multisite-specific integration.
+ * Uncomment when the theme is used on a WordPress Multisite network.
+ * Handles per-site style variation assignment, new-site seeding, and
+ * plugin-conditional pattern registration across network sites.
+ * See: references/multisite.md
+ */
+// if ( is_multisite() ) {
+//     require_once {{THEME_SLUG_UPPER}}_DIR . '/inc/multisite.php';
+// }

@@ -559,7 +559,7 @@ theme-check:
           uses: WordPress/setup-wordpress@v1
           with:
               version: '6.8'
-              multisite: false
+              multisite: false   # Set to true to test against a Multisite network installation
 
         - name: Install Theme Check plugin
           run: wp plugin install theme-check --activate
@@ -765,3 +765,21 @@ cat ci_deploy_key
 - [ ] CI fails on any Stylelint error
 - [ ] CI fails on Vite build error
 - [ ] Deploy blocked if CI fails (branch protection rules)
+
+### Multisite Matrix
+
+When the theme must support WordPress Multisite, add a `multisite` dimension to the WordPress test job matrix. See `references/multisite.md` → CI Testing on Multisite for the complete YAML. Summary:
+
+```yaml
+strategy:
+  matrix:
+    multisite: [false, true]
+
+- name: Set up WordPress
+  uses: WordPress/setup-wordpress@v1
+  with:
+    version: '6.8'
+    multisite: ${{ matrix.multisite }}
+```
+
+This runs all WordPress test steps twice — once on a standard install and once on a Multisite network — and surfaces any multisite-specific activation errors or Theme Check violations early in the pipeline.

@@ -140,8 +140,70 @@ Run **Theme Check** plugin (https://wordpress.org/plugins/theme-check/):
 - [ ] No premium-only features blocked behind paywalls
 - [ ] No tracking scripts or analytics included by default
 - [ ] No promotional content in admin
-- [ ] Tested on multisite
+- [ ] Tested on multisite (see Multisite Validation section below)
 - [ ] Tested in WP_DEBUG mode (no notices/warnings)
+
+## Multisite Validation
+
+Run these checks when submitting to WordPress.org or when the user requires multisite support. Skip if the theme is single-site only.
+
+### Network Setup
+
+```bash
+# Enable WP_MULTISITE in wp-config.php, then:
+wp core multisite-install --title="Test Network" --admin-email=admin@example.com
+
+# Create a sub-site for testing.
+wp site create --slug=subsite --title="Subsite" --email=admin@example.com
+
+# Network-enable and activate the theme.
+wp theme enable {{theme-slug}} --network
+wp theme activate {{theme-slug}} --url=localhost/subsite/
+```
+
+### Activation Checks
+
+- [ ] Theme activates on main site with zero PHP errors/warnings in `debug.log`
+- [ ] Theme activates on a sub-site with zero PHP errors/warnings in `debug.log`
+- [ ] No hardcoded URLs (`http://example.com`, hardcoded domain strings) anywhere in PHP files
+- [ ] No hardcoded blog IDs in PHP files
+
+### Site Editor Checks
+
+- [ ] Site Editor opens on main site — all templates listed
+- [ ] Site Editor opens on the sub-site — all templates listed
+- [ ] Global Styles override saved on sub-site does not change main site's appearance
+- [ ] Block patterns appear in inserter on both main site and sub-site
+
+### Multisite-Specific PHP Checks
+
+```bash
+# Confirm no switch_to_blog() calls in front-end template code.
+grep -r "switch_to_blog" {{theme-slug}}/ --include="*.php" --include="*.html"
+
+# Confirm no hardcoded blog IDs.
+grep -rE "blog_id\s*[=!]=\s*[0-9]+" {{theme-slug}}/ --include="*.php"
+
+# Confirm no hardcoded absolute URLs.
+grep -rE "https?://[a-z0-9.-]+\." {{theme-slug}}/ --include="*.php" | grep -v "schemas\." | grep -v "example\.com"
+```
+
+All three grep commands should return no results (or only expected false positives like schema URLs).
+
+### WP-CLI Verification
+
+```bash
+# Verify theme is active on both sites.
+wp site list --field=url --format=csv | tail -n +2 | while IFS= read -r url; do
+  active=$(wp theme list --status=active --url="$url" --field=name --format=csv | head -1)
+  echo "$url → $active"
+done
+
+# Confirm no PHP errors on each site.
+wp site list --field=url --format=csv | tail -n +2 | while IFS= read -r url; do
+  wp eval 'echo "OK\n";' --url="$url" 2>&1 | grep -v "^$" || echo "ERROR on $url"
+done
+```
 
 ## WooCommerce Validation (if applicable)
 

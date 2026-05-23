@@ -1,6 +1,6 @@
 ---
 name: wp-block-theme-converter
-description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, or building WooCommerce-compatible block themes. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, /wp-variation, or /wp-classic-to-fse. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
+description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, building WooCommerce-compatible block themes, or making themes work on WordPress Multisite / Network installations. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", "multisite theme", "network activation", "multiple WordPress sites", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, /wp-variation, /wp-classic-to-fse, or /wp-multisite. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
 license: MIT
 ---
 
@@ -117,6 +117,7 @@ Trigger this skill when the user wants to:
 | [`/wp-plugin-theme`](commands/wp-plugin-theme.md) | Declare plugin dependencies and generate plugin-specific CSS / compatibility code | `commands/wp-plugin-theme.md` |
 | [`/wp-variation`](commands/wp-variation.md) | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap | `commands/wp-variation.md` |
 | [`/wp-classic-to-fse`](commands/wp-classic-to-fse.md) | Convert an existing WordPress classic theme (PHP templates) to FSE block theme | `commands/wp-classic-to-fse.md` |
+| [`/wp-multisite`](commands/wp-multisite.md) | Audit and fix theme for WordPress Multisite compatibility; generate per-site style variations and network WP-CLI scripts | `commands/wp-multisite.md` |
 
 When the user types one of these commands, read the corresponding command file in `commands/` and execute the workflow defined there.
 
@@ -285,6 +286,7 @@ Read these on-demand based on the task:
 | `references/backward-compatibility.md` | Feature availability by WP version, conditional feature loading, PHP compatibility, version strategy | When `Requires at least` is below 6.5 or user asks about older WP support |
 | `references/e2e-testing.md` | Playwright setup, block render tests, visual regression, a11y scans, CI integration | When user asks about automated browser tests or visual regression |
 | `references/i18n.md` | All i18n functions, plural forms, context strings, JS translations, .pot generation, RTL | During Phase 9 (i18n) or when multilingual questions arise |
+| `references/multisite.md` | WordPress Multisite fundamentals, network activation, per-site style variations, multisite WP-CLI commands, domain mapping, CI matrix | When `/wp-multisite` is invoked or user mentions multisite/network |
 
 ## Templates
 

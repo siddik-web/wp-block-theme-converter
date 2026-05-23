@@ -15,8 +15,9 @@ Deep-dive reference for migrating existing WordPress content — Classic Editor,
 7. [Custom Post Types in Block Themes](#custom-post-types-in-block-themes)
 8. [Page Builder → FSE Migration](#page-builder--fse-migration)
 9. [Database-Level Operations](#database-level-operations)
-10. [Rollback and Safety](#rollback-and-safety)
-11. [Migration Checklist](#migration-checklist)
+10. [Multisite Migration](#multisite-migration)
+11. [Rollback and Safety](#rollback-and-safety)
+12. [Migration Checklist](#migration-checklist)
 
 ---
 
@@ -619,6 +620,89 @@ wp post meta delete $(wp post list --post_type=page --format=ids) _elementor_dat
 
 # Divi
 wp post meta delete $(wp post list --post_type=page --format=ids) _et_pb_use_builder _et_pb_old_content
+```
+
+---
+
+## Multisite Migration
+
+When migrating a Multisite network to a block theme, run all operations per-site using the `--url=` flag. Never run a network-wide search-replace without first auditing per-site.
+
+For full multisite WP-CLI commands, theme activation scripts, and CI matrix configuration, read `references/multisite.md`.
+
+### Per-Site Migration Order
+
+Migrate sites in this order to minimise risk:
+1. **Staging clone of the entire network** — test all steps here first
+2. **Main site (blog ID 1)** — most visible; fix issues here before rolling out
+3. **Low-traffic sub-sites** — catch edge cases at low risk
+4. **High-traffic sub-sites** — final rollout after all issues resolved
+
+### Scoped WP-CLI Commands
+
+```bash
+# Audit classic posts on a specific sub-site.
+wp post list --url=example.com/site-a/ \
+  --post_type=post,page \
+  --posts_per_page=-1 \
+  --format=json | \
+  php -r '$p=json_decode(file_get_contents("php://stdin"),true); \
+  echo count(array_filter($p, fn($x)=>!str_contains($x["post_content"],"<!-- wp:")));'
+
+# Convert classic posts on a sub-site.
+wp eval-file convert-classic-to-blocks.php --url=example.com/site-a/
+
+# Search-replace URLs on a specific sub-site only.
+wp search-replace 'https://old-site-a.com' 'https://example.com/site-a' \
+  --url=example.com/site-a/ \
+  --precise \
+  --skip-columns=guid
+
+# Flush rewrites and cache on a sub-site.
+wp rewrite flush --hard --url=example.com/site-a/
+wp cache flush --url=example.com/site-a/
+```
+
+### Per-Site Database Backup
+
+```bash
+# Back up only one site's tables before migrating it.
+wp db export \
+  --tables=$(wp db tables --url=example.com/site-a/ --format=csv) \
+  backup-site-a-$(date +%Y%m%d-%H%M%S).sql
+```
+
+### Theme Activation Across the Network
+
+```bash
+# Network-enable (makes available to all sites; does not force-activate).
+wp theme enable {{theme-slug}} --network
+
+# Activate on every site and flush caches.
+wp site list --field=url --format=csv | tail -n +2 | while IFS= read -r url; do
+  echo "Activating on $url"
+  wp theme activate {{theme-slug}} --url="$url"
+  wp rewrite flush --hard --url="$url"
+  wp cache flush --url="$url"
+done
+```
+
+### Verifying Migration Across All Sites
+
+```bash
+# Confirm active theme on each site.
+wp site list --field=url --format=csv | tail -n +2 | while IFS= read -r url; do
+  active=$(wp theme list --status=active --url="$url" --field=name --format=csv | head -1)
+  echo "$url → $active"
+done
+
+# Count remaining classic-format posts on each site.
+wp site list --field=url --format=csv | tail -n +2 | while IFS= read -r url; do
+  count=$(wp post list --url="$url" --post_type=post,page --posts_per_page=-1 \
+    --format=json | php -r '$p=json_decode(file_get_contents("php://stdin"),true); \
+    echo count(array_filter($p, fn($x)=>!str_contains($x["post_content"],"<!-- wp:")));')
+  echo "$url → $count classic posts remaining"
+done
 ```
 
 ---
