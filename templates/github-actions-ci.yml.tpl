@@ -6,10 +6,19 @@
 # Required GitHub Secrets:
 #   SSH_HOST          — deployment server hostname
 #   SSH_USER          — SSH username
-#   SSH_PRIVATE_KEY   — SSH private key (no passphrase)
+#   SSH_PRIVATE_KEY   — SSH private key (Ed25519 recommended; rotate annually)
 #   WP_THEMES_PATH    — absolute path to wp-content/themes/ on server
 #   WP_PATH           — absolute path to WordPress root
 #   STAGING_URL       — staging site URL (for a11y tests)
+#
+# SSH Key Security Notes:
+#   - Generate a dedicated deploy key (never reuse personal keys):
+#       ssh-keygen -t ed25519 -C "github-actions-deploy" -f ci_deploy_key
+#   - Use Ed25519 over RSA for stronger security
+#   - Set a passphrase if your runner supports SSH_ASKPASS or ssh-agent
+#   - Restrict the key on the server to a specific command if possible:
+#       command="rsync --server ...",no-pty,no-agent-forwarding ssh-ed25519 AAAA...
+#   - Rotate the key at least annually; revoke immediately if a secret is exposed
 
 name: CI
 

@@ -119,6 +119,36 @@ wp search-replace '[{{shortcode_tag}}]' '<!-- wp:my-theme/{{block-name}} /-->' -
 
 Use with caution — always back up before running.
 
+> ⚠️ **Simple shortcodes only.** The above find-replace works only for shortcodes with no attributes (e.g., `[hero]`). Shortcodes with attributes — e.g., `[gallery id="5" size="medium"]` — cannot be safely replaced with a single string. Use WP-CLI to identify affected posts and handle them individually:
+>
+> ```bash
+> # Find all posts containing the shortcode (with or without attributes)
+> wp post list --post_type=post,page --format=ids \
+>   | xargs -I{} wp post get {} --field=post_content \
+>   | grep -l '\[{{shortcode_tag}}'
+> ```
+>
+> For programmatic replacement of shortcodes with attributes, write a WP-CLI eval script:
+>
+> ```php
+> // Replace [{{shortcode_tag}} id="X"] with the block equivalent. Run via: wp eval-file migrate-shortcode.php
+> $posts = get_posts( array( 'post_type' => 'any', 'posts_per_page' => -1 ) );
+> foreach ( $posts as $post ) {
+>     if ( strpos( $post->post_content, '[{{shortcode_tag}}' ) === false ) continue;
+>     $new_content = preg_replace_callback(
+>         '/\[{{shortcode_tag}}([^\]]*)\]/',
+>         function( $matches ) {
+>             $atts = shortcode_parse_atts( $matches[1] );
+>             $id   = isset( $atts['id'] ) ? (int) $atts['id'] : 0;
+>             return '<!-- wp:my-theme/{{block-name}} {"id":' . $id . '} /-->';
+>         },
+>         $post->post_content
+>     );
+>     wp_update_post( array( 'ID' => $post->ID, 'post_content' => $new_content ) );
+>     WP_CLI::success( "Updated post {$post->ID}" );
+> }
+> ```
+
 **Pattern-based replacement for complex shortcodes:**
 ```php
 // In inc/shortcode-migration.php — keep active only during migration period.

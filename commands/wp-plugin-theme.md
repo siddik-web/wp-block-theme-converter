@@ -60,7 +60,9 @@ WordPress 6.5+ supports declaring required plugins in `style.css` header. Additi
  */
 ```
 
-Slugs must match the plugin's WordPress.org slug (the folder name in `wp-content/plugins/`).
+Slugs must match the plugin's **WordPress.org directory slug** — the folder name under `wp-content/plugins/`. For example, WPForms is `wpforms-lite` (free) or `wpforms` (pro); ACF is `advanced-custom-fields` (free) or `advanced-custom-fields-pro` (pro). Verify slugs at `wordpress.org/plugins/{{slug}}` before committing.
+
+> **ACF Block Bindings version requirement:** Using ACF fields with the Block Bindings API requires **ACF PRO 6.3+** (for native binding support) or the custom `register_block_bindings_source()` approach shown in `commands/wp-migrate.md`. The Block Bindings API itself requires **WordPress 6.5+**. Always check both version constraints before declaring ACF as a required plugin for binding-dependent features.
 
 **TGMPA-style helper in `inc/plugin-dependencies.php`:**
 
