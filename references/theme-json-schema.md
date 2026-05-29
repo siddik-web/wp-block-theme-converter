@@ -73,6 +73,7 @@ Complete reference for generating valid `theme.json` files for WordPress 6.5+.
 ```
 
 **Best practices:**
+
 - Set `defaultPalette: false` to remove WordPress's defaults (cleaner editor)
 - Use semantic slugs (`primary`, `accent`) NOT visual (`black`, `blue`)
 - Always include: `primary`, `secondary`, `accent`, `background`, `text`
@@ -138,6 +139,7 @@ Complete reference for generating valid `theme.json` files for WordPress 6.5+.
 **Self-hosted fonts:** The `file:./` prefix tells WordPress to bundle the font and self-host it. Always use this for GDPR compliance.
 
 **Generated CSS variables:**
+
 - `--wp--preset--font-family--{slug}`
 - `--wp--preset--font-size--{slug}`
 
@@ -398,6 +400,7 @@ The `name` MUST match a file in `templates/` (e.g., `templates/page-landing.html
 Place additional theme.json variants in `/styles/`:
 
 **`styles/dark.json`:**
+
 ```json
 {
   "$schema": "https://schemas.wp.org/trunk/theme.json",
@@ -547,10 +550,12 @@ See `references/modern-blocks.md` → Section Styles for full details and regist
 ## Validation
 
 Validate every theme.json before deployment:
+
 - https://validator.poet.so/theme-json
 - WP-CLI: `wp theme-json validate` (if installed)
 
 Common validation errors:
+
 1. Missing `$schema` declaration
 2. Wrong `version` (must be `3`)
 3. Color slug contains invalid characters (use only lowercase, hyphens, numbers)

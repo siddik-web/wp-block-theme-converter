@@ -129,6 +129,7 @@ WooCommerce:
 This project triggers automatic multi-turn split (10+ HTML pages + WooCommerce + 6 style variations).
 
 ### Turn 1: Foundation
+
 - `style.css`, `theme.json` (base/Swiss Minimalist), `functions.php`
 - `inc/theme-setup.php`, `inc/enqueue.php`, `inc/woocommerce.php`
 - All 16 templates (8 standard + 8 WC)
@@ -136,12 +137,14 @@ This project triggers automatic multi-turn split (10+ HTML pages + WooCommerce +
 - `package.json`, `vite.config.js`, lint configs, `.gitignore`
 
 ### Turn 2: Patterns & Style Variations
+
 - All 22 patterns (product-detail × 6, hero × 2, AI recommender, social proof, countdown, BNPL, bundle, reviews, quick view, compare, filters, newsletter, trust badges, shipping info, footer × 2)
 - 6 style variations in `/styles/`
 - `inc/block-patterns.php`, `inc/block-styles.php`, `inc/block-variations.php`
 - Block style CSS in `assets/css/style.css` and `editor.css`
 
 ### Turn 3: JavaScript & Polish
+
 - `assets/js/main.js`, `editor.js`, `block-variations.js`
 - `assets/js/alpine-init.js`, `size-recommender.js`, `social-proof.js`, `countdown.js`
 - `assets/js/shared-products.js` (ported)

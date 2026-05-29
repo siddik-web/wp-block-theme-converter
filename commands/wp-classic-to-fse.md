@@ -15,6 +15,7 @@ This command is specifically for users who already have a **WordPress classic th
 ### Step 1: Audit the Classic Theme
 
 Ask the user to provide:
+
 1. The theme's `style.css` (header metadata)
 2. List of PHP template files present
 3. `functions.php` (or key sections of it)
@@ -58,7 +59,7 @@ Map each classic theme file to its FSE equivalent:
 | `search.php` | `templates/search.html` | |
 | `404.php` | `templates/404.html` | |
 | `comments.php` | Block-based comments in template | `core/comments` block |
-| Custom page template | `templates/{{slug}}.html` + `customTemplates` entry in theme.json |
+| Custom page template | `templates/{{slug}}.html` + `customTemplates` entry in theme.json | Per template |
 | `woocommerce/` | WC block templates in `templates/` | See `references/woocommerce.md` |
 
 ### Step 3: Convert functions.php
@@ -97,16 +98,19 @@ The classic theme's CSS cannot be used unchanged — it targets classic markup, 
 Options:
 
 **A. Full Rewrite (recommended for clean results)**
+
 - Extract the design tokens (colors, fonts, spacing) → put in `theme.json`
 - Rewrite CSS targeting block classes (`wp-block-*`) instead of classic selectors
 - Use per-block CSS files in `assets/css/blocks/`
 
 **B. Incremental Migration (for large CSS codebases)**
+
 - Keep existing CSS as a global stylesheet
 - Add per-block CSS overrides for block-specific elements
 - Gradually refactor selectors over time
 
 **C. CSS Audit + Cherry-Pick**
+
 - Run Chrome DevTools Coverage tab → identify which CSS rules are actually used
 - Copy used rules only, then rewrite selectors
 
@@ -117,6 +121,7 @@ Always state which approach is being taken and why.
 Convert `header.php` to `parts/header.html`:
 
 **Classic `header.php` (simplified):**
+
 ```php
 <header class="site-header">
     <div class="container">
@@ -129,6 +134,7 @@ Convert `header.php` to `parts/header.html`:
 ```
 
 **FSE `parts/header.html`:**
+
 ```html
 <!-- wp:group {"tagName":"header","className":"site-header","layout":{"type":"constrained"}} -->
 <header class="wp-block-group site-header">
@@ -145,6 +151,7 @@ Convert `header.php` to `parts/header.html`:
 ### Step 6: Convert Templates
 
 **Classic `single.php` (simplified):**
+
 ```php
 <?php get_header(); ?>
 <main class="site-main">
@@ -161,6 +168,7 @@ Convert `header.php` to `parts/header.html`:
 ```
 
 **FSE `templates/single.html`:**
+
 ```html
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 

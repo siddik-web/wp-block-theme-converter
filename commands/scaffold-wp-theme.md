@@ -36,6 +36,7 @@ Each preset maps to a different default `theme.json` and starter patterns:
 Output the same file structure as `/convert-to-wp-theme`, but with placeholder content rather than converted source. Read `references/file-structure.md`.
 
 Use templates from `templates/` directory:
+
 - `templates/style.css.tpl` for the theme header
 - `templates/theme.json.tpl` for the theme.json
 - `templates/functions.php.tpl` for functions.php
@@ -45,6 +46,7 @@ Use templates from `templates/` directory:
 - `templates/vite.config.js.tpl` for Vite config
 
 Generate at minimum:
+
 - `style.css`
 - `theme.json` (with preset colors/fonts)
 - `functions.php`

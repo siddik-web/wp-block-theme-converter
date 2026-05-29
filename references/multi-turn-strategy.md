@@ -15,6 +15,7 @@ For smaller projects, single-turn delivery is fine.
 ## Why Split
 
 A complete WordPress block theme can easily exceed 10,000 lines of generated content:
+
 - theme.json: 300-800 lines
 - 10 templates × 50-200 lines = 500-2000 lines
 - 5 template parts × 30-80 lines = 150-400 lines
@@ -24,6 +25,7 @@ A complete WordPress block theme can easily exceed 10,000 lines of generated con
 - JS files = 200-1000 lines
 
 Single-turn delivery for this scale risks:
+
 1. Hitting context window limits mid-generation
 2. Reduced quality on later files (model fatigue)
 3. Inconsistencies between files
@@ -34,6 +36,7 @@ Single-turn delivery for this scale risks:
 ### Turn 1: Foundation
 
 **Deliver:**
+
 - Conversion Plan (1-page summary)
 - Design Token Extraction Table
 - `style.css` (theme header)
@@ -57,6 +60,7 @@ Single-turn delivery for this scale risks:
 ### Turn 2: Patterns & Styles
 
 **Deliver:**
+
 - All `patterns/*.php` files
 - `inc/block-patterns.php` (category registration)
 - `inc/block-styles.php` (block style registration)
@@ -74,6 +78,7 @@ Single-turn delivery for this scale risks:
 ### Turn 3: JavaScript, Polish & Docs
 
 **Deliver:**
+
 - All `assets/js/*.js` files
 - `assets/css/critical.css` (if needed)
 - `assets/css/woocommerce.css` (if WC)
@@ -117,6 +122,7 @@ At the start of Turn 1, announce the strategy:
 ## Single-Turn Threshold
 
 If the project meets ALL these criteria, deliver in a single turn:
+
 - ✅ < 10 HTML pages
 - ✅ No WooCommerce
 - ✅ Single style variation (no multi-aesthetic)
@@ -134,5 +140,6 @@ For projects between thresholds (5-10 pages, no WC):
 
 Announce:
 > Medium-size project. I'll deliver in 2 turns:
+>
 > 1. **Turn 1:** Foundation + templates
 > 2. **Turn 2:** Patterns + JS + polish

@@ -5,6 +5,7 @@
 ## When to Use
 
 Trigger this command when:
+
 - The user wants a dark, light, high-contrast, seasonal, or brand-alternate version of their theme
 - The user says "color scheme", "variant", "skin", "dark mode", "alternate palette"
 - A design system has multiple brand expressions (e.g., marketing vs. product, seasonal themes)

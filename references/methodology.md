@@ -7,6 +7,7 @@ Execute these phases IN ORDER. Each phase produces specific deliverables.
 **Goal:** Understand the source project before writing any WordPress code.
 
 **Steps:**
+
 1. Parse every HTML file. Build an inventory:
    - File name → page purpose (homepage, about, blog list, single post, etc.)
    - Sections per page (hero, features, testimonials, footer, etc.)
@@ -48,6 +49,7 @@ This is the most important file in a block theme. Get it right.
 ```
 
 **Settings checklist:**
+
 - [ ] `appearanceTools: true` — enables border, spacing, shadow, etc. in editor
 - [ ] `useRootPaddingAwareAlignments: true` — fixes full-width alignment
 - [ ] `layout.contentSize` and `layout.wideSize` defined
@@ -62,6 +64,7 @@ This is the most important file in a block theme. Get it right.
 - [ ] `blocks` overrides for specific block defaults
 
 **Styles checklist:**
+
 - [ ] Root color (background + text)
 - [ ] Root typography (fontFamily + fontSize + lineHeight)
 - [ ] Root spacing (padding, blockGap)
@@ -71,6 +74,7 @@ This is the most important file in a block theme. Get it right.
 - [ ] Per-block overrides in `styles.blocks`
 
 **Template parts:**
+
 ```json
 "templateParts": [
   { "name": "header", "title": "Header", "area": "header" },
@@ -104,6 +108,7 @@ See `theme-json-schema.md` for complete structure.
 1. Identify the `<header>` → reference `parts/header.html` via template-part block
 2. Identify the `<footer>` → reference `parts/footer.html`
 3. Wrap main content in `<main>` group block:
+
    ```html
    <!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
    <main class="wp-block-group">
@@ -111,12 +116,14 @@ See `theme-json-schema.md` for complete structure.
    </main>
    <!-- /wp:group -->
    ```
+
 4. For `single.html` and `page.html`, use `<!-- wp:post-content /-->` for editable content
 5. For `home.html` and `archive.html`, use `<!-- wp:query -->` (Query Loop block)
 6. For repeating sections, reference patterns: `<!-- wp:pattern {"slug":"theme/hero"} /-->`
 7. Convert all remaining HTML to block markup (see `block-conversion-map.md`)
 
 **Skip-link requirement:** Add to `parts/header.html`:
+
 ```html
 <!-- wp:html -->
 <a class="skip-link screen-reader-text" href="#wp--skip-link--target">Skip to main content</a>
@@ -124,6 +131,7 @@ See `theme-json-schema.md` for complete structure.
 ```
 
 And add the target in templates before `<main>`:
+
 ```html
 <!-- wp:html -->
 <div id="wp--skip-link--target"></div>
@@ -156,7 +164,8 @@ And add the target in templates before `<main>`:
 ?>
 ```
 
-4. Pattern body uses block markup with PHP for i18n strings and asset paths:
+1. Pattern body uses block markup with PHP for i18n strings and asset paths:
+
 ```php
 <!-- wp:heading {"level":1,"fontSize":"huge"} -->
 <h1 class="wp-block-heading has-huge-font-size"><?php esc_html_e( 'Welcome', 'theme-slug' ); ?></h1>
@@ -169,7 +178,8 @@ And add the target in templates before `<main>`:
 <!-- /wp:image -->
 ```
 
-5. Register custom pattern categories in `inc/block-patterns.php`:
+1. Register custom pattern categories in `inc/block-patterns.php`:
+
 ```php
 <?php
 function {{theme_slug_underscored}}_register_pattern_categories() {
@@ -196,6 +206,7 @@ add_action( 'init', '{{theme_slug_underscored}}_register_pattern_categories' );
 **Block Styles** (CSS-only variants of existing blocks):
 
 In `inc/block-styles.php`:
+
 ```php
 <?php
 function {{theme_slug_underscored}}_register_block_styles() {
@@ -218,6 +229,7 @@ add_action( 'init', '{{theme_slug_underscored}}_register_block_styles' );
 ```
 
 Matching CSS in `assets/css/style.css`:
+
 ```css
 .wp-block-button.is-style-outline-editorial .wp-block-button__link {
     background: transparent;
@@ -236,6 +248,7 @@ ALSO mirror in `assets/css/editor.css` so the editor matches the frontend.
 **Block Variations** (JS-defined block presets):
 
 In `assets/js/block-variations.js`:
+
 ```js
 import { registerBlockVariation } from '@wordpress/blocks';
 
@@ -250,6 +263,7 @@ registerBlockVariation( 'core/group', {
 ```
 
 Enqueue this in `inc/enqueue.php`:
+
 ```php
 function {{theme_slug_underscored}}_enqueue_block_variations() {
     wp_enqueue_script(
@@ -270,6 +284,7 @@ add_action( 'enqueue_block_editor_assets', '{{theme_slug_underscored}}_enqueue_b
 **Goal:** Port source JS into a WordPress-friendly setup using the most appropriate API.
 
 **Rules:**
+
 - NEVER inline JS in block patterns or templates
 - ALWAYS prefer WordPress-native APIs over third-party libraries
 - Use Interactivity API (`@wordpress/interactivity`) as the PRIMARY strategy for interactive patterns
@@ -292,6 +307,7 @@ add_action( 'enqueue_block_editor_assets', '{{theme_slug_underscored}}_enqueue_b
 | jQuery-dependent code | `wp_enqueue_script()` with jQuery dependency — plan migration |
 
 **Interactivity API implementation (in `inc/enqueue.php`):**
+
 ```php
 function {{theme_slug_underscored}}_register_interactivity_scripts() {
     wp_register_script_module(
@@ -305,6 +321,7 @@ add_action( 'init', '{{theme_slug_underscored}}_register_interactivity_scripts' 
 ```
 
 **Classic script enqueue (in `inc/enqueue.php`):**
+
 ```php
 function {{theme_slug_underscored}}_enqueue_scripts() {
     // Frontend script (for non-Interactivity-API JS)
@@ -333,6 +350,7 @@ add_action( 'wp_enqueue_scripts', '{{theme_slug_underscored}}_enqueue_scripts' )
 ```
 
 **Reduced motion:** Wrap any animations:
+
 ```js
 const prefersReducedMotion = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
 if ( ! prefersReducedMotion ) {
@@ -347,6 +365,7 @@ if ( ! prefersReducedMotion ) {
 **Goal:** Bootstrap the theme. Keep `functions.php` thin.
 
 **`functions.php`** (template at `templates/functions.php.tpl`):
+
 ```php
 <?php
 /**
@@ -380,6 +399,7 @@ if ( class_exists( 'WooCommerce' ) ) {
 ```
 
 **`inc/theme-setup.php`** must call:
+
 ```php
 add_theme_support( 'wp-block-styles' );
 add_theme_support( 'editor-styles' );
@@ -412,6 +432,7 @@ All in a function hooked to `after_setup_theme`.
 **Goal:** Meet WCAG 2.1 AA and Core Web Vitals targets.
 
 **Accessibility checklist:**
+
 - [ ] Skip-link in header part
 - [ ] ARIA landmarks via `tagName` (header, main, footer, aside, nav)
 - [ ] All `core/image` blocks have `alt` attribute
@@ -424,6 +445,7 @@ All in a function hooked to `after_setup_theme`.
 - [ ] Interactivity API patterns include proper ARIA attributes (`aria-expanded`, `aria-hidden`, `aria-label`)
 
 **Performance checklist:**
+
 - [ ] LCP image marked with `loading="eager"` and `fetchpriority="high"`
 - [ ] All other images `loading="lazy"` (core default in WP 5.5+)
 - [ ] Fonts self-hosted via `assets/fonts/`, declared in theme.json `fontFace`
@@ -499,6 +521,7 @@ add_filter( 'wp_preload_resources', '{{theme_slug_underscored}}_preload_resource
 ```
 
 **Critical CSS inline example:**
+
 ```php
 function {{theme_slug_underscored}}_inline_critical_css() {
     $critical_css = file_get_contents( get_template_directory() . '/assets/css/critical.css' );
@@ -510,6 +533,7 @@ add_action( 'wp_enqueue_scripts', '{{theme_slug_underscored}}_inline_critical_cs
 **Editor parity — systematic approach:**
 
 To ensure the editor matches the frontend, follow this process:
+
 1. Every CSS rule in `assets/css/style.css` that affects block appearance MUST be duplicated in `assets/css/editor.css`
 2. Per-block CSS files in `assets/css/blocks/` are automatically loaded in both frontend and editor by `wp_enqueue_block_style()`
 3. Custom block style CSS (`.is-style-*`) MUST appear in both files
@@ -523,6 +547,7 @@ To ensure the editor matches the frontend, follow this process:
 **Goal:** Make every user-facing string translatable.
 
 **Rules:**
+
 - Every user-facing string in PHP wrapped in `__()`, `_e()`, `esc_html__()`, `esc_attr__()`, `_n()`, `_x()`
 - The text-domain argument MUST equal `{{text-domain}}` everywhere
 - For escaped output, use `esc_html__()`, NOT `esc_html(__())`
@@ -600,6 +625,7 @@ Source: {{url}}
 > ⚠️ Add `screenshot.png` (1200×900 PNG, ≤ 1MB) before publishing. This file is required for the theme to display correctly in Appearance → Themes.
 
 **`.gitignore`:**
+
 ```
 node_modules/
 vendor/

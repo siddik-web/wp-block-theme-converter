@@ -34,6 +34,7 @@ After Claude generates the theme, run through these checks. Provide this checkli
 - [ ] No direct database queries
 - [ ] No `eval()`, `exec()`, etc.
 - [ ] PHPCS passes with WordPress-Extra ruleset:
+
   ```bash
   ./vendor/bin/phpcs --standard=phpcs.xml .
   ```
@@ -47,7 +48,7 @@ After Claude generates the theme, run through these checks. Provide this checkli
 - [ ] All images have `alt` attribute (or `alt=""` for decorative)
 - [ ] Heading hierarchy is logical (no skipped levels)
 - [ ] Templates open in Site Editor without errors
-- [ ] All `<!-- wp:pattern --> ` references have matching pattern files
+- [ ] All `<!-- wp:pattern -->` references have matching pattern files
 
 ## CSS Validation
 
@@ -58,6 +59,7 @@ After Claude generates the theme, run through these checks. Provide this checkli
 - [ ] No `!important` declarations (or only as last resort)
 - [ ] `editor.css` mirrors all visual CSS from `style.css` — excluding site-level layout (header/footer positioning), print styles, and animation keyframes. Per-block CSS loaded via `wp_enqueue_block_style()` auto-applies to both.
 - [ ] Stylelint passes:
+
   ```bash
   npx stylelint "assets/css/**/*.css"
   ```
@@ -72,6 +74,7 @@ After Claude generates the theme, run through these checks. Provide this checkli
 - [ ] Interactivity API patterns include proper ARIA attributes (`aria-expanded`, `aria-hidden`, `aria-label`)
 - [ ] No Alpine.js used for interactions that the Interactivity API can handle
 - [ ] ESLint passes:
+
   ```bash
   npx eslint assets/js/
   ```
@@ -194,34 +197,45 @@ Run **Theme Check** plugin (https://wordpress.org/plugins/theme-check/):
 ## Common Issues & Fixes
 
 ### Issue: theme.json doesn't apply
+
 **Fix:** Clear WordPress cache. Check for syntax errors in JSON. Verify `version: 3`.
 
 ### Issue: Patterns don't show in Site Editor
+
 **Fix:** Verify pattern category is registered before patterns reference it. Verify file header docblock is intact.
 
 ### Issue: Fonts don't load
+
 **Fix:** Check `fontFace.src` paths are relative to theme root with `file:./` prefix. Verify font files exist.
 
 ### Issue: Block styles don't show
+
 **Fix:** Verify `register_block_style()` is called on `init` hook. Verify CSS is enqueued.
 
 ### Issue: Editor doesn't match frontend
+
 **Fix:** Add styles to `assets/css/editor.css` AND ensure `add_editor_style()` is called.
 
 ### Issue: WooCommerce blocks have no styling
+
 **Fix:** Add `inc/woocommerce.php` to bootstrap. Add WC block overrides to theme.json.
 
 ### Issue: PHPCS reports violations
+
 **Fix:** Run `phpcbf` (auto-fixer) first: `./vendor/bin/phpcbf --standard=phpcs.xml .`
 
 ### Issue: Interactivity API directives don't work
+
 **Fix:** Verify script is registered with `wp_register_script_module()` (not `wp_enqueue_script()`). Check that the `data-wp-interactive` namespace matches the `store()` call. Ensure `@wordpress/interactivity` is listed as a dependency.
 
 ### Issue: Per-block CSS not loading
+
 **Fix:** Verify `wp_enqueue_block_style()` is hooked to `init` (not `wp_enqueue_scripts`). Check that the `path` parameter points to the absolute filesystem path (not URL). Ensure the block name matches exactly (e.g., `core/quote` not `quote`).
 
 ### Issue: Font preloading causes double-load
+
 **Fix:** Ensure the `href` in the preload link exactly matches the `src` in theme.json `fontFace`. Use `crossorigin` attribute on the preload tag (required for fonts). Only preload 1-2 critical font files, not all weights/styles.
 
 ### Issue: CSS not working in RTL languages
+
 **Fix:** Replace physical CSS properties with logical equivalents. `margin-left` → `margin-inline-start`, `padding-right` → `padding-inline-end`, `text-align: left` → `text-align: start`. See `references/modern-blocks.md` → RTL & Logical Properties.

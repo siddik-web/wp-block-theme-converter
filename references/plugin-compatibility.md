@@ -98,6 +98,7 @@ Do not call plugin functions directly inside `.html` template/pattern files. Use
 PHP only executes in `.php` files. For plugin output inside FSE templates:
 
 **Option A:** Use a `<!-- wp:html -->` block inside a `.php` pattern file (registered in `patterns/`):
+
 ```php
 // patterns/breadcrumbs.php
 /**
@@ -319,6 +320,7 @@ add_filter( 'bbp_get_template_stack', function( array $stack ): array {
 Block theme styles from `theme.json` are injected as `body { ... }` (specificity: 0,0,0,1) — they are intentionally low-specificity. Per-block CSS at `.wp-block-{name}` is (0,0,1,0).
 
 Plugin styles are often at (0,0,2,0) or higher. To override:
+
 ```css
 /* Add .wp-site-blocks ancestor for +1 class specificity */
 .wp-site-blocks .wpforms-container input { }
@@ -330,6 +332,7 @@ Plugin styles are often at (0,0,2,0) or higher. To override:
 ### Order-Based Override (No Specificity Increase)
 
 Load your stylesheet AFTER the plugin's:
+
 ```php
 wp_enqueue_style(
     'my-theme-wpforms',
@@ -404,6 +407,7 @@ add_action( 'wp_enqueue_scripts', function(): void {
 ### Divi + Block Theme
 
 Divi builder is incompatible with FSE. If Divi is active:
+
 1. Divi-built pages must be rebuilt as FSE templates or block patterns
 2. Divi should be deactivated after migration
 

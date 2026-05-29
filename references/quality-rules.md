@@ -205,11 +205,13 @@ These rules apply to EVERY file in the generated theme. Violations result in fai
 ## Performance Rules (Core Web Vitals)
 
 Target metrics:
+
 - **LCP** (Largest Contentful Paint) < 2.5s
 - **CLS** (Cumulative Layout Shift) < 0.1
 - **INP** (Interaction to Next Paint) < 200ms
 
 Required practices:
+
 - Self-host fonts via `assets/fonts/`
 - Use `loading="eager"` and `fetchpriority="high"` on the LCP image
 - Use `loading="lazy"` on below-fold images (WP core default since 5.5)

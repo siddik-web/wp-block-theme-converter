@@ -311,4 +311,4 @@ if ( class_exists( 'WooCommerce' ) ) {
 }
 ```
 
-In templates, use `<!-- wp:pattern --> ` references that fall back to placeholder content if WC is missing.
+In templates, use `<!-- wp:pattern -->` references that fall back to placeholder content if WC is missing.

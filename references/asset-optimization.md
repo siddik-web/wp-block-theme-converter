@@ -47,6 +47,7 @@ npx glyphhanger https://yourdomain.com --subset=latin --formats=woff2 --spider
 ```
 
 Place font files in `assets/fonts/`:
+
 ```
 assets/fonts/
   plus-jakarta-sans-400.woff2
@@ -117,6 +118,7 @@ add_action( 'wp_head', '{{theme_slug_underscored}}_preload_fonts', 1 );
 Subsetting reduces woff2 file sizes by 50–80% by removing unused character ranges.
 
 Using `pyftsubset` (Python, via fonttools):
+
 ```bash
 pip install fonttools brotli
 
@@ -145,6 +147,7 @@ Prefer variable fonts when the design requires 3+ weights — one file replaces 
 ```
 
 In `theme.json`, register with weight range:
+
 ```json
 {
     "fontFace": [
@@ -181,6 +184,7 @@ add_action( 'after_setup_theme', '{{theme_slug_underscored}}_image_sizes' );
 ```
 
 Add sizes to the block editor dropdown:
+
 ```php
 function {{theme_slug_underscored}}_image_size_names( array $sizes ): array {
     return array_merge( $sizes, array(
@@ -419,6 +423,7 @@ wp_enqueue_script(
 ```
 
 `strategy` options (WP 6.3+):
+
 - `'defer'` — load after HTML parsed, execute before DOMContentLoaded
 - `'async'` — load in parallel, execute as soon as downloaded (no order guarantee)
 
@@ -455,6 +460,7 @@ import * as interactivity from '@wordpress/interactivity';
 ### 5. Remove Alpine.js
 
 If the source project uses Alpine.js, replace with Interactivity API for:
+
 - Modals / dialogs
 - Tabs
 - Accordions (prefer `core/details` block)
@@ -462,6 +468,7 @@ If the source project uses Alpine.js, replace with Interactivity API for:
 - Toggle visibility
 
 Only keep Alpine.js (or replace with vanilla JS) for:
+
 - Complex gesture-based interactions
 - Third-party library integrations that require specific initialization
 - GSAP timeline orchestration
@@ -592,6 +599,7 @@ Object.keys(scores).forEach(k => console.log(k, Math.round(scores[k].score * 100
 ```
 
 Target scores:
+
 - Performance: ≥ 90
 - Accessibility: ≥ 90
 - Best Practices: ≥ 90

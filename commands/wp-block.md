@@ -99,6 +99,7 @@ Supports: [list]
 | Color (free) | `"string"` | `""` |
 
 Image attribute pattern:
+
 ```json
 "image": {
     "type": "object",
@@ -179,6 +180,7 @@ export default function save( { attributes } ) {
 ```
 
 Rules for `save.js`:
+
 - Output must be **deterministic** — same attributes always produce same HTML
 - Never use `Math.random()`, `Date.now()`, or any non-deterministic value
 - Never access external data — only `attributes` and `useBlockProps.save()`
@@ -208,6 +210,7 @@ $wrapper_attributes = get_block_wrapper_attributes();
 ```
 
 Rules for `render.php`:
+
 - Always use `get_block_wrapper_attributes()` for the wrapper — never hardcode classes/attributes
 - Always escape output: `esc_html()`, `esc_attr()`, `esc_url()`, `wp_kses_post()`
 - Access attributes via `$attributes['attributeName'] ?? $default`
@@ -217,6 +220,7 @@ Rules for `render.php`:
 ### Step 7: Generate style.css and editor.css
 
 `style.css` — loaded on frontend AND in editor:
+
 ```css
 .wp-block-{{namespace}}-{{block-name}} {
     /* Base styles using theme.json custom properties only */
@@ -224,6 +228,7 @@ Rules for `render.php`:
 ```
 
 `editor.css` — loaded ONLY in the block editor:
+
 ```css
 .wp-block-{{namespace}}-{{block-name}} {
     /* Editor-only overrides (placeholder styling, canvas adjustments) */
@@ -231,6 +236,7 @@ Rules for `render.php`:
 ```
 
 Rules:
+
 - NEVER hardcode colors — use `var(--wp--preset--color--{slug})`
 - NEVER hardcode font sizes — use `var(--wp--preset--font-size--{slug})`
 - NEVER hardcode spacing — use `var(--wp--preset--spacing--{slug})`
@@ -257,6 +263,7 @@ add_action( 'init', '{{theme_slug_underscored}}_register_blocks' );
 ```
 
 Add to `functions.php`:
+
 ```php
 require_once get_template_directory() . '/inc/block-registration.php';
 ```
@@ -280,6 +287,7 @@ Deliver files with labeled headers:
 After all files, provide:
 
 **Build note:**
+
 ```
 Add to vite.config.js input entries:
   '{{block-name}}-edit': 'blocks/{{block-name}}/edit.js',
@@ -287,6 +295,7 @@ Add to vite.config.js input entries:
 ```
 
 **Verification:**
+
 ```
 ✅ Block appears in inserter under "{{category}}" category
 ✅ Block renders correctly on the frontend

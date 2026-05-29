@@ -1,0 +1,77 @@
+name: Skill CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  validate-skill:
+    name: Validate skill structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run validate-skill.mjs
+        run: node scripts/validate-skill.mjs
+
+  lint-scripts:
+    name: Lint scripts (node --check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check all .mjs scripts for syntax errors
+        run: |
+          for f in scripts/*.mjs; do
+            echo "Checking $f"
+            node --check "$f"
+          done
+
+  doctor-golden-theme:
+    name: Doctor — golden theme
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check if golden theme exists
+        id: check-golden
+        run: |
+          if [ -d "examples/_generated/landing-page-theme" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run doctor.mjs against golden theme
+        if: steps.check-golden.outputs.exists == 'true'
+        run: node scripts/doctor.mjs examples/_generated/landing-page-theme
+
+      - name: Skip (golden theme not yet generated)
+        if: steps.check-golden.outputs.exists == 'false'
+        run: echo "examples/_generated/landing-page-theme does not exist yet — skipping doctor check."
+
+  markdown-lint:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run markdownlint-cli2
+        run: npx --yes markdownlint-cli2 "**/*.md" --ignore node_modules

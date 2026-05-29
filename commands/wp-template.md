@@ -91,17 +91,20 @@ Provide this snippet for the user to add to their theme.json.
 Provide:
 
 1. **The template file:**
+
    ```
    === FILE: {{theme-slug}}/templates/{{template-name}}.html ===
    ```
 
 2. **Any new template parts** (if extracted):
+
    ```
    === FILE: {{theme-slug}}/parts/header.html ===
    === FILE: {{theme-slug}}/parts/footer.html ===
    ```
 
 3. **theme.json additions** (if custom template or new parts):
+
    ```json
    "templateParts": [...],
    "customTemplates": [...]

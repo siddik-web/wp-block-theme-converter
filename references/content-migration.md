@@ -122,6 +122,7 @@ wp db query "SELECT COUNT(*) FROM wp_posts WHERE post_content REGEXP '\[[a-z_]+[
 When a Classic Editor post is opened in the Block Editor, WordPress automatically wraps content in a `<!-- wp:freeform -->` (Classic block). This preserves existing content but does not convert it to individual blocks.
 
 To convert to proper blocks: open the post → click the three-dot menu on the Classic block → "Convert to Blocks". WordPress uses the `wp_parse_blocks()` heuristic, which works well for:
+
 - Paragraphs and headings
 - Lists
 - Images (plain `<img>` tags)
@@ -129,6 +130,7 @@ To convert to proper blocks: open the post → click the three-dot menu on the C
 - Tables
 
 It works poorly for:
+
 - Floated images (becomes Group + Image)
 - Shortcodes (stays as Classic block unless shortcode is registered as a block)
 - Complex nested HTML (becomes Custom HTML block)
@@ -455,6 +457,7 @@ register_block_bindings_source(
 ```
 
 Usage in a block:
+
 ```html
 <!-- wp:image {
     "metadata": {
@@ -543,12 +546,14 @@ add_action( 'init', '{{theme_slug_underscored}}_register_post_types' );
 Elementor stores its data in `_elementor_data` post meta (JSON). The post `post_content` contains an empty `[et_pb_section]`-like placeholder or nothing useful.
 
 **Steps:**
+
 1. Screenshot the Elementor layout
 2. Rebuild in FSE as a template or block pattern
 3. Clear Elementor data for that page: `wp post meta delete {{post_id}} _elementor_data`
 4. Set the page to use the new FSE template
 
 **Export Elementor template for reference:**
+
 ```bash
 wp post meta get {{post_id}} _elementor_data | python3 -m json.tool > elementor-template.json
 ```

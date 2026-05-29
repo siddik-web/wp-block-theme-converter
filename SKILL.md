@@ -1,6 +1,7 @@
 ---
 name: wp-block-theme-converter
 description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, or building WooCommerce-compatible block themes. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, /wp-variation, or /wp-classic-to-fse. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
+version: 2.0.0
 license: MIT
 ---
 
@@ -21,6 +22,7 @@ Convert HTML/CSS/JavaScript projects into production-ready WordPress Block Theme
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before generating ANY file:
+
 - **State assumptions explicitly.** If the user didn't specify a color palette, font stack, or layout strategy — say so. Don't silently invent design decisions.
 - **If multiple interpretations exist, present them.** "Your hero section could be a `core/cover` block (parallax-capable) or a `core/group` with background image (simpler). Which do you prefer?"
 - **Push back when warranted.** If the user asks for something that will create a poor theme (e.g., inline JS in patterns, Alpine.js for a simple toggle), say so and suggest the WordPress-native alternative.
@@ -44,12 +46,14 @@ Before generating ANY file:
 **Touch only what you must. Clean up only your own mess.**
 
 When the user has an EXISTING theme and wants modifications:
+
 - **Don't "improve" adjacent code.** If asked to add a footer pattern, don't refactor the header pattern.
 - **Don't refactor things that aren't broken.** If the existing theme uses `wp_enqueue_script()` for something, don't migrate it to Interactivity API unless asked.
 - **Match existing style.** If the theme uses tabs for indentation, use tabs. If it uses `snake_case` for function names, follow suit.
 - **If you notice unrelated issues, mention them — don't fix them.** "I noticed your header pattern has an inline `style` attribute. Want me to fix that too?"
 
 When YOUR changes create orphans:
+
 - Remove imports/variables/functions that YOUR changes made unused.
 - Don't remove pre-existing dead code unless asked.
 
@@ -96,6 +100,7 @@ For multi-step tasks, state a brief plan with verification at each step:
 ## When to Use This Skill
 
 Trigger this skill when the user wants to:
+
 - Convert static HTML/CSS/JS into a WordPress theme
 - Build a Full Site Editing (FSE) theme from scratch
 - Scaffold theme.json, block patterns, or block templates
@@ -117,6 +122,7 @@ Trigger this skill when the user wants to:
 | [`/wp-plugin-theme`](commands/wp-plugin-theme.md) | Declare plugin dependencies and generate plugin-specific CSS / compatibility code | `commands/wp-plugin-theme.md` |
 | [`/wp-variation`](commands/wp-variation.md) | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap | `commands/wp-variation.md` |
 | [`/wp-classic-to-fse`](commands/wp-classic-to-fse.md) | Convert an existing WordPress classic theme (PHP templates) to FSE block theme | `commands/wp-classic-to-fse.md` |
+| [`/wp-debug`](commands/wp-debug.md) | Systematically debug WordPress block theme issues (white screen, editor errors, style regressions) | `commands/wp-debug.md` |
 
 When the user types one of these commands, read the corresponding command file in `commands/` and execute the workflow defined there.
 
@@ -129,6 +135,7 @@ For ANY conversion request (whether triggered by slash command or natural langua
 ### Step 1: Think — Capture & Clarify (Principle 1)
 
 Gather these inputs (ask only if not provided):
+
 - Theme identity (name, slug, author, description)
 - Source project type (landing page, blog, eCommerce, portfolio, SaaS)
 - HTML files to convert
@@ -137,6 +144,7 @@ Gather these inputs (ask only if not provided):
 - WooCommerce support (yes/no)
 
 **Before proceeding, explicitly state:**
+
 - What you're assuming (e.g., "I'm assuming you want GPL-2.0-or-later licensing since you mentioned WordPress.org submission")
 - What you're NOT doing (e.g., "I won't scaffold WooCommerce support since you didn't mention eCommerce")
 - Any ambiguities you need resolved (e.g., "Your hero uses a video background — should this be a `core/cover` with video or a custom pattern with a `<video>` tag?")
@@ -146,6 +154,7 @@ For default values when user is silent, use the table in `references/defaults.md
 ### Step 2: Plan — Define Success Criteria (Principles 1 + 4)
 
 Before writing any code, produce a **Conversion Plan** that maps:
+
 - Each source HTML file → WordPress template
 - Each repeating section → block pattern
 - Header/footer → template parts
@@ -154,6 +163,7 @@ Before writing any code, produce a **Conversion Plan** that maps:
 - Dynamic data needs → Block Bindings API candidates
 
 **Also state the success criteria for this specific conversion:**
+
 ```
 SUCCESS CRITERIA:
 1. Theme activates on WordPress [version] without PHP errors or notices
@@ -184,6 +194,7 @@ Follow the phases documented in `references/methodology.md`. **Apply Simplicity 
 10. **README & Docs** — WordPress.org-format readme.txt
 
 **Simplicity checks during execution:**
+
 - Am I generating a file that isn't needed for this specific project? → Remove it.
 - Am I adding a pattern the user didn't ask for? → Remove it.
 - Am I writing CSS for something theme.json handles? → Move it to theme.json.
@@ -205,7 +216,16 @@ For large projects (10+ HTML pages or WooCommerce themes), split delivery across
 
 ### Step 5: Verify — Post-Generation (Principle 4)
 
-Provide:
+**Run the automated doctor first.** Before providing output to the user, run:
+
+```bash
+node scripts/doctor.mjs <theme-dir>
+```
+
+This executes all four quality checks (theme.json validation, block markup lint, pattern registration check, i18n coverage). **Do not declare success until doctor exits 0.** If it exits non-zero, loop back to the relevant phase and fix every reported violation before continuing.
+
+Then provide:
+
 - Installation instructions
 - Post-install checklist (activate, set front page, install required plugins)
 - Build commands (`npm install`, `npm run dev`, `npm run build`)
@@ -214,6 +234,7 @@ Provide:
 
 ```
 VERIFICATION:
+✅ node scripts/doctor.mjs <theme-dir> → exits 0 (all checks pass)
 ✅ Activate theme → Confirm no PHP errors in debug.log
 ✅ Visit front page → Confirm visual match with source
 ✅ Open Site Editor → Confirm all templates listed
@@ -225,6 +246,8 @@ VERIFICATION:
 
 **If any verification step fails, loop back to the relevant phase and fix it before reporting done. Don't declare success past a failed check.**
 
+If the user reports a problem with a generated theme, direct them to `/wp-debug`. See `references/troubleshooting.md` for the full symptom → root cause → fix reference.
+
 ---
 
 ## Quality Rules — Non-Negotiable
@@ -232,6 +255,7 @@ VERIFICATION:
 These rules apply to EVERY file generated. See `references/quality-rules.md` for full details.
 
 ❌ **NEVER:**
+
 - Inline `style=""` attributes in block markup
 - `<style>` or `<script>` tags inside templates/parts/patterns
 - Hardcoded colors/spacing in CSS — use `var(--wp--preset--color--{slug})`
@@ -245,6 +269,7 @@ These rules apply to EVERY file generated. See `references/quality-rules.md` for
 - "Improving" code that isn't part of the current task (Principle 3)
 
 ✅ **ALWAYS:**
+
 - Use semantic HTML via `tagName` attribute
 - Wrap user-facing strings in `__()`, `_e()`, `esc_html__()`, etc.
 - Version assets with `filemtime()` for cache-busting
@@ -285,6 +310,8 @@ Read these on-demand based on the task:
 | `references/backward-compatibility.md` | Feature availability by WP version, conditional feature loading, PHP compatibility, version strategy | When `Requires at least` is below 6.5 or user asks about older WP support |
 | `references/e2e-testing.md` | Playwright setup, block render tests, visual regression, a11y scans, CI integration | When user asks about automated browser tests or visual regression |
 | `references/i18n.md` | All i18n functions, plural forms, context strings, JS translations, .pot generation, RTL | During Phase 9 (i18n) or when multilingual questions arise |
+| `references/troubleshooting.md` | Symptom→cause→fix for all common FSE/block-theme failures; WP-CLI cheat sheet; environment checklist | When user reports a problem with a generated theme; always cross-link from Step 5 |
+| `references/page-builder-migration.md` | Elementor, Divi, WPBakery, Beaver Builder migration playbooks; element→block mapping tables; 9-step general workflow | When `/wp-migrate` detects an active page builder |
 
 ## Templates
 
@@ -351,6 +378,7 @@ Reference implementations in `examples/`:
 ## How to Know These Guidelines Are Working
 
 These guidelines are working if you see:
+
 - **Fewer unnecessary files** — only files the project actually needs
 - **Smaller diffs** — only changed lines, no drive-by improvements
 - **Clarifying questions BEFORE code** — not after 500 lines of wrong output
