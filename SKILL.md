@@ -207,7 +207,15 @@ For large projects (10+ HTML pages or WooCommerce themes), split delivery across
 
 ### Step 5: Verify — Post-Generation (Principle 4)
 
-Provide:
+**Run the automated doctor first.** Before providing output to the user, run:
+
+```bash
+node scripts/doctor.mjs <theme-dir>
+```
+
+This executes all four quality checks (theme.json validation, block markup lint, pattern registration check, i18n coverage). **Do not declare success until doctor exits 0.** If it exits non-zero, loop back to the relevant phase and fix every reported violation before continuing.
+
+Then provide:
 - Installation instructions
 - Post-install checklist (activate, set front page, install required plugins)
 - Build commands (`npm install`, `npm run dev`, `npm run build`)
@@ -216,6 +224,7 @@ Provide:
 
 ```
 VERIFICATION:
+✅ node scripts/doctor.mjs <theme-dir> → exits 0 (all checks pass)
 ✅ Activate theme → Confirm no PHP errors in debug.log
 ✅ Visit front page → Confirm visual match with source
 ✅ Open Site Editor → Confirm all templates listed
@@ -226,6 +235,8 @@ VERIFICATION:
 ```
 
 **If any verification step fails, loop back to the relevant phase and fix it before reporting done. Don't declare success past a failed check.**
+
+If the user reports a problem with a generated theme, direct them to `/wp-debug`. See `references/troubleshooting.md` for the full symptom → root cause → fix reference.
 
 ---
 
@@ -287,6 +298,8 @@ Read these on-demand based on the task:
 | `references/backward-compatibility.md` | Feature availability by WP version, conditional feature loading, PHP compatibility, version strategy | When `Requires at least` is below 6.5 or user asks about older WP support |
 | `references/e2e-testing.md` | Playwright setup, block render tests, visual regression, a11y scans, CI integration | When user asks about automated browser tests or visual regression |
 | `references/i18n.md` | All i18n functions, plural forms, context strings, JS translations, .pot generation, RTL | During Phase 9 (i18n) or when multilingual questions arise |
+| `references/troubleshooting.md` | Symptom→cause→fix for all common FSE/block-theme failures; WP-CLI cheat sheet; environment checklist | When user reports a problem with a generated theme; always cross-link from Step 5 |
+| `references/page-builder-migration.md` | Elementor, Divi, WPBakery, Beaver Builder migration playbooks; element→block mapping tables; 9-step general workflow | When `/wp-migrate` detects an active page builder |
 
 ## Templates
 

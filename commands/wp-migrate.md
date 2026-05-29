@@ -14,6 +14,19 @@ Trigger this command when:
 
 This command is NOT for converting static HTML → WordPress (use `/convert-to-wp-theme` for that).
 
+## Page Builder Detection
+
+If the user mentions or you detect a page builder in scope, load `references/page-builder-migration.md` **before** Step 2. That reference contains per-builder playbooks with element→block mapping tables, WP-CLI extraction commands, and worked examples. Use the builder-specific workflow from that reference instead of the generic approach below for content extraction.
+
+| Builder detected | Action |
+|-----------------|--------|
+| Elementor / Elementor Pro | Load page-builder-migration.md §1 |
+| Divi / Divi Builder | Load page-builder-migration.md §2 |
+| WPBakery / Visual Composer | Load page-builder-migration.md §3 |
+| Beaver Builder / BB Themer | Load page-builder-migration.md §4 |
+| Classic Gutenberg (no builder) | Load page-builder-migration.md §5 |
+| None / unknown | Continue with generic workflow below |
+
 ## Workflow
 
 ### Step 1: Identify Migration Scope
@@ -23,7 +36,7 @@ Ask (or infer from context):
 | Question | Why it matters |
 |----------|---------------|
 | WordPress version currently running | Determines available migration tools |
-| Active page builder (Elementor, Divi, Beaver Builder, WPBakery, none) | Different conversion strategies per builder |
+| Active page builder (Elementor, Divi, Beaver Builder, WPBakery, none) | Different conversion strategies per builder — see page-builder-migration.md |
 | Using Classic Editor or already using Gutenberg? | Classic content needs block conversion |
 | Custom Post Types (CPTs) — list their slugs | Need Query Loop templates or custom blocks |
 | Custom fields plugin (ACF, CMB2, Meta Box, Pods, none) | Determines Block Bindings approach |
