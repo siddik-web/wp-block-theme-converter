@@ -20,6 +20,7 @@ Ask (or infer from source HTML / context):
 | Any page builder plugins (Elementor, Divi)? | Different compatibility approach |
 
 **Common plugins to ask about:**
+
 - Yoast SEO / Rank Math / SEOPress (breadcrumbs, OG tags)
 - WPForms / Gravity Forms / Contact Form 7 (forms)
 - ACF / CMB2 / Meta Box (custom fields)
@@ -52,6 +53,7 @@ Show plan, get confirmation before generating files.
 WordPress 6.5+ supports declaring required plugins in `style.css` header. Additionally use the TGMPA pattern for backward compatibility.
 
 **style.css header addition:**
+
 ```css
 /*
  * Theme Name:   {{Theme Name}}
@@ -113,6 +115,7 @@ add_action( 'admin_init', '{{theme_slug_underscored}}_check_plugin_dependencies'
 ```
 
 Add to `functions.php`:
+
 ```php
 require_once get_template_directory() . '/inc/plugin-dependencies.php';
 ```
@@ -146,11 +149,13 @@ Output only the files relevant to the plugins identified in Step 1.
 ```
 
 **OG image size** (in `inc/setup.php`):
+
 ```php
 add_image_size( 'og-image', 1200, 630, true );
 ```
 
 **Yoast CSS stub** (`assets/css/plugins/yoast.css`):
+
 ```css
 /* Breadcrumb navigation */
 .site-breadcrumbs .breadcrumb {
@@ -171,6 +176,7 @@ add_image_size( 'og-image', 1200, 630, true );
 ```
 
 Enqueue conditionally:
+
 ```php
 if ( defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || defined( 'SEOPRESS_VERSION' ) ) {
     wp_enqueue_style(
@@ -187,6 +193,7 @@ if ( defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || defined( 'S
 #### WPForms
 
 **CSS stub** (`assets/css/plugins/wpforms.css`):
+
 ```css
 /* WPForms — reset to match theme styling */
 .wpforms-container .wpforms-form .wpforms-field input,
@@ -228,6 +235,7 @@ if ( defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || defined( 'S
 ```
 
 Enqueue conditionally:
+
 ```php
 if ( class_exists( 'WPForms' ) ) {
     wp_enqueue_style(
@@ -244,6 +252,7 @@ if ( class_exists( 'WPForms' ) ) {
 #### Gravity Forms
 
 **CSS stub** (`assets/css/plugins/gravity-forms.css`):
+
 ```css
 /* Gravity Forms — theme integration */
 .gform_wrapper.gravity-theme .gfield input,
@@ -280,6 +289,7 @@ if ( class_exists( 'WPForms' ) ) {
 ```
 
 Enqueue conditionally:
+
 ```php
 if ( class_exists( 'GFForms' ) ) {
     wp_enqueue_style(
@@ -296,6 +306,7 @@ if ( class_exists( 'GFForms' ) ) {
 #### Contact Form 7
 
 **CSS stub** (`assets/css/plugins/cf7.css`):
+
 ```css
 /* Contact Form 7 */
 .wpcf7-form .wpcf7-text,
@@ -336,6 +347,7 @@ if ( class_exists( 'GFForms' ) ) {
 ```
 
 Enqueue conditionally:
+
 ```php
 if ( defined( 'WPCF7_VERSION' ) ) {
     wp_enqueue_style(
@@ -352,6 +364,7 @@ if ( defined( 'WPCF7_VERSION' ) ) {
 #### The Events Calendar
 
 **CSS stub** (`assets/css/plugins/events-calendar.css`):
+
 ```css
 /* The Events Calendar */
 .tribe-common .tribe-common-h2,
@@ -374,6 +387,7 @@ if ( defined( 'WPCF7_VERSION' ) ) {
 ```
 
 **Declare theme support** (in `inc/setup.php`):
+
 ```php
 add_action( 'tribe_events_before_html', function(): void {
     // Opt into The Events Calendar's block theme support.
@@ -388,6 +402,7 @@ add_action( 'tribe_events_before_html', function(): void {
 #### Jetpack
 
 **CSS stub** (`assets/css/plugins/jetpack.css`):
+
 ```css
 /* Jetpack sharing buttons */
 .sharedaddy .sd-content ul li a.share-button {
@@ -438,6 +453,7 @@ add_action( 'tribe_events_before_html', function(): void {
 ```
 
 **CSS stub** (`assets/css/plugins/language-switcher.css`):
+
 ```css
 /* Language switcher (Polylang / WPML) */
 .pll-parent-menu-item a,
@@ -450,6 +466,7 @@ add_action( 'tribe_events_before_html', function(): void {
 ```
 
 **RTL direction support** (in `inc/setup.php`):
+
 ```php
 add_action( 'after_setup_theme', function(): void {
     // Load RTL stylesheet for right-to-left languages.
@@ -462,6 +479,7 @@ add_action( 'after_setup_theme', function(): void {
 #### MemberPress / Restrict Content Pro
 
 **Protected content CSS stub** (`assets/css/plugins/members.css`):
+
 ```css
 /* MemberPress login/registration */
 .mepr-login-form input[type="text"],
@@ -551,6 +569,7 @@ add_action( 'wp_enqueue_scripts', '{{theme_slug_underscored}}_enqueue_plugin_sty
 ```
 
 Also output the `style.css` header addition and `functions.php` additions:
+
 ```
 === ADDITION: {{theme-slug}}/style.css (header) ===
 === ADDITION: {{theme-slug}}/functions.php ===

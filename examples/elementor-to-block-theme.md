@@ -633,6 +633,7 @@ Elementor had enqueued Playfair Display via its own font manager. With the plugi
 ### Before DNS Cutover (Staging)
 
 **Functional**
+
 - [ ] Home page hero loads background image; overlay visible; heading and button rendered correctly
 - [ ] Services grid shows 3 columns on desktop, stacks on mobile
 - [ ] CTA banner background color matches brand dark green (`#2D4A1E`)
@@ -644,6 +645,7 @@ Elementor had enqueued Playfair Display via its own font manager. With the plugi
 - [ ] Footer: copyright year correct; footer nav links work
 
 **Visual regression** (compare staging screenshots to Elementor reference screenshots)
+
 - [ ] Home — hero section
 - [ ] Home — services grid
 - [ ] Home — CTA banner
@@ -654,22 +656,26 @@ Elementor had enqueued Playfair Display via its own font manager. With the plugi
 - [ ] Single post — typography and spacing
 
 **Performance**
+
 ```bash
 npx lighthouse https://staging.northaven-landscaping.com --only-categories=performance --output=json --output-path=lh-home.json
 # Target: LCP < 2.5s, TBT < 200ms (was LCP 5.8s with Elementor)
 ```
 
 **Accessibility**
+
 ```bash
 npx axe-cli https://staging.northaven-landscaping.com --exit
 npx axe-cli https://staging.northaven-landscaping.com/contact/ --exit
 ```
+
 - [ ] Skip link present and functional
 - [ ] All images have alt text
 - [ ] Form labels associated with inputs
 - [ ] Color contrast passes WCAG AA (4.5:1 for body text)
 
 **Database cleanup**
+
 ```bash
 # Confirm no Elementor builder meta remains
 wp db query "SELECT COUNT(*) FROM wp_postmeta WHERE meta_key = '_elementor_data';"
@@ -681,6 +687,7 @@ wp db query "SELECT COUNT(*) FROM wp_posts WHERE post_content LIKE '%elementor%'
 ```
 
 **Plugin cleanup** (after all pages verified)
+
 ```bash
 wp plugin deactivate elementor elementor-pro
 wp plugin delete elementor elementor-pro

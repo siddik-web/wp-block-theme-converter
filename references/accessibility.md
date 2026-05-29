@@ -94,6 +94,7 @@ Every theme must have a skip link as the first focusable element in `parts/heade
 ```
 
 **Mirror in `assets/css/editor.css`:**
+
 ```css
 /* Skip link not visible in editor — pattern intentionally omitted */
 ```
@@ -144,6 +145,7 @@ Block themes control HTML element semantics via `tagName` in block attributes �
 ### Landmark Roles
 
 Every page must have exactly:
+
 - 1 `<header>` landmark (`role="banner"` implied)
 - 1 `<main>` landmark (`role="main"` implied)
 - 1 `<footer>` landmark (`role="contentinfo"` implied)
@@ -200,12 +202,14 @@ For the front page where the site title is `<h1>`, post listings should start at
 When defining the color palette, verify each color pair used for text/background:
 
 **Tools:**
+
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) — manual
 - `npx contrast-ratio "#0F172A" "#FFFFFF"` — CLI
 - Chrome DevTools → Accessibility pane → color contrast
 - axe DevTools browser extension
 
 **theme.json palette design rule:**
+
 - `foreground` on `background` must be ≥ 4.5:1
 - `primary` (used as button background) with white text must be ≥ 4.5:1
 - `muted` (used for secondary text) on `background` must be ≥ 4.5:1
@@ -231,6 +235,7 @@ Links must be distinguishable from surrounding text WITHOUT relying on color alo
 ### Visible Focus Indicator (WCAG 2.4.11, AA in 2.2)
 
 Every interactive element must have a visible focus indicator with:
+
 - Minimum 3:1 contrast ratio between focused and unfocused state
 - Focus area of at least the perimeter of the element
 
@@ -253,6 +258,7 @@ Every interactive element must have a visible focus indicator with:
 See `references/interactivity-api-advanced.md` — Modal Focus Trap section for the full implementation.
 
 **Rules:**
+
 1. When a modal opens, focus moves to the first focusable element inside it (or the modal itself if nothing is focusable)
 2. Tab and Shift+Tab cycle through focusable elements INSIDE the modal only
 3. Escape closes the modal and returns focus to the trigger element
@@ -409,6 +415,7 @@ Icon-only buttons must have an accessible name:
 ```
 
 CSS to show/hide the panel:
+
 ```css
 .is-hidden {
     display: none;

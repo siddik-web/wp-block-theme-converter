@@ -49,6 +49,7 @@ Skip the confirmation if the user originally said "just build it" or similar.
 ### Step 3: Execute 10-Phase Methodology
 
 Read `references/methodology.md` and execute Phases 1-10 in order. Read also:
+
 - `references/file-structure.md` for the required output directory layout
 - `references/theme-json-schema.md` for theme.json structure
 - `references/block-conversion-map.md` for HTML→Block lookups
@@ -78,6 +79,7 @@ Output every file in the theme using this format:
 ````
 
 Generate files in this order:
+
 1. `style.css` (theme header)
 2. `theme.json`
 3. `functions.php` and `inc/*.php`
@@ -143,15 +145,18 @@ npm run lint:css         # Stylelint check
 1. Run validation checks from `references/validation-checklist.md`
 2. Test in WP_DEBUG mode to catch any notices
 3. Run Lighthouse audit (target: 90+ Performance, 100 Accessibility)
+
 ```
 
 ## Example Invocation
 
 ```
+
 User: /convert-to-wp-theme
 
 I have a 5-page landing site for "Acme SaaS". Files attached.
 Use Vite 6, no WooCommerce.
+
 ```
 
 → Claude: Acknowledges → produces Conversion Plan → asks "go?" → generates complete theme → provides install instructions.

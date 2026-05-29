@@ -80,11 +80,14 @@ This comparison is intentionally strict to prevent silent data corruption from s
 
 1. Open the post/template in the block editor. Note the exact error text.
 2. Open browser DevTools → Console. Look for:
+
    ```
    Block validation: Block type "core/..." is not registered.
    Block validation: Expected attribute ... but received ...
    ```
+
 3. Identify if this happened after a WordPress core update or plugin update:
+
    ```bash
    # Check WP version
    wp core version
@@ -92,12 +95,16 @@ This comparison is intentionally strict to prevent silent data corruption from s
    # Check recent update history
    wp core check-update
    ```
+
 4. Identify which post/template is affected:
+
    ```bash
    wp post list --post_type=post,page,wp_template,wp_template_part \
      --format=table --fields=ID,post_type,post_name,post_modified
    ```
+
 5. Check the raw content for broken block comments:
+
    ```bash
    wp post get <POST_ID> --field=post_content | grep -n "wp:"
    ```
@@ -105,12 +112,14 @@ This comparison is intentionally strict to prevent silent data corruption from s
 #### Step-by-Step Fix
 
 **Fix A — Block Recovery (for individual posts):**
+
 1. Open the post in the block editor.
 2. Click "Attempt Block Recovery" in the error banner.
 3. Verify the block renders correctly.
 4. Save. WordPress re-serializes to the current schema.
 
 **Fix B — Delete DB template override (for `wp_template` only):**
+
 ```bash
 # Find the record
 wp post list --post_type=wp_template --format=table --fields=ID,post_name
@@ -120,6 +129,7 @@ wp post delete <POST_ID> --force
 ```
 
 **Fix C — Programmatic re-save for bulk block validation errors:**
+
 ```php
 <?php
 // Run via: wp eval-file fix-block-validation.php
@@ -171,6 +181,7 @@ When the file contains a JSON syntax error, PHP's `json_decode()` returns `null`
 #### Step-by-Step Diagnosis
 
 1. Validate JSON syntax:
+
    ```bash
    php -r "
    \$json = file_get_contents('theme.json');
@@ -182,6 +193,7 @@ When the file contains a JSON syntax error, PHP's `json_decode()` returns `null`
    ```
 
 2. Validate against the official schema (requires Node.js):
+
    ```bash
    # Install ajv-cli if not already installed
    npm install -g ajv-cli ajv-formats
@@ -193,21 +205,26 @@ When the file contains a JSON syntax error, PHP's `json_decode()` returns `null`
    ```
 
 3. Flush transient cache and reload:
+
    ```bash
    wp cache flush
    wp transient delete --all
    ```
+
    Hard reload the page in the browser (Ctrl+Shift+R / Cmd+Shift+R).
 
 4. Check which CSS custom properties WordPress is generating. In browser DevTools → Elements, look in `<head>` for:
+
    ```css
    :root {
        --wp--preset--color--primary: #...;
    }
    ```
+
    If your slugs are missing, the palette section failed to parse.
 
 5. Verify the theme.json `version` is supported by the installed WordPress:
+
    ```bash
    wp core version
    # theme.json version 3 → requires WordPress 6.6+
@@ -224,6 +241,7 @@ When the file contains a JSON syntax error, PHP's `json_decode()` returns `null`
    - Unescaped backslash in font `src` paths (use `\\/` or forward slashes)
 
 2. **Correct structure for color palette:**
+
    ```json
    {
        "$schema": "https://schemas.wp.org/trunk/theme.json",
@@ -244,6 +262,7 @@ When the file contains a JSON syntax error, PHP's `json_decode()` returns `null`
    ```
 
 3. **Correct structure for typography with local fonts:**
+
    ```json
    "settings": {
        "typography": {
@@ -266,9 +285,11 @@ When the file contains a JSON syntax error, PHP's `json_decode()` returns `null`
        }
    }
    ```
+
    The `src` path must use `file:./` prefix and point to a file that actually exists relative to the theme root.
 
 4. Flush caches after every `theme.json` edit during development:
+
    ```bash
    wp transient delete --all && wp cache flush
    ```
@@ -295,6 +316,7 @@ If any required field is missing, or if the `Slug` is already registered by anot
 #### Step-by-Step Diagnosis
 
 1. Check the exact file header format:
+
    ```php
    <?php
    /**
@@ -306,20 +328,25 @@ If any required field is missing, or if the `Slug` is already registered by anot
     * Viewport Width: 1280
     */
    ```
+
    Common mistakes: the comment block uses `//` instead of `/** */`, the field name has a typo (`Slugg` instead of `Slug`), or the file starts with a BOM character.
 
 2. Check for PHP syntax errors:
+
    ```bash
    php -l patterns/hero.php
    ```
 
 3. Verify there are no duplicate slugs:
+
    ```bash
    grep -r "^\s*\* Slug:" patterns/ | awk -F': ' '{print $2}' | sort | uniq -d
    ```
+
    Any output indicates duplicate slugs — each must be unique.
 
 4. List all patterns currently registered in WordPress:
+
    ```bash
    wp eval '
    $patterns = WP_Block_Patterns_Registry::get_instance()->get_all_registered();
@@ -330,6 +357,7 @@ If any required field is missing, or if the `Slug` is already registered by anot
    ```
 
 5. Verify the referenced categories are registered:
+
    ```bash
    wp eval '
    $cats = WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered();
@@ -338,6 +366,7 @@ If any required field is missing, or if the `Slug` is already registered by anot
    }
    '
    ```
+
    If `my-theme-sections` is missing from the output, the category registration is failing or running too late.
 
 #### Step-by-Step Fix
@@ -345,6 +374,7 @@ If any required field is missing, or if the `Slug` is already registered by anot
 1. Fix the file header if malformed. The header comment must be the very first thing in the file after `<?php`.
 
 2. If a referenced category does not exist, register it explicitly:
+
    ```php
    // In functions.php or inc/patterns.php
    add_action( 'init', function(): void {
@@ -356,12 +386,14 @@ If any required field is missing, or if the `Slug` is already registered by anot
    ```
 
 3. If you have a slug collision with a plugin pattern, choose a different namespace:
+
    ```
    // Instead of: my-theme/hero
    // Use: my-theme-v2/hero or rename: my-theme/main-hero
    ```
 
 4. To temporarily hide a pattern from the inserter while debugging, set `Inserter: no` in the header:
+
    ```php
    /**
     * Title: WIP Pattern
@@ -395,6 +427,7 @@ When a user edits a template in the Site Editor and saves, WordPress creates a `
 #### Step-by-Step Diagnosis
 
 1. List all database template overrides:
+
    ```bash
    wp post list \
      --post_type=wp_template \
@@ -405,6 +438,7 @@ When a user edits a template in the Site Editor and saves, WordPress creates a `
    ```
 
 2. List all template part overrides:
+
    ```bash
    wp post list \
      --post_type=wp_template_part \
@@ -413,6 +447,7 @@ When a user edits a template in the Site Editor and saves, WordPress creates a `
    ```
 
 3. Compare the DB content to the file content:
+
    ```bash
    # DB version
    wp post get <POST_ID> --field=post_content
@@ -426,6 +461,7 @@ When a user edits a template in the Site Editor and saves, WordPress creates a `
 #### Step-by-Step Fix
 
 **Via Site Editor (no CLI, safer for editors):**
+
 1. Appearance → Editor → Templates (or Template Parts).
 2. Click the template name.
 3. Open the three-dot menu (⋮) in the top-right.
@@ -433,6 +469,7 @@ When a user edits a template in the Site Editor and saves, WordPress creates a `
 5. Confirm the reset. The DB record is deleted.
 
 **Via WP-CLI (faster for developers):**
+
 ```bash
 # Reset a specific template
 wp post delete $(wp post list --post_type=wp_template --post_name=front-page --format=ids) --force
@@ -447,6 +484,7 @@ wp post delete $(wp post list --post_type=wp_template_part --format=ids) --force
 
 **Export Site Editor customizations to files (preserve intended edits):**
 If the Site Editor has legitimate customizations you want to keep, export them to your theme files before deleting:
+
 ```bash
 # Export templates to theme directory
 wp post list --post_type=wp_template --format=json | \
@@ -458,6 +496,7 @@ wp post list --post_type=wp_template --format=json | \
     }
   '
 ```
+
 After exporting, delete the DB records so the file versions are used.
 
 #### Known Variations and Edge Cases
@@ -479,6 +518,7 @@ If the render callback reads an attribute that was not saved in the comment (bec
 #### Step-by-Step Diagnosis
 
 1. Enable debug logging temporarily:
+
    ```php
    // wp-config.php
    define( 'WP_DEBUG',         true  );
@@ -487,11 +527,13 @@ If the render callback reads an attribute that was not saved in the comment (bec
    ```
 
 2. Load the affected page and read the log:
+
    ```bash
    tail -100 wp-content/debug.log | grep -i "notice\|warning\|error"
    ```
 
 3. Find the render file for the failing block:
+
    ```bash
    # For theme blocks
    find wp-content/themes/my-theme/blocks -name "render.php" | xargs grep -l "Undefined"
@@ -503,6 +545,7 @@ If the render callback reads an attribute that was not saved in the comment (bec
    ```
 
 4. Check if the issue is from a core block or plugin block (if so, it may be a known upstream bug):
+
    ```bash
    grep "render_callback\|render_block" wp-content/debug.log | head -10
    ```
@@ -510,6 +553,7 @@ If the render callback reads an attribute that was not saved in the comment (bec
 #### Step-by-Step Fix
 
 1. Add null-coalescing defaults to all attribute accesses in render callbacks:
+
    ```php
    // Wrong — causes notice if attribute not saved
    $text_color = $attributes['textColor'];
@@ -521,6 +565,7 @@ If the render callback reads an attribute that was not saved in the comment (bec
    ```
 
 2. Declare explicit defaults in `block.json` to ensure the attribute is always present:
+
    ```json
    {
        "apiVersion": 3,
@@ -539,6 +584,7 @@ If the render callback reads an attribute that was not saved in the comment (bec
    ```
 
 3. For context-dependent blocks, guard against missing context:
+
    ```php
    <?php
    // render.php for a block that requires post context
@@ -553,6 +599,7 @@ If the render callback reads an attribute that was not saved in the comment (bec
    ```
 
 4. If the warning comes from `WP_Block_Supports` itself (core code), the fix is to remove the relevant support from `block.json` if you are not actually using it:
+
    ```json
    {
        "supports": {
@@ -583,6 +630,7 @@ Asset loading fails when: (1) files do not exist at the path, (2) URLs are hardc
 #### Step-by-Step Diagnosis
 
 1. Verify files exist on the server:
+
    ```bash
    ls -la wp-content/themes/my-theme/assets/css/
    ls -la wp-content/themes/my-theme/assets/js/
@@ -593,6 +641,7 @@ Asset loading fails when: (1) files do not exist at the path, (2) URLs are hardc
    ```
 
 2. Check what paths WordPress resolves to:
+
    ```bash
    wp eval "echo get_template_directory_uri() . PHP_EOL;"
    wp eval "echo get_stylesheet_directory_uri() . PHP_EOL;"
@@ -600,15 +649,18 @@ Asset loading fails when: (1) files do not exist at the path, (2) URLs are hardc
    ```
 
 3. Find all `wp_enqueue_*` calls in the theme:
+
    ```bash
    grep -rn "wp_enqueue_style\|wp_enqueue_script" wp-content/themes/my-theme/functions.php
    grep -rn "wp_enqueue_style\|wp_enqueue_script" wp-content/themes/my-theme/inc/
    ```
+
    Flag any that contain hardcoded strings like `/wp-content/themes/`.
 
 4. Open browser DevTools → Network tab, filter by "CSS" and "JS". Look for red 404 entries. Copy the full requested URL and compare to what `get_template_directory_uri()` returns.
 
 5. Clear all cache layers:
+
    ```bash
    wp cache flush
    wp transient delete --all
@@ -626,6 +678,7 @@ Asset loading fails when: (1) files do not exist at the path, (2) URLs are hardc
 #### Step-by-Step Fix
 
 1. Replace hardcoded paths with dynamic functions:
+
    ```php
    // Wrong
    wp_enqueue_style(
@@ -645,6 +698,7 @@ Asset loading fails when: (1) files do not exist at the path, (2) URLs are hardc
    ```
 
 2. Use `filemtime()` for automatic cache busting on every file change:
+
    ```php
    $asset_path = get_template_directory() . '/assets/css/style.css';
    wp_enqueue_style(
@@ -656,6 +710,7 @@ Asset loading fails when: (1) files do not exist at the path, (2) URLs are hardc
    ```
 
 3. If the file is missing from the server, re-deploy it:
+
    ```bash
    # Build locally first
    npm run build
@@ -692,10 +747,13 @@ Styles enqueued only on `wp_enqueue_scripts` (front end) do **not** reach the ed
 #### Step-by-Step Diagnosis
 
 1. Verify `editor.css` registration:
+
    ```bash
    grep -n "add_editor_style" wp-content/themes/my-theme/functions.php
    ```
+
    Must be inside an `after_setup_theme` callback:
+
    ```php
    add_action( 'after_setup_theme', function(): void {
        add_editor_style( 'assets/css/editor.css' );
@@ -703,6 +761,7 @@ Styles enqueued only on `wp_enqueue_scripts` (front end) do **not** reach the ed
    ```
 
 2. Verify the file exists:
+
    ```bash
    ls -la wp-content/themes/my-theme/assets/css/editor.css
    ```
@@ -720,6 +779,7 @@ Styles enqueued only on `wp_enqueue_scripts` (front end) do **not** reach the ed
 #### Step-by-Step Fix
 
 1. Register `editor.css`:
+
    ```php
    add_action( 'after_setup_theme', function(): void {
        add_editor_style( array(
@@ -742,6 +802,7 @@ Styles enqueued only on `wp_enqueue_scripts` (front end) do **not** reach the ed
    - Component/block styles
 
 3. For per-block styles, prefer `wp_enqueue_block_style()` over separate front-end and editor enqueue calls — it handles both automatically:
+
    ```php
    add_action( 'init', function(): void {
        wp_enqueue_block_style(
@@ -774,6 +835,7 @@ Block themes render templates by parsing serialized HTML block comments. The `th
 #### Step-by-Step Diagnosis
 
 1. Check if the shortcode is registered:
+
    ```bash
    wp eval '
    global $shortcode_tags;
@@ -782,12 +844,15 @@ Block themes render templates by parsing serialized HTML block comments. The `th
    ```
 
 2. Verify `do_shortcode` is in the `the_content` filter chain:
+
    ```bash
    wp eval 'echo has_filter( "the_content", "do_shortcode" ) ? "YES\n" : "NO\n";'
    ```
+
    Expected output: `10` (the default priority). `false` or `NO` means it was removed.
 
 3. For ACF bindings, verify the meta key is REST-enabled:
+
    ```bash
    wp eval '
    $keys = get_registered_meta_keys( "post" );
@@ -800,6 +865,7 @@ Block themes render templates by parsing serialized HTML block comments. The `th
    ```
 
 4. Check if the ACF binding source is registered:
+
    ```bash
    wp eval '
    $sources = WP_Block_Bindings_Registry::get_instance()->get_all_registered();
@@ -810,6 +876,7 @@ Block themes render templates by parsing serialized HTML block comments. The `th
    ```
 
 5. Look for raw PHP in stored content (a sign of copy-paste from a classic theme template):
+
    ```bash
    wp post list --post_type=any --format=ids | \
      xargs -I{} wp eval "
@@ -823,12 +890,14 @@ Block themes render templates by parsing serialized HTML block comments. The `th
 #### Step-by-Step Fix
 
 For shortcodes appearing as literal text when the plugin is active:
+
 ```php
 // Ensure do_shortcode runs. Add to functions.php if it was accidentally removed:
 add_filter( 'the_content', 'do_shortcode', 11 );
 ```
 
 For ACF Block Bindings — full setup:
+
 ```php
 <?php
 // inc/block-bindings.php
@@ -864,6 +933,7 @@ function my_theme_get_acf_binding_value( array $source_args, WP_Block $block_ins
 ```
 
 For native `core/post-meta` bindings (no custom source needed, WP 6.5+):
+
 ```php
 // Register the meta key with REST API access so the bindings API can read it
 add_action( 'init', function(): void {
@@ -880,6 +950,7 @@ add_action( 'init', function(): void {
 ```
 
 Then use it in a block pattern:
+
 ```html
 <!-- wp:paragraph {
     "metadata": {
@@ -925,6 +996,7 @@ grep -rn "require_once\|require\|include_once\|include" wp-content/themes/my-the
 
 1. Fix the syntax error reported in `debug.log`. The log includes the file path and line number.
 2. Verify that `require_once` paths use `get_template_directory()`:
+
    ```php
    // Wrong — breaks if WP is not installed at root
    require_once __DIR__ . '/inc/setup.php';
@@ -932,7 +1004,9 @@ grep -rn "require_once\|require\|include_once\|include" wp-content/themes/my-the
    // Correct
    require_once get_template_directory() . '/inc/setup.php';
    ```
+
 3. Guard function calls against missing plugins or WP version constraints:
+
    ```php
    if ( function_exists( 'some_plugin_function' ) ) {
        some_plugin_function();
@@ -952,6 +1026,7 @@ head -15 wp-content/themes/my-theme/style.css
 ```
 
 The header must contain at minimum:
+
 ```css
 /*
  * Theme Name: My Theme
@@ -959,6 +1034,7 @@ The header must contain at minimum:
 ```
 
 The error "The theme is missing the style.css stylesheet" appears when:
+
 - `style.css` does not exist at the theme root
 - The `Theme Name:` line is missing or misspelled
 - The file is named `styles.css` or `Style.css` (case-sensitive on Linux servers)
@@ -966,6 +1042,7 @@ The error "The theme is missing the style.css stylesheet" appears when:
 #### Fix
 
 Create or restore `style.css` with a valid header:
+
 ```css
 /*
  * Theme Name:  My Theme
@@ -1035,12 +1112,15 @@ grep -rn "margin-left\|margin-right\|padding-left\|padding-right\|border-left\|b
    | `float: left` | Use flexbox or grid instead |
 
 2. Add `rtl.css` for legacy overrides that cannot use logical properties:
+
    ```bash
    touch wp-content/themes/my-theme/assets/css/rtl.css
    ```
+
    WordPress automatically loads `rtl.css` when `is_rtl()` returns true — no enqueue needed. The file should contain only overrides, not a full copy of `style.css`.
 
 3. Register RTL support in `functions.php`:
+
    ```php
    add_action( 'after_setup_theme', function(): void {
        load_theme_textdomain( 'my-theme', get_template_directory() . '/languages' );
@@ -1066,6 +1146,7 @@ foreach ( $styles as $s ) {
 ```
 
 Register block styles on `init` with inline CSS or a stylesheet handle:
+
 ```php
 add_action( 'init', function(): void {
     register_block_style(
@@ -1086,6 +1167,7 @@ add_action( 'init', function(): void {
 ```
 
 Alternatively, use a stylesheet handle (recommended for larger CSS):
+
 ```php
 add_action( 'init', function(): void {
     register_block_style(
@@ -1341,6 +1423,7 @@ wp core version
 ```
 
 Minimum requirements for block theme features:
+
 - Block themes (FSE): WordPress 5.9+
 - `theme.json` v2: WordPress 6.0+
 - `patterns/` directory auto-discovery: WordPress 6.0+
@@ -1358,6 +1441,7 @@ wp --info | grep "PHP version"
 Recommended minimum: **PHP 8.1**. PHP 7.4 is EOL and unsupported by WordPress core since WordPress 6.3. PHP 8.2 is the current recommended version.
 
 PHP version differences that affect debugging:
+
 - PHP 8.0+: `Undefined index` notices became `TypeError` in strict mode; `match` expressions available
 - PHP 8.1+: Enums available; intersection types available; deprecated: `utf8_encode()`/`utf8_decode()`
 - PHP 8.2+: Deprecated: dynamic properties (affects some older plugins)
@@ -1369,6 +1453,7 @@ wp plugin list --status=active --format=table --fields=name,version,status
 ```
 
 Note specifically:
+
 - Caching plugins (WP Rocket, LiteSpeed Cache, W3 Total Cache, WP Super Cache)
 - Page builder plugins (Elementor, Divi, Beaver Builder) — these can conflict with FSE
 - Custom field plugins (ACF, CMB2, Meta Box) — relevant for binding issues
@@ -1382,6 +1467,7 @@ wp eval 'echo get_stylesheet() . PHP_EOL; echo get_template() . PHP_EOL;'
 ```
 
 If `get_stylesheet()` !== `get_template()`, a child theme is active. Note:
+
 - `get_template_directory()` → parent theme path
 - `get_stylesheet_directory()` → child (or active) theme path
 - `theme.json` in a child theme merges with the parent — a child theme `theme.json` error only affects child theme settings
@@ -1398,6 +1484,7 @@ echo "SCRIPT_DEBUG:     " . (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG ? "ON" : "O
 ```
 
 Recommended development configuration in `wp-config.php`:
+
 ```php
 define( 'WP_DEBUG',         true  );
 define( 'WP_DEBUG_LOG',     true  );

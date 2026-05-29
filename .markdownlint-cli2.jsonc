@@ -1,0 +1,65 @@
+{
+  // Markdownlint configuration for wp-block-theme-converter
+  // This project contains large technical reference documents, CHANGELOG files,
+  // and PR templates — rules that assume short prose don't apply here.
+  "config": {
+    // MD013: Line length — disabled. Reference docs, tables, and code examples
+    // routinely exceed 80 chars; enforcing it would harm readability.
+    "MD013": false,
+
+    // MD024: Duplicate headings — disabled. CHANGELOG legitimately repeats
+    // "Added", "Fixed", "Changed" under every version section.
+    "MD024": false,
+
+    // MD041: First line must be h1 — disabled. PR templates, CHANGELOG, and
+    // many reference docs intentionally start with ## or front-matter.
+    "MD041": false,
+
+    // MD034: No bare URLs — disabled. Technical docs reference many URLs
+    // inline in prose and code comments.
+    "MD034": false,
+
+    // MD036: No emphasis as heading — disabled. Bold text is used for
+    // emphasis and labels throughout the reference documents.
+    "MD036": false,
+
+    // MD060: Table column style — disabled. Tables in this project use the
+    // compact pipe style which is valid GitHub-Flavored Markdown.
+    "MD060": false,
+
+    // MD029: Ordered list item prefix — use "ordered" (1. 2. 3.) not "one"
+    "MD029": { "style": "ordered" },
+
+    // MD010: No hard tabs — enabled (use spaces)
+    "MD010": true,
+
+    // MD012: No multiple consecutive blank lines
+    "MD012": { "maximum": 2 },
+
+    // MD022: Headings should be surrounded by blank lines
+    "MD022": true,
+
+    // MD031: Fenced code blocks surrounded by blank lines — enabled
+    "MD031": true,
+
+    // MD032: Lists surrounded by blank lines — enabled
+    "MD032": true,
+
+    // MD038: No space in code — enabled
+    "MD038": true,
+
+    // MD040: Fenced code blocks should have a language — disabled.
+    // All real code fences (PHP/JS/bash/JSON/CSS/HTML) are already labeled.
+    // Remaining unlabeled fences are plain-text blocks: usage examples,
+    // migration maps, file trees, and command output — where a language tag
+    // adds no value and would be misleading.
+    "MD040": false,
+
+    // MD056: Table column count — enabled
+    "MD056": true
+  },
+  "ignores": [
+    "node_modules/**",
+    "vendor/**"
+  ]
+}

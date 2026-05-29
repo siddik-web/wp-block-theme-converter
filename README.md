@@ -44,9 +44,11 @@ Converts static HTML/CSS/JavaScript projects into complete, production-ready Wor
 
 1. Download `wp-block-theme-converter.skill` (or the zip)
 2. Place the unzipped folder in your Claude Code skills directory:
+
    ```bash
    ~/.claude/skills/wp-block-theme-converter/
    ```
+
 3. Restart Claude Code or run `claude reload`
 4. Verify: type any of the slash commands listed above
 
@@ -60,6 +62,7 @@ Converts static HTML/CSS/JavaScript projects into complete, production-ready Wor
 ### Option 3: Manual (Cowork / Other Environments)
 
 Place the unzipped `wp-block-theme-converter/` folder in your skills directory. Path varies by environment:
+
 - Cowork: `~/skills/`
 - Custom: Configure via `CLAUDE_SKILLS_DIR` environment variable
 
@@ -222,6 +225,7 @@ Every conversion follows the same proven phases:
 ### Multi-Turn for Large Projects
 
 The skill automatically detects large projects and splits delivery across 3 turns:
+
 - **Turn 1:** Foundation (theme.json, templates, parts, functions.php)
 - **Turn 2:** Patterns + Block Styles + Style Variations
 - **Turn 3:** JavaScript + Assets + Docs
@@ -298,6 +302,7 @@ Moving off Elementor, Divi, WPBakery, or Beaver Builder? Use `/wp-migrate` — i
 ### Skill Quality
 
 The skill ships with:
+
 - **`evals/`** — trigger/no-trigger/ambiguous test cases per command (see `evals/README.md`)
 - **`scripts/validate-skill.mjs`** — structural linter for the skill itself (checks command files exist, no dead links, frontmatter valid)
 - **`scripts/build-skill.sh`** — produces the distributable `.skill` zip artifact
@@ -323,35 +328,42 @@ The skill ships with:
 ## Troubleshooting
 
 ### "The skill didn't trigger"
+
 - Check that you used one of the trigger phrases or slash commands
 - Verify the skill is installed: list available skills with `/skills`
 - For natural language, use phrases like "convert this to a WordPress theme" or "make this an FSE theme"
 
 ### "The output is incomplete"
+
 - Likely hit context limits — large projects need multi-turn delivery
 - Reply "continue" to get the next batch
 - Consider using `/scaffold-wp-theme` first, then `/wp-pattern` per section
 
 ### "theme.json doesn't validate"
+
 - Ensure no trailing commas
 - Verify `version: 3` (not 1 or 2)
 - Check that all `fontFace.src` paths actually exist
 - Validate online at https://www.jsonschemavalidator.net/ using schema URL `https://schemas.wp.org/trunk/theme.json`
 
 ### "Classic theme migration isn't picking up my ACF fields"
+
 - Use `/wp-migrate` with the ACF field group export (JSON) attached
 - The `references/content-migration.md` documents all supported field types and Block Bindings strategies
 
 ### "My Elementor / Divi / WPBakery site won't migrate cleanly"
+
 - Use `/wp-migrate` — it detects your page builder and applies the correct strategy
 - See `references/page-builder-migration.md` for per-builder element→block mapping tables
 - See `examples/elementor-to-block-theme.md` for a complete worked migration example
 
 ### "Something else is broken and I don't know why"
+
 - Use `/wp-debug` — describe your symptom and Claude will identify the root cause
 - See `references/troubleshooting.md` for the full 18-symptom reference with WP-CLI cheat sheet
 
 ### "My custom block isn't showing in the editor"
+
 - Ensure `block.json` is in the correct directory and registered via `register_block_type()`
 - Check the browser console for JS errors from `edit.js`
 - Run `npm run build` if using a build step — the editor loads the compiled assets

@@ -266,6 +266,7 @@ wp post meta get <header_library_id> _elementor_data | python3 -m json.tool > he
 **Step 6 — Migrate pages from high-traffic to low-traffic**
 
 For each page, in order of business importance:
+
 1. Open `elementor-exports/post-<id>.json`
 2. Map each widget to its core block equivalent (see table above)
 3. Extract content from settings fields
@@ -984,6 +985,7 @@ WHERE pm.meta_key = '_thumbnail_id'
 ### Step 8 — QA Checklist
 
 **Mobile and desktop:**
+
 - [ ] Front page renders correctly at 375px, 768px, 1280px, 1600px viewports
 - [ ] Navigation is functional (hamburger on mobile, expanded on desktop)
 - [ ] All images load; no broken src references
@@ -992,6 +994,7 @@ WHERE pm.meta_key = '_thumbnail_id'
 - [ ] Carousels (if rebuilt) function on touch devices
 
 **Accessibility:**
+
 ```bash
 # Run axe on key pages
 npx axe-cli https://staging.example.com --exit
@@ -1000,11 +1003,13 @@ npx axe-cli https://staging.example.com/contact/ --exit
 ```
 
 **Performance:**
+
 ```bash
 npx lighthouse https://staging.example.com --output=json --output-path=./lh-home.json --only-categories=performance
 ```
 
 **WordPress-specific:**
+
 ```bash
 # Check for PHP errors
 wp eval 'error_reporting(E_ALL); echo "No fatal errors\n";'

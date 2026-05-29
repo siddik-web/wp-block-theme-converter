@@ -5,6 +5,7 @@
 ## When to Use
 
 Trigger this command when:
+
 - The user has an existing WordPress site (not a static HTML project) they are upgrading to a block theme
 - The user wants to convert Classic Editor content to block editor content
 - The user has custom fields (ACF, CMB2, Meta Box) they want to surface via Block Bindings API
@@ -121,11 +122,13 @@ For each shortcode, provide:
 3. A WP-CLI command to find all posts using the shortcode
 
 **Finding all shortcode usages:**
+
 ```bash
 wp post list --post_type=post,page --format=ids | xargs -I{} wp post get {} --field=post_content | grep -c '\[{{shortcode_tag}}'
 ```
 
 **Replacing shortcodes in existing content (WP-CLI batch):**
+
 ```bash
 wp search-replace '[{{shortcode_tag}}]' '<!-- wp:my-theme/{{block-name}} /-->' --all-tables --precise
 ```
@@ -163,6 +166,7 @@ Use with caution — always back up before running.
 > ```
 
 **Pattern-based replacement for complex shortcodes:**
+
 ```php
 // In inc/shortcode-migration.php — keep active only during migration period.
 add_shortcode( '{{shortcode_tag}}', function( array $atts ): string {
@@ -190,6 +194,7 @@ For each widget area:
 3. Remove the widget area registration from `functions.php`
 
 **SQL to list active widgets:**
+
 ```sql
 SELECT option_name, option_value
 FROM wp_options
@@ -216,6 +221,7 @@ ORDER BY option_name;
 | Custom (plugin) | Equivalent plugin block or pattern |
 
 **Template part output (example: sidebar):**
+
 ```
 === FILE: {{theme-slug}}/parts/sidebar.html ===
 <!-- wp:group {"tagName":"aside","className":"site-sidebar","layout":{"type":"flex","orientation":"vertical"}} -->
@@ -311,10 +317,12 @@ function {{theme_slug_underscored}}_get_acf_binding_value( array $source_args, W
 ```
 
 Requirements for `core/post-meta` binding:
+
 - Meta key must be registered with `register_post_meta()` and `show_in_rest: true`
 - Only works inside Query Loop context or on single post/page templates
 
 **Register post meta for bindings:**
+
 ```php
 register_post_meta( '{{post_type}}', '{{meta_key}}', array(
     'show_in_rest'  => true,
@@ -393,16 +401,19 @@ Page builder content (Elementor, Divi, etc.) cannot be auto-converted. Provide:
 3. **Priority order** — high-traffic pages first
 
 **Find Elementor-built pages:**
+
 ```bash
 wp post list --meta_key=_elementor_edit_mode --meta_value=builder --post_type=page --format=table
 ```
 
 **Find Divi-built pages:**
+
 ```bash
 wp post list --post_type=page --format=ids | xargs -I{} wp post meta get {} _et_pb_use_builder
 ```
 
 For each page builder page, the migration path is:
+
 1. Screenshot the page builder output
 2. Rebuild as an FSE template or block pattern (use `/convert-to-wp-theme` for this)
 3. Publish the FSE version and deactivate the page builder on that page
@@ -420,6 +431,7 @@ For each page builder page, the migration path is:
 7. Updated `functions.php` additions — `require_once` for new `inc/` files
 
 Use labeled file headers:
+
 ```
 === FILE: {{theme-slug}}/inc/block-bindings.php ===
 ```

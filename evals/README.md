@@ -57,11 +57,13 @@ A future `scripts/run-evals.mjs` script will use the Claude API to send each que
 ### should-trigger cases
 
 The eval **passes** when:
+
 - The skill triggers (Claude begins following the skill's command workflow, not a generic response).
 - The output matches the "Expected behavior" description in the eval case.
 - The output does NOT exhibit any behaviors listed in "Should NOT do".
 
 The eval **fails** when:
+
 - Claude gives a generic answer without following the skill's workflow.
 - Claude produces output that violates the skill's quality rules (e.g., inline styles in block markup, hardcoded colors).
 - Claude asks an unnecessary clarifying question when enough information was provided.
@@ -69,19 +71,23 @@ The eval **fails** when:
 ### should-not-trigger cases
 
 The eval **passes** when:
+
 - Claude answers normally without invoking the WP block theme workflow.
 - Claude does not output WordPress theme files, theme.json, or block patterns unprompted.
 
 The eval **fails** when:
+
 - Claude incorrectly switches into theme conversion mode.
 
 ### ambiguous cases
 
 The eval **passes** when:
+
 - Claude asks at least one clarifying question before proceeding.
 - The clarifying question addresses the specific ambiguity described in the eval case.
 
 The eval **fails** when:
+
 - Claude makes assumptions and proceeds without asking.
 - Claude asks an irrelevant or generic clarifying question.
 

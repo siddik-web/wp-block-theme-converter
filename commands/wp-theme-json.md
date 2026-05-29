@@ -5,6 +5,7 @@
 ## Trigger
 
 User types `/wp-theme-json` followed by:
+
 - CSS custom properties (`:root { --color-primary: #000; ... }`)
 - A design tokens spec (JSON, YAML, or plain description)
 - A natural language description ("dark theme with gold accents and serif headings")
@@ -151,11 +152,13 @@ Read `references/theme-json-schema.md` for the full schema. The output MUST incl
 Provide:
 
 1. **The complete `theme.json`** in a single code block:
+
    ```
    === FILE: {{theme-slug}}/theme.json ===
    ```
 
 2. **Token reference table** so the user knows what CSS variables are now available:
+
    ```markdown
    ## CSS Variables Generated
 

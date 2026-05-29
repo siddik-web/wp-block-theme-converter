@@ -3,6 +3,7 @@
 Deep-dive reference for advanced WordPress Interactivity API usage. The basics (directives, simple store, `data-wp-context`) are in `references/modern-blocks.md`. This file covers shared stores, server state, pagination, optimistic UI, ARIA live regions, complex state patterns, and testing.
 
 Read this file when:
+
 - An interactive feature requires state shared across multiple block instances
 - Server-side data must hydrate client-side state
 - Infinite scroll, real-time search, or live filtering is required
@@ -56,6 +57,7 @@ const { state } = store( 'myTheme', {
 ```
 
 Block A (the toggle button — any instance anywhere on the page):
+
 ```html
 <button
     data-wp-interactive="myTheme"
@@ -68,6 +70,7 @@ Block A (the toggle button — any instance anywhere on the page):
 ```
 
 Block B (the panel — any instance anywhere on the page):
+
 ```html
 <div
     id="filter-panel"
@@ -196,6 +199,7 @@ const { state } = store( 'myTheme', {
 ```
 
 In a directive:
+
 ```html
 <p data-wp-text="state.resultCount + ' results'"></p>
 <div data-wp-class--is-empty="state.isEmpty">
@@ -261,6 +265,7 @@ const { state, actions } = store( 'myTheme', {
 **Note: Async actions use generator functions (`function*`) with `yield` for promises.** This is the Interactivity API pattern for async — do NOT use `async/await` directly.
 
 Block markup for "Load More" button:
+
 ```html
 <div
     data-wp-interactive="myTheme"
@@ -324,6 +329,7 @@ callbacks: {
 ```
 
 In markup — a sentinel element at the end of the list:
+
 ```html
 <div
     class="scroll-sentinel"
@@ -371,6 +377,7 @@ const { state } = store( 'myTheme', {
 ```
 
 In markup:
+
 ```html
 <div data-wp-interactive="myTheme">
     <label for="filter-search">
@@ -462,6 +469,7 @@ const { state } = store( 'myTheme', {
 ```
 
 In markup:
+
 ```html
 <button
     data-wp-interactive="myTheme"
@@ -511,6 +519,7 @@ Announce dynamic content changes to screen readers.
 ```
 
 In store:
+
 ```js
 const { state } = store( 'myTheme', {
     state: {
@@ -630,6 +639,7 @@ store( 'myTheme', {
 ```
 
 In markup:
+
 ```html
 <!-- Trigger -->
 <button

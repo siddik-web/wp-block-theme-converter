@@ -167,6 +167,7 @@ The skill is production grade when **all** of the following are true:
 ## 9. Project TODO list
 
 ### P0 — Output reliability
+
 - [ ] Write `scripts/validate-theme-json.mjs` (JSON validity, version 3, no hardcoded hex, defaultPalette set, fontFace paths resolve, offline schema fallback)
 - [ ] Write `scripts/lint-block-markup.mjs` (inline styles/scripts, unescaped echo, physical CSS, block-delimiter integrity)
 - [ ] Write `scripts/check-patterns.mjs` (header, category registration, unique slug)
@@ -176,18 +177,21 @@ The skill is production grade when **all** of the following are true:
 - [ ] Vendor local `theme.json` schema copy for offline validation
 
 ### P1 — Debugging real errors
+
 - [ ] Author `commands/wp-debug.md` (symptom → decision tree → fix)
 - [ ] Author `references/troubleshooting.md` (symptom/cause/fix table for the 6 top failures)
 - [ ] Cross-link troubleshooting from SKILL.md, README, validation-checklist
 - [ ] Add `/wp-debug` to README + SKILL.md command tables
 
 ### P2 — Page-builder migration
+
 - [ ] Author `references/page-builder-migration.md` (Elementor, Divi, WPBakery, Beaver Builder, Gutenberg-classic)
 - [ ] Extend `commands/wp-migrate.md` with builder detection + links
 - [ ] Add `examples/elementor-to-block-theme.md` worked example
 - [ ] Add "what cannot be auto-migrated" honesty section
 
 ### P3 — Skill quality infrastructure
+
 - [ ] Create `evals/` with trigger/no-trigger/ambiguous cases per command + `evals/README.md`
 - [ ] Write `scripts/validate-skill.mjs` (frontmatter, command/reference existence, dead-link check, description budget)
 - [ ] Write `scripts/build-skill.sh` (produce `.skill`/zip, stamp version from frontmatter)
@@ -198,12 +202,14 @@ The skill is production grade when **all** of the following are true:
 - [ ] Move `Version` into SKILL.md frontmatter as single source of truth
 
 ### P4 — Golden output & docs polish
+
 - [ ] Commit one complete generated reference theme under `examples/_generated/`
 - [ ] Use the golden theme as the CI regression fixture for P0 scripts
 - [ ] Add "Production / Reliability" section to README
 - [ ] Fix README install instructions to reference the real build artifact
 
 ### Release
+
 - [ ] Run full eval suite across Haiku/Sonnet/Opus; record results
 - [ ] Tag and release **v3.0.0** with CHANGELOG notes
 

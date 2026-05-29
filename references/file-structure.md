@@ -161,17 +161,20 @@ Each is a partial theme.json that overrides the base. WordPress merges them. Use
 ## Required vs Optional Files
 
 **Required for theme to load:**
+
 - `style.css` (with valid theme header)
 - `theme.json`
 - `templates/index.html`
 
 **Required for full FSE experience:**
+
 - `functions.php`
 - `parts/header.html`
 - `parts/footer.html`
 - All standard templates (front-page, home, single, page, archive, search, 404)
 
 **Required for WordPress.org submission:**
+
 - `readme.txt` (WordPress.org format)
 - `screenshot.png` (1200×900 PNG)
 - `languages/{{text-domain}}.pot`
@@ -179,6 +182,7 @@ Each is a partial theme.json that overrides the base. WordPress merges them. Use
 - Copyright/attribution section in `readme.txt`
 
 **Optional but recommended:**
+
 - `inc/` directory with separated bootstrap files
 - Build tooling (`package.json`, `vite.config.js`)
 - Linting configs (`phpcs.xml`, `.eslintrc.json`, `.stylelintrc.json`)
@@ -212,6 +216,7 @@ assets/                     ← WordPress reads these (git-committed)
 ```
 
 **Key rules:**
+
 - Run `npm run build` after any source change before committing.
 - Run `npm run dev` during development for HMR (Vite creates `.vite-dev-running` sentinel; WordPress detects this and serves assets from the Vite dev server).
 - `assets/` should be committed to git so the theme works without a build step on first activation.

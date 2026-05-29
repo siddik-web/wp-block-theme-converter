@@ -65,6 +65,7 @@ Guidance for block themes that must support WordPress versions older than 6.5 or
 ### What to Sacrifice at Each Version
 
 **Targeting WP 6.3–6.4 (no Interactivity API, no Block Bindings):**
+
 - Replace Interactivity API with `wp_enqueue_script()` + vanilla JS (or Alpine.js as a compromise)
 - Replace Block Bindings with PHP template parts or dynamic custom blocks
 - Remove `wp_register_script_module()` calls — use `wp_enqueue_script()` with `'in_footer' => true`
@@ -72,6 +73,7 @@ Guidance for block themes that must support WordPress versions older than 6.5 or
 - Pattern Overrides unavailable — use plain editable patterns instead
 
 **Targeting WP 6.0–6.2 (no per-block CSS `path` key):**
+
 - All above restrictions apply
 - Remove `'path'` key from `wp_enqueue_block_style()` calls — CSS will not be inlined (no Critical CSS)
 - Grid layout not available — use Columns block instead
@@ -199,6 +201,7 @@ if ( function_exists( 'wp_register_script_module' ) ) {
 ```
 
 CSS-only navigation dropdown (`:focus-within`):
+
 ```css
 .nav-item:focus-within .submenu {
     display: block;
@@ -416,6 +419,7 @@ $value = match( $key ) {
 ### PHPCS PHPCompatibility Check
 
 Add to `.phpcs.xml.dist`:
+
 ```xml
 <rule ref="PHPCompatibilityWP"/>
 <config name="testVersion" value="7.4-"/>

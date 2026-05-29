@@ -91,12 +91,14 @@ export default defineConfig( {
 ```
 
 Start the environment:
+
 ```bash
 npx wp-env start
 npx wp-env run cli wp theme activate {{theme-slug}}
 ```
 
 Add to `package.json`:
+
 ```json
 {
     "scripts": {
@@ -233,11 +235,13 @@ for ( const { name, path } of PAGES ) {
 ```
 
 **Generate baseline screenshots:**
+
 ```bash
 npx playwright test --update-snapshots
 ```
 
 **Run visual regression:**
+
 ```bash
 npx playwright test tests/e2e/visual/
 ```

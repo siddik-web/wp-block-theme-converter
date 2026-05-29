@@ -91,6 +91,7 @@ If no design tokens provided:
 ## Typography Defaults
 
 If no fonts specified:
+
 - **Heading:** `"Plus Jakarta Sans", system-ui, sans-serif`
 - **Body:** `"Inter", system-ui, sans-serif`
 - **Mono:** `"JetBrains Mono", ui-monospace, monospace`
@@ -151,6 +152,7 @@ NOTE: NEVER default to plain "Inter" or "Roboto" alone — pair with system-ui f
 ## When NOT to Use Defaults
 
 Always extract from source if available:
+
 - CSS custom properties in `:root` — extract these as priority
 - Repeated color values in stylesheets — palette these
 - `font-family` declarations — use as font families

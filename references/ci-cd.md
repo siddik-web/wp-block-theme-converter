@@ -74,9 +74,9 @@ For local development, add a Makefile target:
 
 ```makefile
 validate-theme-json:
-	@curl -sSL https://schemas.wp.org/trunk/theme.json -o /tmp/theme-schema.json
-	@ajv validate -s /tmp/theme-schema.json -d theme.json --strict=false \
-	  && echo "theme.json valid" || exit 1
+ @curl -sSL https://schemas.wp.org/trunk/theme.json -o /tmp/theme-schema.json
+ @ajv validate -s /tmp/theme-schema.json -d theme.json --strict=false \
+   && echo "theme.json valid" || exit 1
 ```
 
 Or using WP-CLI on a local WordPress installation:
@@ -480,6 +480,7 @@ composer run-script phpcbf
 ## Vite Build Verification
 
 The CI build step catches:
+
 - Import errors (missing modules, typos)
 - Syntax errors in JS and CSS
 - Asset path resolution failures

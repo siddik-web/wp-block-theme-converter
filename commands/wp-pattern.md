@@ -11,6 +11,7 @@ User types `/wp-pattern` followed by HTML markup, OR pastes HTML and asks for a 
 ### Step 1: Identify Pattern Metadata
 
 From the HTML, infer:
+
 - **Pattern name** — descriptive (e.g., "Hero with CTA", "Three-Column Features")
 - **Pattern slug** — kebab-case (e.g., "hero-with-cta")
 - **Category** — choose from: featured, hero, header, footer, gallery, posts, products, services, testimonials, contact, pricing, faq, team, cta
@@ -70,11 +71,13 @@ Use this exact structure (template at `templates/pattern-header.php.tpl`):
 Provide:
 
 1. **The pattern file** in a single code block, labeled with its file path:
+
    ```
    === FILE: {{theme-slug}}/patterns/{{pattern-slug}}.php ===
    ```
 
 2. **Registration snippet** (if pattern category is custom) for `inc/block-patterns.php`:
+
    ```php
    register_block_pattern_category(
        '{{theme-slug}}-{{category}}',
@@ -83,11 +86,13 @@ Provide:
    ```
 
 3. **CSS additions** (if any custom classes were used) for `assets/css/style.css`:
+
    ```css
    .wp-block-group.is-style-{{custom-style}} {
        /* styles */
    }
    ```
+
    AND mirror them in `assets/css/editor.css`.
 
 4. **Usage note** — explain how the user can insert the pattern in Site Editor:

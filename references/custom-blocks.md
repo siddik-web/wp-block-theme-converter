@@ -98,6 +98,7 @@ Build a custom block only when the above alternatives genuinely do not fit.
 | `embed` | Embeds |
 
 Register a custom category in `inc/block-registration.php`:
+
 ```php
 add_filter( 'block_categories_all', function( array $categories ): array {
     return array_merge(
@@ -132,9 +133,11 @@ add_filter( 'block_categories_all', function( array $categories ): array {
 - Best for: data-driven content, server-side data, content that should update without re-saving posts
 
 **Use `render` in `block.json` (WP 6.1+):**
+
 ```json
 "render": "file:./render.php"
 ```
+
 This is preferred over registering a `render_callback` in PHP.
 
 ---
@@ -473,6 +476,7 @@ Share data between a parent block and its inner blocks without prop-drilling.
 ### Parent block — provide context
 
 In `block.json`:
+
 ```json
 "providesContext": {
     "my-theme/columnCount": "columns"
@@ -482,11 +486,13 @@ In `block.json`:
 ### Child block — consume context
 
 In `block.json`:
+
 ```json
 "usesContext": ["my-theme/columnCount"]
 ```
 
 In `edit.js`:
+
 ```js
 export default function Edit( { context } ) {
     const { 'my-theme/columnCount': columnCount } = context;
@@ -495,6 +501,7 @@ export default function Edit( { context } ) {
 ```
 
 In `render.php`:
+
 ```php
 $column_count = isset( $block->context['my-theme/columnCount'] )
     ? absint( $block->context['my-theme/columnCount'] )
@@ -533,12 +540,14 @@ export default function Edit() {
 ```
 
 `templateLock` values:
+
 - `false` — authors can add/remove/reorder blocks freely
 - `"insert"` — authors can edit existing blocks but not add or remove
 - `"all"` — authors can only edit content, not structure
 - `"contentOnly"` — authors can only edit text/media content
 
 In `save.js`:
+
 ```js
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 export default function save() {
@@ -632,6 +641,7 @@ export default deprecated;
 ```
 
 Pass `deprecated` to `registerBlockType`:
+
 ```js
 import deprecated from './deprecated';
 registerBlockType( metadata, { edit: Edit, save, deprecated } );
