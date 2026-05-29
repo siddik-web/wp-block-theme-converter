@@ -1,3 +1,7 @@
+---
+description: Convert a complete HTML/CSS/JavaScript project into a production-ready WordPress block theme (Full Site Editing).
+---
+
 # /convert-to-wp-theme
 
 **Purpose:** Convert a complete HTML/CSS/JavaScript project into a production-ready WordPress Block Theme.

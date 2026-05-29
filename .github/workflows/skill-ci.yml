@@ -21,6 +21,20 @@ jobs:
       - name: Run validate-skill.mjs
         run: node scripts/validate-skill.mjs
 
+  validate-plugin:
+    name: Validate plugin packaging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run validate-plugin.mjs
+        run: node scripts/validate-plugin.mjs
+
   lint-scripts:
     name: Lint scripts (node --check)
     runs-on: ubuntu-latest
@@ -34,7 +48,7 @@ jobs:
 
       - name: Check all .mjs scripts for syntax errors
         run: |
-          for f in scripts/*.mjs; do
+          for f in $(find scripts -name '*.mjs'); do
             echo "Checking $f"
             node --check "$f"
           done

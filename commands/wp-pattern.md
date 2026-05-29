@@ -1,3 +1,7 @@
+---
+description: Convert a single HTML section or snippet into a registered WordPress block pattern PHP file.
+---
+
 # /wp-pattern
 
 **Purpose:** Convert a single HTML section/snippet into a registered WordPress block pattern PHP file.

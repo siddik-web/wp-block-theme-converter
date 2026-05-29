@@ -1,3 +1,7 @@
+---
+description: Declare plugin dependencies and generate plugin-specific CSS and compatibility code for a block theme.
+---
+
 # /wp-plugin-theme
 
 **Purpose:** Extend a block theme to declare plugin dependencies, add plugin-specific CSS stubs, and generate compatibility code for the most common WordPress plugins (Yoast SEO, WPForms, Gravity Forms, ACF, Jetpack, WooCommerce, and others).

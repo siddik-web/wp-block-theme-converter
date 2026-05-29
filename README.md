@@ -1,6 +1,6 @@
 # WordPress Block Theme Converter Skill
 
-A Claude skill for converting any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing).
+A Claude Code plugin (and standalone skill) for converting any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing).
 
 **Author:** Md Siddiqur Rahman
 **Version:** 2.0.0
@@ -40,10 +40,30 @@ Converts static HTML/CSS/JavaScript projects into complete, production-ready Wor
 
 ## Installation
 
-### Option 1: Claude Code
+### Option 1: Claude Code plugin (recommended)
 
-1. Download `wp-block-theme-converter.skill` (or the zip)
-2. Place the unzipped folder in your Claude Code skills directory:
+This repository is also a Claude Code **plugin marketplace**. Install it
+directly from GitHub:
+
+```bash
+# Run these inside Claude Code:
+/plugin marketplace add siddik-web/wp-block-theme-converter
+/plugin install wp-block-theme-converter@siddik-web
+```
+
+Installing the plugin registers everything at once:
+
+- All **11 slash commands** (`/convert-to-wp-theme`, `/wp-debug`, …)
+- The **`wp-block-theme-converter` skill** (auto-triggers on WordPress requests)
+- The **`wp-theme-reviewer` agent** for auditing generated themes
+- A non-blocking **`theme.json` validation hook** that runs after edits
+
+Manage or disable it any time with `/plugin`.
+
+### Option 2: Claude Code skill (manual)
+
+1. Download or clone this repository
+2. Place the folder in your Claude Code skills directory:
 
    ```bash
    ~/.claude/skills/wp-block-theme-converter/
@@ -52,16 +72,16 @@ Converts static HTML/CSS/JavaScript projects into complete, production-ready Wor
 3. Restart Claude Code or run `claude reload`
 4. Verify: type any of the slash commands listed above
 
-### Option 2: Claude.ai (Project Skills)
+### Option 3: Claude.ai (Project Skills)
 
 1. Open a Claude.ai Project
 2. Project settings → Skills → Upload Skill
 3. Upload `wp-block-theme-converter.skill`
 4. The skill will be available in all conversations within that project
 
-### Option 3: Manual (Cowork / Other Environments)
+### Option 4: Manual (Cowork / Other Environments)
 
-Place the unzipped `wp-block-theme-converter/` folder in your skills directory. Path varies by environment:
+Place the `wp-block-theme-converter/` folder in your skills directory. Path varies by environment:
 
 - Cowork: `~/skills/`
 - Custom: Configure via `CLAUDE_SKILLS_DIR` environment variable
@@ -130,24 +150,35 @@ Convert my existing classic PHP theme to a full FSE block theme.
 The theme uses a custom page builder and ACF fields.
 ```
 
-## Skill Structure
+## Plugin Structure
 
 ```
-wp-block-theme-converter/
-├── SKILL.md                              # Main entry point
+wp-block-theme-converter/                 # Plugin root (also a marketplace)
+├── .claude-plugin/
+│   ├── plugin.json                       # Plugin manifest
+│   └── marketplace.json                  # Marketplace entry (installable)
+│
+├── SKILL.md                              # The bundled skill (auto-triggers)
 ├── README.md                             # This file
 │
-├── commands/                             # Slash command definitions
+├── commands/                             # 11 slash command definitions
 │   ├── convert-to-wp-theme.md
 │   ├── scaffold-wp-theme.md
 │   ├── wp-block.md
 │   ├── wp-classic-to-fse.md
+│   ├── wp-debug.md
 │   ├── wp-migrate.md
 │   ├── wp-pattern.md
 │   ├── wp-plugin-theme.md
 │   ├── wp-template.md
 │   ├── wp-theme-json.md
 │   └── wp-variation.md
+│
+├── agents/                               # Subagents
+│   └── wp-theme-reviewer.md              # Audits a generated block theme
+│
+├── hooks/
+│   └── hooks.json                        # PostToolUse theme.json validation
 │
 ├── references/                           # Detailed reference docs
 │   ├── defaults.md                       # Default values for placeholders
@@ -190,9 +221,16 @@ wp-block-theme-converter/
 │       ├── team-grid.php.tpl
 │       └── stats-row.php.tpl
 │
-└── examples/                             # Worked examples
-    ├── northaven-ecommerce.md            # Multi-aesthetic WooCommerce theme
-    └── landing-page-simple.md           # Simple SaaS landing page
+├── examples/                             # Worked examples
+│   ├── northaven-ecommerce.md            # Multi-aesthetic WooCommerce theme
+│   └── landing-page-simple.md            # Simple SaaS landing page
+│
+└── scripts/                              # Validation + packaging tooling
+    ├── doctor.mjs                        # Runs all four theme-quality checks
+    ├── validate-skill.mjs                # Skill integrity linter
+    ├── validate-plugin.mjs               # Plugin packaging linter
+    └── hooks/
+        └── theme-json-postwrite.mjs      # theme.json validation hook runner
 ```
 
 ## How It Works
@@ -299,15 +337,16 @@ Claude will run through a decision tree, identify the root cause (missing catego
 
 Moving off Elementor, Divi, WPBakery, or Beaver Builder? Use `/wp-migrate` — it now includes full builder-detection and per-builder playbooks. See `references/page-builder-migration.md` for element-to-block mapping tables, WP-CLI extraction commands, and a worked Elementor example in `examples/elementor-to-block-theme.md`.
 
-### Skill Quality
+### Plugin & Skill Quality
 
-The skill ships with:
+The plugin ships with:
 
 - **`evals/`** — trigger/no-trigger/ambiguous test cases per command (see `evals/README.md`)
 - **`scripts/validate-skill.mjs`** — structural linter for the skill itself (checks command files exist, no dead links, frontmatter valid)
+- **`scripts/validate-plugin.mjs`** — packaging linter for the plugin manifest, marketplace entry, and components
 - **`scripts/build-skill.sh`** — produces the distributable `.skill` zip artifact
 - **`CHANGELOG.md`** — full version history
-- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, lint-scripts, doctor against golden theme, markdown lint
+- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, validate-plugin, lint-scripts, doctor against golden theme, markdown lint
 
 ## Compatibility
 

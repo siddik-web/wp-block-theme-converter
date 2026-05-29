@@ -1,3 +1,7 @@
+---
+description: Generate an empty, valid WordPress block theme scaffold from scratch — no source HTML required.
+---
+
 # /scaffold-wp-theme
 
 **Purpose:** Generate an empty, valid WordPress Block Theme scaffold with no source HTML to convert. Useful for starting a new theme from scratch.

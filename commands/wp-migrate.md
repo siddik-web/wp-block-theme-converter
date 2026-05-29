@@ -1,3 +1,7 @@
+---
+description: Migrate existing WordPress content (Classic Editor, ACF, widgets, CPTs, shortcodes, page builders) into a block theme.
+---
+
 # /wp-migrate
 
 **Purpose:** Generate the code, queries, and patterns needed to migrate existing WordPress content — classic editor posts, widget areas, ACF fields, shortcodes, or Custom Post Types — into the new block theme structure.

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "wp-block-theme-converter",
+  "displayName": "WordPress Block Theme Converter",
+  "version": "2.0.0",
+  "description": "Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing): theme.json v3, block patterns, FSE templates, the Interactivity API, and optional WooCommerce support. Bundles 11 slash commands, a quality-review agent, deterministic validation scripts, and a full reference library.",
+  "author": {
+    "name": "Md Siddiqur Rahman",
+    "email": "siddikcoder@gmail.com",
+    "url": "https://github.com/siddik-web"
+  },
+  "homepage": "https://github.com/siddik-web/wp-block-theme-converter#readme",
+  "repository": "https://github.com/siddik-web/wp-block-theme-converter",
+  "license": "MIT",
+  "keywords": [
+    "wordpress",
+    "block-theme",
+    "fse",
+    "full-site-editing",
+    "gutenberg",
+    "theme-json",
+    "woocommerce",
+    "interactivity-api",
+    "html-to-wordpress",
+    "theme-converter"
+  ]
+}

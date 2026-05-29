@@ -1,3 +1,7 @@
+---
+description: Generate a complete, valid theme.json (schema v3) from a design system, CSS custom properties, or design tokens.
+---
+
 # /wp-theme-json
 
 **Purpose:** Generate a complete, valid `theme.json` (schema v3) from a design system, CSS custom properties, or design token specification.
