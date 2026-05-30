@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Claude Code Plugin Packaging
+
+- `.claude-plugin/plugin.json` — plugin manifest (name, version, author, license, keywords); turns the repository into an installable Claude Code plugin
+- `.claude-plugin/marketplace.json` — marketplace entry so the plugin installs via `/plugin marketplace add siddik-web/wp-block-theme-converter`
+- `agents/wp-theme-reviewer.md` — subagent that audits a generated/existing block theme against the quality rules and runs `doctor.mjs`
+- `hooks/hooks.json` + `scripts/hooks/theme-json-postwrite.mjs` — non-blocking PostToolUse hook that validates `theme.json` after it is written or edited
+- YAML `description` frontmatter on all 11 command files for plugin command discovery
+- `scripts/validate-plugin.mjs` — linter for the manifest, marketplace entry, and component layout; wired into CI as a new `validate-plugin` job
+- `validate-skill.mjs` now also asserts the plugin manifest is present and link-checks `agents/`
+
 #### P0 — Deterministic Validation Scripts
 
 - `scripts/doctor.mjs` — all-in-one diagnostic runner that validates a generated theme directory

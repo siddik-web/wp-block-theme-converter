@@ -1,3 +1,7 @@
+---
+description: Convert a single HTML page into a WordPress FSE template (.html) in the theme's templates/ directory.
+---
+
 # /wp-template
 
 **Purpose:** Convert a single HTML page into a WordPress FSE template (`.html` file in the theme's `templates/` directory).

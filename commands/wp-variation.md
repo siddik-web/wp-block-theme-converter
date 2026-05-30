@@ -1,3 +1,7 @@
+---
+description: Generate a WordPress block theme style variation (styles/*.json) — dark mode, color palette swap, or font swap.
+---
+
 # /wp-variation
 
 **Purpose:** Generate a WordPress block theme style variation — a `styles/*.json` file that overrides color, typography, and spacing from the base `theme.json` to create an alternative theme aesthetic.

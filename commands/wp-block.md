@@ -1,3 +1,7 @@
+---
+description: Scaffold a custom WordPress block (block.json, edit.js, save.js or render.php, styles) ready to register inside a block theme.
+---
+
 # /wp-block
 
 **Purpose:** Scaffold a custom WordPress block — `block.json`, `edit.js`, `save.js` or `render.php`, `style.css`, and `editor.css` — ready to register inside a block theme.

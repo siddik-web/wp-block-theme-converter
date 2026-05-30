@@ -1,3 +1,7 @@
+---
+description: Diagnose and fix WordPress block-theme failures — block validation errors, theme.json issues, missing patterns, DB template overrides, and PHP warnings.
+---
+
 # /wp-debug
 
 **Purpose:** Run a guided diagnostic workflow to identify and fix the root cause of a WordPress block theme problem. This command maps symptoms to specific root causes, provides step-by-step diagnosis, and offers to apply fixes directly to theme files.

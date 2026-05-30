@@ -264,13 +264,14 @@ console.log('\nCheck 4: Every template listed in SKILL.md exists in templates/')
 // ── Check 5: No dead internal links in any .md file ─────────────────────────
 console.log('\nCheck 5: No dead internal links in any .md file');
 {
-  const scanDirs = ['commands', 'references', 'evals', '.github'];
+  const scanDirs = ['commands', 'references', 'agents', 'evals', '.github'];
   const mdFiles = [
     'SKILL.md',
     'CONTRIBUTING.md',
     'CHANGELOG.md',
     ...collectMdFiles('commands'),
     ...collectMdFiles('references'),
+    ...collectMdFiles('agents'),
     ...collectMdFiles('evals'),
     ...collectMdFiles('.github'),
   ];
@@ -340,6 +341,22 @@ console.log('\nCheck 9: scripts/doctor.mjs exists');
     fail('scripts/doctor.mjs exists');
   } else {
     pass('scripts/doctor.mjs exists');
+  }
+}
+
+// ── Check 10: Claude Code plugin manifest exists ────────────────────────────
+console.log('\nCheck 10: .claude-plugin/plugin.json exists (Claude Code plugin)');
+{
+  if (!exists('.claude-plugin/plugin.json')) {
+    fail('.claude-plugin/plugin.json exists');
+  } else {
+    try {
+      const m = JSON.parse(readFile('.claude-plugin/plugin.json'));
+      if (!m.name) fail('plugin.json has a name field');
+      else pass(`plugin manifest present (name: ${m.name})`);
+    } catch (err) {
+      fail('.claude-plugin/plugin.json is valid JSON', err.message);
+    }
   }
 }
 

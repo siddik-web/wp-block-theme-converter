@@ -1,3 +1,7 @@
+---
+description: Convert an existing classic WordPress theme (PHP templates, functions.php) into a Full Site Editing block theme.
+---
+
 # /wp-classic-to-fse
 
 **Purpose:** Convert an existing classic WordPress theme (PHP template files, `functions.php`, `style.css`) into a Full Site Editing (FSE) block theme, preserving the visual design and site structure.

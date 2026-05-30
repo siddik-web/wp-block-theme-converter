@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "siddik-web",
+  "owner": {
+    "name": "Md Siddiqur Rahman",
+    "email": "siddikcoder@gmail.com"
+  },
+  "description": "WordPress tooling plugins for Claude Code.",
+  "plugins": [
+    {
+      "name": "wp-block-theme-converter",
+      "source": "./",
+      "description": "Convert HTML/CSS/JS into production-ready WordPress Block Themes (FSE), scaffold themes, generate theme.json, build patterns, and debug block-theme issues.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Md Siddiqur Rahman",
+        "email": "siddikcoder@gmail.com"
+      },
+      "homepage": "https://github.com/siddik-web/wp-block-theme-converter#readme",
+      "repository": "https://github.com/siddik-web/wp-block-theme-converter",
+      "license": "MIT",
+      "category": "development",
+      "keywords": [
+        "wordpress",
+        "block-theme",
+        "fse",
+        "gutenberg",
+        "theme-json",
+        "woocommerce"
+      ]
+    }
+  ]
+}
