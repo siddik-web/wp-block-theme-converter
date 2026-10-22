@@ -226,7 +226,7 @@ wp-block-theme-converter/                 # Plugin root (also a marketplace)
 │   └── landing-page-simple.md            # Simple SaaS landing page
 │
 └── scripts/                              # Validation + packaging tooling
-    ├── doctor.mjs                        # Runs all four theme-quality checks
+    ├── doctor.mjs                        # Runs all five theme-quality checks
     ├── validate-skill.mjs                # Skill integrity linter
     ├── validate-plugin.mjs               # Plugin packaging linter
     └── hooks/
@@ -346,7 +346,7 @@ The plugin ships with:
 - **`scripts/validate-plugin.mjs`** — packaging linter for the plugin manifest, marketplace entry, and components
 - **`scripts/build-skill.sh`** — produces the distributable `.skill` zip artifact
 - **`CHANGELOG.md`** — full version history
-- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, validate-plugin, lint-scripts, doctor against golden theme, markdown lint
+- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, validate-plugin, lint-scripts, doctor against golden theme, theme-check regression tests, markdown lint
 
 ## Compatibility
 

@@ -9,7 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] — v3.0.0
 
+### Fixed
+
+- `lint-block-markup.mjs` no longer rejects valid markup: self-closing blocks with attributes (`<!-- wp:spacer {...} /-->`) were counted as unclosed openers, and inline `style=""` that core generates for block supports was flagged. Block delimiters are now tokenized like core's parser (multi-line attributes included); only hand-written styles (outside blocks, in `core/html`, or on blocks with no attributes) are flagged. The bundled pattern templates went from 94 violations to 0
+- `validate-theme-json.mjs` read `templateParts` from `settings` (and by `slug`) instead of the top-level `templateParts[].name`, so the check never ran; it also missed 8-digit hex and `rgb()`/`hsl()` colors
+- `hero`, `stats-row`, and `woocommerce-product-card` pattern templates referenced a `foreground` color that is not in the bundled palette (now `text`)
+- `team-grid` pattern template escaped the image alt text when building it rather than at output
+
 ### Added
+
+#### Doctor coverage
+
+- `scripts/check-theme-structure.mjs` (fifth doctor check) — requires `style.css` and `templates/index.html`, a complete `style.css` header, resolvable template-part / pattern / palette-color references, and `php -l`-clean PHP
+- `validate-theme-json.mjs` — `$schema` must point at schemas.wp.org; validates `styles/*.json` variations and `customTemplates`; flags `templateParts`/`customTemplates` misplaced under `settings`
+- `check-patterns.mjs` — pattern slug namespace must match the theme's Text Domain
+- `check-i18n.mjs` — flags hardcoded text in pattern markup and text domains that don't match `style.css`
+- `examples/_generated/landing-page-theme/` — golden theme rendered from `templates/` by `scripts/build-golden-theme.mjs`; CI now runs the doctor on it (no longer skipped) and fails if it is stale
+- `scripts/tests/theme-checks.test.mjs` — `node:test` regression suite (19 cases) for every check and the PostToolUse hook, wired into CI
 
 #### Claude Code Plugin Packaging
 

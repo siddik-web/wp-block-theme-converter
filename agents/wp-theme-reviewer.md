@@ -24,8 +24,8 @@ directory using the plugin root env var:
 node "$CLAUDE_PLUGIN_ROOT/scripts/doctor.mjs" <theme-dir>
 ```
 
-`doctor.mjs` runs four checks (theme.json validity, block-markup linting,
-pattern headers, and i18n). Capture its output verbatim — it is the spine of
+`doctor.mjs` runs five checks (theme structure, theme.json validity,
+block-markup linting, pattern headers, and i18n). Capture its output verbatim — it is the spine of
 your report. A non-zero exit means at least one check failed.
 
 ## Step 2 — Read the quality bar

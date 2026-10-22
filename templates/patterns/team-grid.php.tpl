@@ -44,9 +44,9 @@
                 <figure class="wp-block-image aligncenter team-photo" style="border-radius:50%">
                     <?php
                     /* translators: %s: team member name */
-                    $alt = sprintf( esc_attr__( '%s photo', '{{text-domain}}' ), esc_attr( $member['name'] ) );
+                    $alt = sprintf( __( '%s photo', '{{text-domain}}' ), $member['name'] );
                     ?>
-                    <img src="" alt="<?php echo $alt; ?>" width="160" height="160" style="object-fit:cover"/>
+                    <img src="" alt="<?php echo esc_attr( $alt ); ?>" width="160" height="160" style="object-fit:cover"/>
                 </figure>
                 <!-- /wp:image -->
                 <!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"},"style":{"spacing":{"rowGap":"4px"}}} -->

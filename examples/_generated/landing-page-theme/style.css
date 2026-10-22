@@ -1,0 +1,24 @@
+/*
+Theme Name: Landing Page Theme
+Theme URI: https://github.com/siddik-web/wp-block-theme-converter
+Author: wp-block-theme-converter
+Author URI: https://github.com/siddik-web/wp-block-theme-converter
+Description: Reference block theme rendered from the wp-block-theme-converter templates. Used as the doctor.mjs CI fixture.
+Version: 1.0.0
+Requires at least: 6.6
+Tested up to: 6.8
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: landing-page-theme
+Tags: full-site-editing, block-patterns, one-column
+
+Landing Page Theme, Copyright 2026 wp-block-theme-converter.
+Landing Page Theme is distributed under the terms of the GNU GPL.
+*/
+
+/*
+ * IMPORTANT: This file should ONLY contain the theme header above.
+ * All actual CSS goes in /assets/css/style.css and /assets/css/editor.css
+ * theme.json is the single source of truth for design tokens.
+ */

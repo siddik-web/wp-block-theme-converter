@@ -98,10 +98,17 @@ This checks that every file listed in `SKILL.md` exists, that no internal links 
 Run this after any change to `scripts/`:
 
 ```bash
+node --test scripts/tests/*.test.mjs
 node scripts/doctor.mjs examples/_generated/landing-page-theme
 ```
 
-The golden theme in `examples/_generated/landing-page-theme/` is the reference output the doctor scripts are calibrated against. All checks should pass on it.
+The golden theme in `examples/_generated/landing-page-theme/` is rendered from `templates/` by `scripts/build-golden-theme.mjs` and is the reference output the doctor scripts are calibrated against. All checks must pass on it. The regression tests copy it, break one thing at a time, and assert the right script catches it.
+
+After changing anything in `templates/`, regenerate the golden theme and commit the result (CI fails if it is stale):
+
+```bash
+node scripts/build-golden-theme.mjs
+```
 
 ### 3. Run evals
 

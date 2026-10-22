@@ -64,22 +64,25 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Check if golden theme exists
-        id: check-golden
-        run: |
-          if [ -d "examples/_generated/landing-page-theme" ]; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Golden theme is in sync with templates/
+        run: node scripts/build-golden-theme.mjs --check
 
       - name: Run doctor.mjs against golden theme
-        if: steps.check-golden.outputs.exists == 'true'
         run: node scripts/doctor.mjs examples/_generated/landing-page-theme
 
-      - name: Skip (golden theme not yet generated)
-        if: steps.check-golden.outputs.exists == 'false'
-        run: echo "examples/_generated/landing-page-theme does not exist yet — skipping doctor check."
+  test-scripts:
+    name: Theme-check regression tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run node --test
+        run: node --test scripts/tests/*.test.mjs
 
   markdown-lint:
     name: Markdown lint

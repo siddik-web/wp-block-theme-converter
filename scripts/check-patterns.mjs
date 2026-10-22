@@ -3,6 +3,7 @@
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { resolve, join, extname, relative, basename } from 'path';
+import { readTextDomain } from './lib/theme-utils.mjs';
 
 const themeDir = resolve(process.argv[2] ?? '.');
 const patternsDir = join(themeDir, 'patterns');
@@ -24,6 +25,8 @@ function collectPhpFiles(dir) {
 }
 
 const files = collectPhpFiles(patternsDir);
+// Pattern slugs must be namespaced with the theme's text domain (from style.css).
+const textDomain = readTextDomain(themeDir);
 
 let totalViolations = 0;
 
@@ -76,6 +79,8 @@ for (const file of files) {
     // WordPress block pattern slugs should be "namespace/pattern-name"
     if (!slug.includes('/')) {
       report(file, `Slug "${slug}" appears to lack a namespace — expected format: theme-slug/pattern-name`);
+    } else if (textDomain && slug.split('/')[0] !== textDomain) {
+      report(file, `Slug "${slug}" is namespaced "${slug.split('/')[0]}" but the theme's Text Domain is "${textDomain}" — expected ${textDomain}/${slug.split('/').slice(1).join('/')}`);
     }
 
     // Check: duplicate slugs

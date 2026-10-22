@@ -222,7 +222,7 @@ For large projects (10+ HTML pages or WooCommerce themes), split delivery across
 node scripts/doctor.mjs <theme-dir>
 ```
 
-This executes all four quality checks (theme.json validation, block markup lint, pattern registration check, i18n coverage). **Do not declare success until doctor exits 0.** If it exits non-zero, loop back to the relevant phase and fix every reported violation before continuing.
+This executes all five quality checks (theme structure, theme.json validation, block markup lint, pattern registration check, i18n coverage). **Do not declare success until doctor exits 0.** If it exits non-zero, loop back to the relevant phase and fix every reported violation before continuing.
 
 Then provide:
 

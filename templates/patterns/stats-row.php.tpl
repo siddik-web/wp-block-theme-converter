@@ -9,8 +9,8 @@
  * Description: Horizontal row of key statistics or metrics.
  */
 ?>
-<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"foreground","textColor":"background","layout":{"type":"constrained"}} -->
-<section class="wp-block-group alignfull has-foreground-background-color has-background-color has-background has-text-color" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
+<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"text","textColor":"background","layout":{"type":"constrained"}} -->
+<section class="wp-block-group alignfull has-text-background-color has-background-color has-background has-text-color" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
 
     <!-- wp:columns {"isStackedOnMobile":true,"style":{"spacing":{"blockGap":{"top":"var:preset|spacing|50","left":"1px"}}}} -->
     <div class="wp-block-columns">
