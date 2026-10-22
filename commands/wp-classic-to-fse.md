@@ -64,7 +64,7 @@ Map each classic theme file to its FSE equivalent:
 | `404.php` | `templates/404.html` | |
 | `comments.php` | Block-based comments in template | `core/comments` block |
 | Custom page template | `templates/{{slug}}.html` + `customTemplates` entry in theme.json | Per template |
-| `woocommerce/` | WC block templates in `templates/` | See `references/woocommerce.md` |
+| `woocommerce/` | WC block templates in `templates/` | See `${CLAUDE_PLUGIN_ROOT}/references/woocommerce.md` |
 
 ### Step 3: Convert functions.php
 
@@ -279,7 +279,7 @@ Deliver in this order:
 11. `templates/*.html` — all page templates
 12. `patterns/*.php` — patterns replacing shortcodes
 
-For large classic themes (10+ template files), use the multi-turn strategy from `references/multi-turn-strategy.md`.
+For large classic themes (10+ template files), use the multi-turn strategy from `${CLAUDE_PLUGIN_ROOT}/references/multi-turn-strategy.md`.
 
 ### Step 10: Verification
 
@@ -345,8 +345,8 @@ The parent theme's PHP templates are standard WordPress.
 
 ## Read Also
 
-- `commands/convert-to-wp-theme.md` — for converting static HTML (not a WordPress classic theme)
-- `commands/wp-migrate.md` — for migrating content (posts, ACF, widgets) to the new theme
-- `references/methodology.md` — 10-phase conversion process
-- `references/block-conversion-map.md` — HTML element → block lookup table
-- `references/woocommerce.md` — if the classic theme has WooCommerce templates
+- `${CLAUDE_PLUGIN_ROOT}/commands/convert-to-wp-theme.md` — for converting static HTML (not a WordPress classic theme)
+- `${CLAUDE_PLUGIN_ROOT}/commands/wp-migrate.md` — for migrating content (posts, ACF, widgets) to the new theme
+- `${CLAUDE_PLUGIN_ROOT}/references/methodology.md` — 10-phase conversion process
+- `${CLAUDE_PLUGIN_ROOT}/references/block-conversion-map.md` — HTML element → block lookup table
+- `${CLAUDE_PLUGIN_ROOT}/references/woocommerce.md` — if the classic theme has WooCommerce templates

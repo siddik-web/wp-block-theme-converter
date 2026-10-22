@@ -346,7 +346,7 @@ The plugin ships with:
 - **`scripts/validate-plugin.mjs`** — packaging linter for the plugin manifest, marketplace entry, and components
 - **`scripts/build-skill.sh`** — produces the distributable `.skill` zip artifact
 - **`CHANGELOG.md`** — full version history
-- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, validate-plugin, lint-scripts, doctor against golden theme, theme-check regression tests, markdown lint
+- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, validate-plugin, official `claude plugin validate --strict`, lint-scripts, doctor against golden theme, theme-check regression tests, markdown lint
 
 ## Compatibility
 

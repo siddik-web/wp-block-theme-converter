@@ -62,6 +62,7 @@ wp-block-theme-converter/
 - Match the `Step 1 / Step 2 / Step 3` workflow structure used in existing commands.
 - Every command must have a "When to use" section and a "Success criteria" block.
 - Commands must reference the relevant reference files they depend on (so Claude reads them at the right time).
+- **Write paths to plugin files as `${CLAUDE_PLUGIN_ROOT}/<path>`** in `SKILL.md`, `commands/`, and `agents/` — e.g. `${CLAUDE_PLUGIN_ROOT}/references/defaults.md`, `node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs"`. Once installed, Claude's working directory is the user's project, so a bare `references/defaults.md` resolves to the wrong place. Claude Code substitutes `${CLAUDE_PLUGIN_ROOT}` (with braces) when it loads the file; `$CLAUDE_PLUGIN_ROOT` is not substituted and is not set in Bash. `validate-skill.mjs` enforces this, and `build-skill.sh` strips the prefix for the standalone `.skill`. Markdown link targets stay relative so they still work on GitHub.
 - Do not embed large code blocks directly — link to templates or reference files instead.
 
 ### Scripts (`scripts/`)

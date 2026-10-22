@@ -41,7 +41,7 @@ Ask (or infer from context):
 | Appears in | Site Editor → Styles → Browse styles | Block toolbar → Styles |
 | WordPress version | 6.0+ | 6.6+ |
 
-If the user wants a variation for a single block (e.g., a "dark section" Group block), refer to `references/modern-blocks.md` — Section Styles section instead.
+If the user wants a variation for a single block (e.g., a "dark section" Group block), refer to `${CLAUDE_PLUGIN_ROOT}/references/modern-blocks.md` — Section Styles section instead.
 
 ### Step 2: State the Variation Plan
 
@@ -381,6 +381,6 @@ to black/white, and uses a serif body font for better print readability.
 
 ## Read Also
 
-- `references/theme-json-schema.md` — full theme.json v3 settings and styles reference
-- `references/accessibility.md` — contrast ratio requirements for the new palette
-- `references/modern-blocks.md` — Section Styles (per-block variations, WP 6.6+)
+- `${CLAUDE_PLUGIN_ROOT}/references/theme-json-schema.md` — full theme.json v3 settings and styles reference
+- `${CLAUDE_PLUGIN_ROOT}/references/accessibility.md` — contrast ratio requirements for the new palette
+- `${CLAUDE_PLUGIN_ROOT}/references/modern-blocks.md` — Section Styles (per-block variations, WP 6.6+)

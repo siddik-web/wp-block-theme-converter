@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `validate-theme-json.mjs` read `templateParts` from `settings` (and by `slug`) instead of the top-level `templateParts[].name`, so the check never ran; it also missed 8-digit hex and `rgb()`/`hsl()` colors
 - `hero`, `stats-row`, and `woocommerce-product-card` pattern templates referenced a `foreground` color that is not in the bundled palette (now `text`)
 - `team-grid` pattern template escaped the image alt text when building it rather than at output
+- Installed-plugin paths: `SKILL.md`, every command, and the reviewer agent pointed at plugin files with bare relative paths (`references/…`, `node scripts/doctor.mjs`), which resolve against the user's project once installed. They now use `${CLAUDE_PLUGIN_ROOT}/…`; the agent's `$CLAUDE_PLUGIN_ROOT` (no braces) was neither substituted nor set in Bash. `build-skill.sh` strips the prefix for the standalone `.skill`
+- `SKILL.md` description was 1,215 chars — over the 1,024-char Agent Skills limit — and omitted `/wp-debug`; now 974 chars and names all 11 commands
+- `validate-skill.mjs` Check 6 claimed a 500-char limit but enforced 2,000; it now enforces 1,024 and requires every slash command to appear in the description
 
 ### Added
 
@@ -25,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `check-patterns.mjs` — pattern slug namespace must match the theme's Text Domain
 - `check-i18n.mjs` — flags hardcoded text in pattern markup and text domains that don't match `style.css`
 - `examples/_generated/landing-page-theme/` — golden theme rendered from `templates/` by `scripts/build-golden-theme.mjs`; CI now runs the doctor on it (no longer skipped) and fails if it is stale
+- `validate-skill.mjs` Check 11 — fails on bare plugin-file paths or `$CLAUDE_PLUGIN_ROOT` without braces in `SKILL.md`, `commands/`, `agents/`
+- CI job `claude-plugin-validate` — runs the official `claude plugin validate --strict` (pinned CLI version) on the plugin and marketplace manifests
 - `scripts/tests/theme-checks.test.mjs` — `node:test` regression suite (19 cases) for every check and the PostToolUse hook, wired into CI
 
 #### Claude Code Plugin Packaging

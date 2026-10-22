@@ -21,7 +21,7 @@ This command is NOT for converting static HTML → WordPress (use `/convert-to-w
 
 ## Page Builder Detection
 
-If the user mentions or you detect a page builder in scope, load `references/page-builder-migration.md` **before** Step 2. That reference contains per-builder playbooks with element→block mapping tables, WP-CLI extraction commands, and worked examples. Use the builder-specific workflow from that reference instead of the generic approach below for content extraction.
+If the user mentions or you detect a page builder in scope, load `${CLAUDE_PLUGIN_ROOT}/references/page-builder-migration.md` **before** Step 2. That reference contains per-builder playbooks with element→block mapping tables, WP-CLI extraction commands, and worked examples. Use the builder-specific workflow from that reference instead of the generic approach below for content extraction.
 
 | Builder detected | Action |
 |-----------------|--------|
@@ -481,7 +481,7 @@ and client_name (all ACF). Need archive and single templates.
 
 ## Read Also
 
-- `references/content-migration.md` — detailed classic-to-block conversion patterns, WP-CLI command reference, ACF Pro bindings setup
-- `references/modern-blocks.md` — Block Bindings API in depth
-- `commands/wp-block.md` — building custom dynamic blocks for CPT data display
-- `references/woocommerce.md` — if WooCommerce products are being migrated
+- `${CLAUDE_PLUGIN_ROOT}/references/content-migration.md` — detailed classic-to-block conversion patterns, WP-CLI command reference, ACF Pro bindings setup
+- `${CLAUDE_PLUGIN_ROOT}/references/modern-blocks.md` — Block Bindings API in depth
+- `${CLAUDE_PLUGIN_ROOT}/commands/wp-block.md` — building custom dynamic blocks for CPT data display
+- `${CLAUDE_PLUGIN_ROOT}/references/woocommerce.md` — if WooCommerce products are being migrated

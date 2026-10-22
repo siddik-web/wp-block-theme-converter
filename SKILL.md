@@ -1,6 +1,6 @@
 ---
 name: wp-block-theme-converter
-description: Convert any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing) with Interactivity API, Block Bindings, per-block CSS, and WordPress 6.5+ best practices. Use this skill whenever the user wants to convert, port, transform, migrate, or rebuild static HTML/CSS/JS into a WordPress block theme, FSE theme, or Gutenberg-compatible theme. Also triggers for scaffolding themes from scratch, generating theme.json from design tokens, creating block patterns from HTML snippets, or building WooCommerce-compatible block themes. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "Gutenberg theme", "WordPress theme from scratch", "port my landing page to WordPress", "WooCommerce theme from HTML", "create a block pattern", "generate theme.json", or any request involving WordPress block theme development. Also use this skill when the user invokes the slash commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, /wp-variation, or /wp-classic-to-fse. Even if the user just says "WordPress theme" or "WP theme", this skill is likely relevant.
+description: Convert HTML/CSS/JavaScript projects into production-ready WordPress block themes (Full Site Editing) with theme.json v3, FSE templates and parts, block patterns, the Interactivity API, Block Bindings, and optional WooCommerce support. Use whenever the user wants to convert, port, or rebuild a static site, landing page, or classic WordPress theme as a block, FSE, or Gutenberg theme; scaffold a block theme from scratch; generate theme.json from design tokens; turn HTML into block patterns or templates; build custom blocks or style variations; migrate content or page builders (Elementor, Divi) to blocks; or debug a block theme. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "theme.json", or "block pattern", and on the commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, /wp-variation, /wp-classic-to-fse, and /wp-debug.
 version: 2.0.0
 license: MIT
 ---
@@ -112,19 +112,19 @@ Trigger this skill when the user wants to:
 
 | Command | Purpose | Reference File |
 |---------|---------|----------------|
-| [`/convert-to-wp-theme`](commands/convert-to-wp-theme.md) | Full conversion of HTML/CSS/JS project to complete block theme | `commands/convert-to-wp-theme.md` |
-| [`/scaffold-wp-theme`](commands/scaffold-wp-theme.md) | Create empty block theme scaffold (no source conversion) | `commands/scaffold-wp-theme.md` |
-| [`/wp-pattern`](commands/wp-pattern.md) | Convert single HTML section into a registered block pattern | `commands/wp-pattern.md` |
-| [`/wp-theme-json`](commands/wp-theme-json.md) | Generate theme.json from a design system / CSS custom properties | `commands/wp-theme-json.md` |
-| [`/wp-template`](commands/wp-template.md) | Convert single HTML page into FSE template | `commands/wp-template.md` |
-| [`/wp-block`](commands/wp-block.md) | Scaffold a custom block (block.json, edit.js, save.js/render.php, CSS) | `commands/wp-block.md` |
-| [`/wp-migrate`](commands/wp-migrate.md) | Migrate existing WP content (Classic Editor, ACF, widgets, CPTs, shortcodes) to block theme | `commands/wp-migrate.md` |
-| [`/wp-plugin-theme`](commands/wp-plugin-theme.md) | Declare plugin dependencies and generate plugin-specific CSS / compatibility code | `commands/wp-plugin-theme.md` |
-| [`/wp-variation`](commands/wp-variation.md) | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap | `commands/wp-variation.md` |
-| [`/wp-classic-to-fse`](commands/wp-classic-to-fse.md) | Convert an existing WordPress classic theme (PHP templates) to FSE block theme | `commands/wp-classic-to-fse.md` |
-| [`/wp-debug`](commands/wp-debug.md) | Systematically debug WordPress block theme issues (white screen, editor errors, style regressions) | `commands/wp-debug.md` |
+| [`/convert-to-wp-theme`](commands/convert-to-wp-theme.md) | Full conversion of HTML/CSS/JS project to complete block theme | `${CLAUDE_PLUGIN_ROOT}/commands/convert-to-wp-theme.md` |
+| [`/scaffold-wp-theme`](commands/scaffold-wp-theme.md) | Create empty block theme scaffold (no source conversion) | `${CLAUDE_PLUGIN_ROOT}/commands/scaffold-wp-theme.md` |
+| [`/wp-pattern`](commands/wp-pattern.md) | Convert single HTML section into a registered block pattern | `${CLAUDE_PLUGIN_ROOT}/commands/wp-pattern.md` |
+| [`/wp-theme-json`](commands/wp-theme-json.md) | Generate theme.json from a design system / CSS custom properties | `${CLAUDE_PLUGIN_ROOT}/commands/wp-theme-json.md` |
+| [`/wp-template`](commands/wp-template.md) | Convert single HTML page into FSE template | `${CLAUDE_PLUGIN_ROOT}/commands/wp-template.md` |
+| [`/wp-block`](commands/wp-block.md) | Scaffold a custom block (block.json, edit.js, save.js/render.php, CSS) | `${CLAUDE_PLUGIN_ROOT}/commands/wp-block.md` |
+| [`/wp-migrate`](commands/wp-migrate.md) | Migrate existing WP content (Classic Editor, ACF, widgets, CPTs, shortcodes) to block theme | `${CLAUDE_PLUGIN_ROOT}/commands/wp-migrate.md` |
+| [`/wp-plugin-theme`](commands/wp-plugin-theme.md) | Declare plugin dependencies and generate plugin-specific CSS / compatibility code | `${CLAUDE_PLUGIN_ROOT}/commands/wp-plugin-theme.md` |
+| [`/wp-variation`](commands/wp-variation.md) | Generate a style variation (styles/*.json) — dark mode, color palette swap, font swap | `${CLAUDE_PLUGIN_ROOT}/commands/wp-variation.md` |
+| [`/wp-classic-to-fse`](commands/wp-classic-to-fse.md) | Convert an existing WordPress classic theme (PHP templates) to FSE block theme | `${CLAUDE_PLUGIN_ROOT}/commands/wp-classic-to-fse.md` |
+| [`/wp-debug`](commands/wp-debug.md) | Systematically debug WordPress block theme issues (white screen, editor errors, style regressions) | `${CLAUDE_PLUGIN_ROOT}/commands/wp-debug.md` |
 
-When the user types one of these commands, read the corresponding command file in `commands/` and execute the workflow defined there.
+When the user types one of these commands, read the corresponding command file in `${CLAUDE_PLUGIN_ROOT}/commands/` and execute the workflow defined there.
 
 ---
 
@@ -149,7 +149,7 @@ Gather these inputs (ask only if not provided):
 - What you're NOT doing (e.g., "I won't scaffold WooCommerce support since you didn't mention eCommerce")
 - Any ambiguities you need resolved (e.g., "Your hero uses a video background — should this be a `core/cover` with video or a custom pattern with a `<video>` tag?")
 
-For default values when user is silent, use the table in `references/defaults.md`.
+For default values when user is silent, use the table in `${CLAUDE_PLUGIN_ROOT}/references/defaults.md`.
 
 ### Step 2: Plan — Define Success Criteria (Principles 1 + 4)
 
@@ -158,7 +158,7 @@ Before writing any code, produce a **Conversion Plan** that maps:
 - Each source HTML file → WordPress template
 - Each repeating section → block pattern
 - Header/footer → template parts
-- Interactive components → JS strategy (Interactivity API preferred, classic enqueue for complex libs — read `references/modern-blocks.md`)
+- Interactive components → JS strategy (Interactivity API preferred, classic enqueue for complex libs — read `${CLAUDE_PLUGIN_ROOT}/references/modern-blocks.md`)
 - Design tokens → theme.json structure
 - Dynamic data needs → Block Bindings API candidates
 
@@ -180,14 +180,14 @@ Show this plan to the user. Get confirmation before proceeding to file generatio
 
 ### Step 3: Execute — 10-Phase Methodology (Principle 2)
 
-Follow the phases documented in `references/methodology.md`. **Apply Simplicity First at every phase — generate only what the project needs:**
+Follow the phases documented in `${CLAUDE_PLUGIN_ROOT}/references/methodology.md`. **Apply Simplicity First at every phase — generate only what the project needs:**
 
 1. **Audit & Extract** — parse source, identify reusable components
 2. **theme.json** — generate schema v3 with full settings + styles (incl. Section Styles, dimensions, position)
 3. **Templates & Parts** — convert HTML pages to FSE block markup
 4. **Block Patterns** — register sections as reusable patterns
 5. **Block Styles & Variations** — register custom variants via theme.json + PHP
-6. **JavaScript Integration** — Interactivity API for interactive patterns; `wp_enqueue_script()` only for complex libs. Read `references/modern-blocks.md` FIRST.
+6. **JavaScript Integration** — Interactivity API for interactive patterns; `wp_enqueue_script()` only for complex libs. Read `${CLAUDE_PLUGIN_ROOT}/references/modern-blocks.md` FIRST.
 7. **functions.php & inc/** — bootstrap files following WP Coding Standards
 8. **Accessibility & Performance** — WCAG 2.1 AA + Core Web Vitals + per-block CSS loading + font preloading
 9. **i18n** — translation-ready strings everywhere
@@ -203,14 +203,14 @@ Follow the phases documented in `references/methodology.md`. **Apply Simplicity 
 
 ### Step 4: Output Files (Principle 3)
 
-Use the file structure documented in `references/file-structure.md`. Output every file with a clear header:
+Use the file structure documented in `${CLAUDE_PLUGIN_ROOT}/references/file-structure.md`. Output every file with a clear header:
 
 ```
 === FILE: {{theme-slug}}/path/to/file.ext ===
 <content>
 ```
 
-For large projects (10+ HTML pages or WooCommerce themes), split delivery across 3 turns using `references/multi-turn-strategy.md`.
+For large projects (10+ HTML pages or WooCommerce themes), split delivery across 3 turns using `${CLAUDE_PLUGIN_ROOT}/references/multi-turn-strategy.md`.
 
 **Surgical precision for existing themes:** If modifying an existing theme, output ONLY the changed files. Include a diff summary showing exactly what changed and why.
 
@@ -219,7 +219,7 @@ For large projects (10+ HTML pages or WooCommerce themes), split delivery across
 **Run the automated doctor first.** Before providing output to the user, run:
 
 ```bash
-node scripts/doctor.mjs <theme-dir>
+node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" <theme-dir>
 ```
 
 This executes all five quality checks (theme structure, theme.json validation, block markup lint, pattern registration check, i18n coverage). **Do not declare success until doctor exits 0.** If it exits non-zero, loop back to the relevant phase and fix every reported violation before continuing.
@@ -234,7 +234,7 @@ Then provide:
 
 ```
 VERIFICATION:
-✅ node scripts/doctor.mjs <theme-dir> → exits 0 (all checks pass)
+✅ node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" <theme-dir> → exits 0 (all checks pass)
 ✅ Activate theme → Confirm no PHP errors in debug.log
 ✅ Visit front page → Confirm visual match with source
 ✅ Open Site Editor → Confirm all templates listed
@@ -246,13 +246,13 @@ VERIFICATION:
 
 **If any verification step fails, loop back to the relevant phase and fix it before reporting done. Don't declare success past a failed check.**
 
-If the user reports a problem with a generated theme, direct them to `/wp-debug`. See `references/troubleshooting.md` for the full symptom → root cause → fix reference.
+If the user reports a problem with a generated theme, direct them to `/wp-debug`. See `${CLAUDE_PLUGIN_ROOT}/references/troubleshooting.md` for the full symptom → root cause → fix reference.
 
 ---
 
 ## Quality Rules — Non-Negotiable
 
-These rules apply to EVERY file generated. See `references/quality-rules.md` for full details.
+These rules apply to EVERY file generated. See `${CLAUDE_PLUGIN_ROOT}/references/quality-rules.md` for full details.
 
 ❌ **NEVER:**
 
@@ -290,57 +290,57 @@ Read these on-demand based on the task:
 
 | File | When to Read | Priority |
 |------|-------------|----------|
-| `references/defaults.md` | Every conversion (default values) | Always |
-| `references/methodology.md` | Full conversions (10-phase process) | Always |
-| `references/modern-blocks.md` | **Any JS/interactivity work.** Interactivity API, Block Bindings, per-block CSS, Section Styles, dark mode, RTL | Before Phase 6 |
-| `references/file-structure.md` | Full conversions (directory layout) | Always |
-| `references/block-conversion-map.md` | Converting HTML → block markup | During Phase 3-4 |
-| `references/theme-json-schema.md` | Generating theme.json (v3 schema + examples) | During Phase 2 |
-| `references/quality-rules.md` | Every task (do's and don'ts) | Always |
-| `references/multi-turn-strategy.md` | Large projects (10+ pages) | When needed |
-| `references/woocommerce.md` | WooCommerce themes | When needed |
-| `references/validation-checklist.md` | Post-generation verification | After all files |
-| `references/custom-blocks.md` | Custom block development (block.json schema, edit.js patterns, render.php, deprecations) | When `/wp-block` is invoked |
-| `references/content-migration.md` | Classic-to-block conversion, WP-CLI commands, ACF bindings, CPT templates, page builder migration | When `/wp-migrate` is invoked |
-| `references/asset-optimization.md` | Fonts (subsetting, preload, self-hosting), images (WebP, lazy load, LCP), per-block CSS, JS deferral, Core Web Vitals | During Phase 8 (Performance) |
-| `references/plugin-compatibility.md` | Plugin detection, CSS conflict resolution, plugin-specific hooks, caching compat | When `/wp-plugin-theme` is invoked |
-| `references/interactivity-api-advanced.md` | Shared store, server hydration, pagination, optimistic UI, ARIA live regions, focus traps, async actions, testing | When Interactivity API work is complex (shared state, async fetch, focus management) |
-| `references/accessibility.md` | Skip links, semantic HTML, color contrast, focus management, ARIA patterns, forms, motion, dark mode, screen reader testing | During Phase 8 (Accessibility) or when a11y question arises |
-| `references/ci-cd.md` | GitHub Actions workflows, PHPCS config, ESLint/Stylelint config, Theme Check, accessibility scan, SSH deployment | When user asks about CI/CD, automated testing, or deployment pipelines |
-| `references/backward-compatibility.md` | Feature availability by WP version, conditional feature loading, PHP compatibility, version strategy | When `Requires at least` is below 6.5 or user asks about older WP support |
-| `references/e2e-testing.md` | Playwright setup, block render tests, visual regression, a11y scans, CI integration | When user asks about automated browser tests or visual regression |
-| `references/i18n.md` | All i18n functions, plural forms, context strings, JS translations, .pot generation, RTL | During Phase 9 (i18n) or when multilingual questions arise |
-| `references/troubleshooting.md` | Symptom→cause→fix for all common FSE/block-theme failures; WP-CLI cheat sheet; environment checklist | When user reports a problem with a generated theme; always cross-link from Step 5 |
-| `references/page-builder-migration.md` | Elementor, Divi, WPBakery, Beaver Builder migration playbooks; element→block mapping tables; 9-step general workflow | When `/wp-migrate` detects an active page builder |
+| `${CLAUDE_PLUGIN_ROOT}/references/defaults.md` | Every conversion (default values) | Always |
+| `${CLAUDE_PLUGIN_ROOT}/references/methodology.md` | Full conversions (10-phase process) | Always |
+| `${CLAUDE_PLUGIN_ROOT}/references/modern-blocks.md` | **Any JS/interactivity work.** Interactivity API, Block Bindings, per-block CSS, Section Styles, dark mode, RTL | Before Phase 6 |
+| `${CLAUDE_PLUGIN_ROOT}/references/file-structure.md` | Full conversions (directory layout) | Always |
+| `${CLAUDE_PLUGIN_ROOT}/references/block-conversion-map.md` | Converting HTML → block markup | During Phase 3-4 |
+| `${CLAUDE_PLUGIN_ROOT}/references/theme-json-schema.md` | Generating theme.json (v3 schema + examples) | During Phase 2 |
+| `${CLAUDE_PLUGIN_ROOT}/references/quality-rules.md` | Every task (do's and don'ts) | Always |
+| `${CLAUDE_PLUGIN_ROOT}/references/multi-turn-strategy.md` | Large projects (10+ pages) | When needed |
+| `${CLAUDE_PLUGIN_ROOT}/references/woocommerce.md` | WooCommerce themes | When needed |
+| `${CLAUDE_PLUGIN_ROOT}/references/validation-checklist.md` | Post-generation verification | After all files |
+| `${CLAUDE_PLUGIN_ROOT}/references/custom-blocks.md` | Custom block development (block.json schema, edit.js patterns, render.php, deprecations) | When `/wp-block` is invoked |
+| `${CLAUDE_PLUGIN_ROOT}/references/content-migration.md` | Classic-to-block conversion, WP-CLI commands, ACF bindings, CPT templates, page builder migration | When `/wp-migrate` is invoked |
+| `${CLAUDE_PLUGIN_ROOT}/references/asset-optimization.md` | Fonts (subsetting, preload, self-hosting), images (WebP, lazy load, LCP), per-block CSS, JS deferral, Core Web Vitals | During Phase 8 (Performance) |
+| `${CLAUDE_PLUGIN_ROOT}/references/plugin-compatibility.md` | Plugin detection, CSS conflict resolution, plugin-specific hooks, caching compat | When `/wp-plugin-theme` is invoked |
+| `${CLAUDE_PLUGIN_ROOT}/references/interactivity-api-advanced.md` | Shared store, server hydration, pagination, optimistic UI, ARIA live regions, focus traps, async actions, testing | When Interactivity API work is complex (shared state, async fetch, focus management) |
+| `${CLAUDE_PLUGIN_ROOT}/references/accessibility.md` | Skip links, semantic HTML, color contrast, focus management, ARIA patterns, forms, motion, dark mode, screen reader testing | During Phase 8 (Accessibility) or when a11y question arises |
+| `${CLAUDE_PLUGIN_ROOT}/references/ci-cd.md` | GitHub Actions workflows, PHPCS config, ESLint/Stylelint config, Theme Check, accessibility scan, SSH deployment | When user asks about CI/CD, automated testing, or deployment pipelines |
+| `${CLAUDE_PLUGIN_ROOT}/references/backward-compatibility.md` | Feature availability by WP version, conditional feature loading, PHP compatibility, version strategy | When `Requires at least` is below 6.5 or user asks about older WP support |
+| `${CLAUDE_PLUGIN_ROOT}/references/e2e-testing.md` | Playwright setup, block render tests, visual regression, a11y scans, CI integration | When user asks about automated browser tests or visual regression |
+| `${CLAUDE_PLUGIN_ROOT}/references/i18n.md` | All i18n functions, plural forms, context strings, JS translations, .pot generation, RTL | During Phase 9 (i18n) or when multilingual questions arise |
+| `${CLAUDE_PLUGIN_ROOT}/references/troubleshooting.md` | Symptom→cause→fix for all common FSE/block-theme failures; WP-CLI cheat sheet; environment checklist | When user reports a problem with a generated theme; always cross-link from Step 5 |
+| `${CLAUDE_PLUGIN_ROOT}/references/page-builder-migration.md` | Elementor, Divi, WPBakery, Beaver Builder migration playbooks; element→block mapping tables; 9-step general workflow | When `/wp-migrate` detects an active page builder |
 
 ## Templates
 
-Reusable boilerplate files in `templates/`:
+Reusable boilerplate files in `${CLAUDE_PLUGIN_ROOT}/templates/`:
 
-- `templates/style.css.tpl` — Theme header file template
-- `templates/theme.json.tpl` — Minimal valid theme.json starter
-- `templates/functions.php.tpl` — Bootstrap functions.php
-- `templates/pattern-header.php.tpl` — Block pattern PHP file header
-- `templates/template-skeleton.html.tpl` — Empty FSE template skeleton
-- `templates/package.json.tpl` — Build tooling package.json
-- `templates/vite.config.js.tpl` — Vite 6 config for WP integration
-- `templates/github-actions-ci.yml.tpl` — GitHub Actions CI workflow (PHPCS, ESLint, Stylelint, Vite build)
-- `templates/patterns/hero.php.tpl` — Hero with CTA pattern
-- `templates/patterns/features-grid.php.tpl` — Three-column features grid pattern
-- `templates/patterns/testimonials.php.tpl` — Three testimonials pattern
-- `templates/patterns/pricing-table.php.tpl` — Three-tier pricing table pattern
-- `templates/patterns/cta-section.php.tpl` — Call-to-action section pattern
-- `templates/patterns/faq-accordion.php.tpl` — FAQ accordion (native details block) pattern
-- `templates/patterns/team-grid.php.tpl` — Four-column team grid pattern
-- `templates/patterns/stats-row.php.tpl` — Key statistics/metrics row pattern
-- `templates/patterns/woocommerce-product-card.php.tpl` — WooCommerce product card for Query Loop (requires WooCommerce 8.0+)
+- `${CLAUDE_PLUGIN_ROOT}/templates/style.css.tpl` — Theme header file template
+- `${CLAUDE_PLUGIN_ROOT}/templates/theme.json.tpl` — Minimal valid theme.json starter
+- `${CLAUDE_PLUGIN_ROOT}/templates/functions.php.tpl` — Bootstrap functions.php
+- `${CLAUDE_PLUGIN_ROOT}/templates/pattern-header.php.tpl` — Block pattern PHP file header
+- `${CLAUDE_PLUGIN_ROOT}/templates/template-skeleton.html.tpl` — Empty FSE template skeleton
+- `${CLAUDE_PLUGIN_ROOT}/templates/package.json.tpl` — Build tooling package.json
+- `${CLAUDE_PLUGIN_ROOT}/templates/vite.config.js.tpl` — Vite 6 config for WP integration
+- `${CLAUDE_PLUGIN_ROOT}/templates/github-actions-ci.yml.tpl` — GitHub Actions CI workflow (PHPCS, ESLint, Stylelint, Vite build)
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/hero.php.tpl` — Hero with CTA pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/features-grid.php.tpl` — Three-column features grid pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/testimonials.php.tpl` — Three testimonials pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/pricing-table.php.tpl` — Three-tier pricing table pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/cta-section.php.tpl` — Call-to-action section pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/faq-accordion.php.tpl` — FAQ accordion (native details block) pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/team-grid.php.tpl` — Four-column team grid pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/stats-row.php.tpl` — Key statistics/metrics row pattern
+- `${CLAUDE_PLUGIN_ROOT}/templates/patterns/woocommerce-product-card.php.tpl` — WooCommerce product card for Query Loop (requires WooCommerce 8.0+)
 
 ## Examples
 
-Reference implementations in `examples/`:
+Reference implementations in `${CLAUDE_PLUGIN_ROOT}/examples/`:
 
-- `examples/northaven-ecommerce.md` — Full filled-in prompt for a multi-aesthetic WooCommerce theme
-- `examples/landing-page-simple.md` — Minimal single-page conversion example
+- `${CLAUDE_PLUGIN_ROOT}/examples/northaven-ecommerce.md` — Full filled-in prompt for a multi-aesthetic WooCommerce theme
+- `${CLAUDE_PLUGIN_ROOT}/examples/landing-page-simple.md` — Minimal single-page conversion example
 
 ---
 

@@ -31,11 +31,11 @@ From the input, identify:
 | **Shadows** | sm, md, lg presets |
 | **Layout** | Container width, wide width |
 
-If anything is missing, use defaults from `references/defaults.md`.
+If anything is missing, use defaults from `${CLAUDE_PLUGIN_ROOT}/references/defaults.md`.
 
 ### Step 2: Build theme.json Structure
 
-Read `references/theme-json-schema.md` for the full schema. The output MUST include:
+Read `${CLAUDE_PLUGIN_ROOT}/references/theme-json-schema.md` for the full schema. The output MUST include:
 
 ```json
 {

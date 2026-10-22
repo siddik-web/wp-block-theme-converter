@@ -26,7 +26,7 @@ Trigger this command when:
 | Plugin conflict causing a white screen or admin error | `/wp-plugin-theme` |
 | Hosting, server config, or database connection errors | Out of scope — contact hosting provider |
 | WP-CLI or SSH access denied | Out of scope — contact server admin |
-| Performance / Core Web Vitals issues | Out of scope — use `references/asset-optimization.md` |
+| Performance / Core Web Vitals issues | Out of scope — use `${CLAUDE_PLUGIN_ROOT}/references/asset-optimization.md` |
 
 ---
 
@@ -275,7 +275,7 @@ WordPress parses `theme.json` at theme activation and caches the output in the d
 
 **Prevention**
 
-- Keep `theme.json` under version control and validate on every commit (see `scripts/validate-theme-json.mjs`).
+- Keep `theme.json` under version control and validate on every commit (see `${CLAUDE_PLUGIN_ROOT}/scripts/validate-theme-json.mjs`).
 - Use the `$schema` declaration so editors provide inline validation:
 
   ```json
@@ -399,7 +399,7 @@ WordPress discovers patterns in one of three ways: auto-discovery of `patterns/*
 
 **Prevention**
 
-- Run `node scripts/check-patterns.mjs` (included in this project) before committing pattern changes.
+- Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/check-patterns.mjs"` (included in this project) before committing pattern changes.
 - Always run `php -l` on new pattern PHP files before pushing to staging.
 - Register categories in a dedicated `inc/patterns.php` file included before pattern files load.
 
@@ -705,7 +705,7 @@ Asset 404s in block themes most often have three causes: (1) the file was not co
 
 - Always use `get_template_directory_uri()` and `get_template_directory()` in enqueue calls — never hardcode paths.
 - Use `filemtime()` as the version parameter so caches bust automatically on file change.
-- Include an asset deployment step in your CI/CD pipeline (see `references/ci-cd.md`).
+- Include an asset deployment step in your CI/CD pipeline (see `${CLAUDE_PLUGIN_ROOT}/references/ci-cd.md`).
 - Test asset loading immediately after every deployment to staging.
 
 ---
@@ -793,7 +793,7 @@ The block editor renders blocks inside an `<iframe>` with its own stylesheet cas
 - Maintain `editor.css` as a peer of `style.css` and update both in lockstep.
 - Use `wp_enqueue_block_style()` for all per-block CSS rather than global enqueue.
 - Check editor rendering visually during development, not just the front end.
-- Add an editor parity check to the `references/validation-checklist.md` sign-off.
+- Add an editor parity check to the `${CLAUDE_PLUGIN_ROOT}/references/validation-checklist.md` sign-off.
 
 ---
 
@@ -880,7 +880,7 @@ add_action( 'init', function(): void {
 For widget HTML leaking into block content:
 
 1. Identify the affected template part and remove the PHP `dynamic_sidebar()` call.
-2. Replace with the equivalent block markup (see `references/block-conversion-map.md`).
+2. Replace with the equivalent block markup (see `${CLAUDE_PLUGIN_ROOT}/references/block-conversion-map.md`).
 3. Delete the old sidebar registration from `functions.php`.
 
 For orphaned block comments (block references with no registered block):
@@ -898,7 +898,7 @@ wp post list --post_type=any --format=ids | \
 
 **Prevention**
 
-- Run `node scripts/check-patterns.mjs` and `node scripts/lint-block-markup.mjs` after every migration.
+- Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/check-patterns.mjs"` and `node "${CLAUDE_PLUGIN_ROOT}/scripts/lint-block-markup.mjs"` after every migration.
 - When deactivating a plugin that provides shortcodes or blocks, replace all usages in content first.
 - Use `/wp-migrate` (this skill's migration command) to systematically convert shortcodes to blocks before switching themes.
 
@@ -914,7 +914,7 @@ After presenting the diagnosis and fix for the matched category, ask:
 > 2. The affected file(s) or template name
 > 3. Any relevant current file content (paste or describe)"
 
-If the user says yes, generate the complete corrected file(s) using the appropriate template from the `templates/` directory and the fix steps above.
+If the user says yes, generate the complete corrected file(s) using the appropriate template from the `${CLAUDE_PLUGIN_ROOT}/templates/` directory and the fix steps above.
 
 ---
 
@@ -966,8 +966,8 @@ I switched from a classic theme. My [contact-form-7 id="5"] shortcodes now just 
 
 ## Read Also
 
-- `references/troubleshooting.md` — comprehensive symptom → cause → fix reference with deep dives
-- `references/theme-json-schema.md` — theme.json structure, valid keys by WP version
-- `references/validation-checklist.md` — post-deployment verification steps
-- `commands/wp-migrate.md` — systematic migration of classic content to blocks
-- `commands/wp-plugin-theme.md` — plugin compatibility issues
+- `${CLAUDE_PLUGIN_ROOT}/references/troubleshooting.md` — comprehensive symptom → cause → fix reference with deep dives
+- `${CLAUDE_PLUGIN_ROOT}/references/theme-json-schema.md` — theme.json structure, valid keys by WP version
+- `${CLAUDE_PLUGIN_ROOT}/references/validation-checklist.md` — post-deployment verification steps
+- `${CLAUDE_PLUGIN_ROOT}/commands/wp-migrate.md` — systematic migration of classic content to blocks
+- `${CLAUDE_PLUGIN_ROOT}/commands/wp-plugin-theme.md` — plugin compatibility issues

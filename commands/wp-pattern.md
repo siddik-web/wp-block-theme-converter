@@ -36,7 +36,7 @@ From the HTML, infer:
 
 ### Step 2: Convert HTML to Block Markup
 
-Apply the conversion map from `references/block-conversion-map.md`. Key rules:
+Apply the conversion map from `${CLAUDE_PLUGIN_ROOT}/references/block-conversion-map.md`. Key rules:
 
 1. Wrap top-level in `<!-- wp:group {"layout":{"type":"constrained"}} -->` unless the section needs full-width
 2. Convert each HTML element to its block equivalent (see map)
@@ -49,7 +49,7 @@ Apply the conversion map from `references/block-conversion-map.md`. Key rules:
 
 ### Step 3: Build the Pattern File
 
-Use this exact structure (template at `templates/pattern-header.php.tpl`):
+Use this exact structure (template at `${CLAUDE_PLUGIN_ROOT}/templates/pattern-header.php.tpl`):
 
 ```php
 <?php
