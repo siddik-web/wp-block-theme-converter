@@ -406,6 +406,61 @@ console.log(`\nCheck 11: plugin-file paths in SKILL.md, commands/, agents/ use $
   if (allOk) pass(`All plugin-file paths in ${files.length} files use ${PLUGIN_ROOT_VAR}`);
 }
 
+// ── Check 12: version is identical everywhere and has a CHANGELOG entry ─────
+console.log('\nCheck 12: SKILL.md, plugin.json, marketplace.json, README, and CHANGELOG agree on the version');
+{
+  const versions = {};
+  versions['SKILL.md'] = frontmatter?.version;
+  try { versions['.claude-plugin/plugin.json'] = JSON.parse(readFile('.claude-plugin/plugin.json')).version; } catch { /* Check 10 reports */ }
+  try {
+    const entry = JSON.parse(readFile('.claude-plugin/marketplace.json')).plugins?.[0];
+    versions['.claude-plugin/marketplace.json'] = entry?.version;
+  } catch { /* validate-plugin reports */ }
+  versions['README.md'] = /\*\*Version:\*\*\s*(\S+)/.exec(readFile('README.md'))?.[1];
+
+  const distinct = new Set(Object.values(versions));
+  if (distinct.size !== 1 || distinct.has(undefined)) {
+    fail('versions match', Object.entries(versions).map(([f, v]) => `${f}=${v}`).join(', '));
+  } else {
+    const version = [...distinct][0];
+    pass(`all four files say ${version}`);
+    const changelog = readFile('CHANGELOG.md');
+    if (new RegExp(`^## \\[${version.replace(/\./g, '\\.')}\\]`, 'm').test(changelog)) {
+      pass(`CHANGELOG.md has a [${version}] entry`);
+    } else {
+      fail(`CHANGELOG.md has a [${version}] entry`, 'Add a "## [x.y.z] — date" heading (not only [Unreleased]) for the version you are shipping');
+    }
+  }
+}
+
+// ── Check 13: repo paths named in prose exist ───────────────────────────────
+// The link checker only sees [text](url) links, so a stale `examples/foo.md` in
+// backticks (as CHANGELOG once had) slipped through.
+console.log('\nCheck 13: backticked repo paths in docs point at files that exist');
+{
+  const PATH_RE = /^(?:examples|references|templates|scripts|commands|agents|evals|hooks|\.claude-plugin|\.github)\/[\w./-]+\.\w+$/;
+  const docs = ['README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'scripts/README.md', 'evals/README.md', 'SKILL.md',
+    ...collectMdFiles('commands'), ...collectMdFiles('agents')];
+  let allOk = true;
+  for (const f of docs) {
+    if (!exists(f)) continue;
+    // Changelog history may legitimately name files that were later removed or renamed.
+    const text = readFile(f).replaceAll(`${PLUGIN_ROOT_VAR}/`, '');
+    const section = f === 'CHANGELOG.md' ? text.split(/^## \[2\.0\.0\]/m)[0] : text;
+    for (const m of section.matchAll(/`([^`\s]+)`/g)) {
+      const ref = m[1];
+      if (!PATH_RE.test(ref) || /[*<>{}]|_generated|\/results\//.test(ref)) continue;
+      // templates/ in prose usually means the generated theme's templates/*.html; only .tpl files live here.
+      if (ref.startsWith('templates/') && !ref.endsWith('.tpl')) continue;
+      if (!exists(ref)) {
+        fail(`${f} references ${ref}`, 'File does not exist');
+        allOk = false;
+      }
+    }
+  }
+  if (allOk) pass(`All backticked repo paths in ${docs.length} docs exist`);
+}
+
 // ─── Summary ─────────────────────────────────────────────────────────────────
 
 console.log('\n─────────────────────────────────────────────');

@@ -1,7 +1,7 @@
 ---
 name: wp-block-theme-converter
 description: Convert HTML/CSS/JavaScript projects into production-ready WordPress block themes (Full Site Editing) with theme.json v3, FSE templates and parts, block patterns, the Interactivity API, Block Bindings, and optional WooCommerce support. Use whenever the user wants to convert, port, or rebuild a static site, landing page, or classic WordPress theme as a block, FSE, or Gutenberg theme; scaffold a block theme from scratch; generate theme.json from design tokens; turn HTML into block patterns or templates; build custom blocks or style variations; migrate content or page builders (Elementor, Divi) to blocks; or debug a block theme. Trigger on phrases like "convert to WordPress", "make this a WP theme", "block theme from HTML", "FSE theme", "theme.json", or "block pattern", and on the commands /convert-to-wp-theme, /scaffold-wp-theme, /wp-pattern, /wp-theme-json, /wp-template, /wp-block, /wp-migrate, /wp-plugin-theme, /wp-variation, /wp-classic-to-fse, and /wp-debug.
-version: 2.0.0
+version: 3.0.0
 license: MIT
 ---
 

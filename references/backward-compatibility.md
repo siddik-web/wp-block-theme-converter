@@ -7,6 +7,7 @@ Guidance for block themes that must support WordPress versions older than 6.5 or
 ## Table of Contents
 
 1. [Feature Availability Matrix](#feature-availability-matrix)
+   - [Release Timeline](#release-timeline)
 2. [Minimum WordPress Version Strategy](#minimum-wordpress-version-strategy)
 3. [Conditional Feature Loading](#conditional-feature-loading)
 4. [Interactivity API Fallbacks](#interactivity-api-fallbacks)
@@ -48,6 +49,20 @@ Guidance for block themes that must support WordPress versions older than 6.5 or
 | `wp_enqueue_block_style()` for 3rd-party blocks | 6.1 | |
 | `wp_interactivity_config()` | 6.5 | |
 | Sticky positioning support | 6.5 | `position.sticky` in block supports |
+
+### Release Timeline
+
+Use this to pick `Requires at least` and `Tested up to`. Dates are from WordPress.org release announcements; verify the current stable release at <https://wordpress.org/download/releases/> before generating a theme (the table below was last reviewed 2026-10-22).
+
+| Release | Date | Relevance to block themes |
+|---------|------|---------------------------|
+| 6.5 | 2024-04 | Interactivity API, Block Bindings API, script modules |
+| 6.6 | 2024-07 | theme.json v3, Section Styles, Pattern Overrides — this skill's default `Requires at least` |
+| 6.7 – 6.9 | 2024-10 – 2025-12 | Incremental editor, pattern, and performance improvements; no change to the minimums above |
+| 7.0 | 2026-05-20 | Pattern editing with a Content tab in the block sidebar, editable navigation overlays (mobile menus as template parts), expanded Site Editor design panel. See the [7.0 Field Guide](https://make.wordpress.org/core/2026/05/14/wordpress-7-0-field-guide/) |
+| 7.1 | scheduled 2026-08-19 | Not verified against official release notes when this table was reviewed |
+
+Only the newest release series receives regular maintenance, so default `Tested up to` to the current stable release and keep `Requires at least` at the oldest version whose features the theme actually uses.
 
 ---
 

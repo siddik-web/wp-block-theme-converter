@@ -35,6 +35,20 @@ jobs:
       - name: Run validate-plugin.mjs
         run: node scripts/validate-plugin.mjs
 
+  validate-evals:
+    name: Validate eval suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run validate-evals.mjs
+        run: node scripts/validate-evals.mjs
+
   claude-plugin-validate:
     name: claude plugin validate (official)
     runs-on: ubuntu-latest

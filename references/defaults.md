@@ -19,7 +19,7 @@ When the user doesn't specify a value, use these defaults. Always note assumed d
 | Field | Default | Rationale |
 |-------|---------|-----------|
 | Requires WP | `6.6` | First WP version with Section Styles + mature Interactivity API |
-| Tested Up To | `6.8` | Latest stable as of early 2025 — UPDATE this to match the current WP release at generation time |
+| Tested Up To | `7.0` | Newest release confirmed when these defaults were last reviewed (2026-10-22; 7.0 shipped 2026-05-20). 7.1 was scheduled for 2026-08-19 — UPDATE this to match the current WP release at generation time |
 | Requires PHP | `7.4` | WordPress minimum + matches most shared hosts |
 | License | `GPL-2.0-or-later` | Required for WordPress.org |
 | License URI | `https://www.gnu.org/licenses/gpl-2.0.html` | Standard |

@@ -89,6 +89,11 @@ test('every bundled pattern template lints clean once rendered', (t) => {
   }
 });
 
+test('eval suite is well-formed and covers every command', () => {
+  const { code, out } = run('validate-evals.mjs', null);
+  assert.equal(code, 0, out);
+});
+
 // ── lint-block-markup ──────────────────────────────────────────────────────────
 
 test('lint: self-closing blocks with attributes and block-support styles are valid', (t) => {
@@ -278,4 +283,34 @@ test('hook: reports theme.json problems and stays silent otherwise', (t) => {
   const other = run(hook, null, JSON.stringify({ tool_input: { file_path: join(dir, 'style.css') } }));
   assert.equal(other.code, 0);
   assert.equal(other.out, '');
+});
+
+test('hook: validates style variations in styles/ and ignores unrelated json', (t) => {
+  const dir = fixture(t, {
+    'styles/dark.json': JSON.stringify({ version: 2, styles: {} }),
+    'blocks/x/block.json': '{}',
+  });
+  const hook = 'hooks/theme-json-postwrite.mjs';
+
+  const bad = run(hook, null, JSON.stringify({ tool_input: { file_path: join(dir, 'styles', 'dark.json') } }));
+  assert.equal(bad.code, 0);
+  assert.match(JSON.parse(bad.out).hookSpecificOutput.additionalContext, /styles\/dark\.json: version must be 3/);
+
+  const block = run(hook, null, JSON.stringify({ tool_input: { file_path: join(dir, 'blocks', 'x', 'block.json') } }));
+  assert.equal(block.out, '');
+
+  // A variation written before theme.json exists has nothing to validate against.
+  const bare = fixture(t, { 'theme.json': null, 'styles/dark.json': JSON.stringify({ version: 2 }) });
+  const early = run(hook, null, JSON.stringify({ tool_input: { file_path: join(bare, 'styles', 'dark.json') } }));
+  assert.equal(early.out, '');
+});
+
+test('hooks.json: command is skipped quietly when node is missing', () => {
+  const { hooks } = JSON.parse(readFileSync(join(ROOT, 'hooks', 'hooks.json'), 'utf8'));
+  const cmd = hooks.PostToolUse[0].hooks[0].command;
+  const res = spawnSync('/bin/sh', ['-c', cmd.replace('${CLAUDE_PLUGIN_ROOT}', ROOT)], {
+    input: '{}', encoding: 'utf8', env: { PATH: '/nonexistent' },
+  });
+  assert.equal(res.status, 0, res.stderr);
+  assert.equal(res.stdout, '');
 });

@@ -11,7 +11,7 @@
       "name": "wp-block-theme-converter",
       "source": "./",
       "description": "Convert HTML/CSS/JS into production-ready WordPress Block Themes (FSE), scaffold themes, generate theme.json, build patterns, and debug block-theme issues.",
-      "version": "2.0.0",
+      "version": "3.0.0",
       "author": {
         "name": "Md Siddiqur Rahman",
         "email": "siddikcoder@gmail.com"

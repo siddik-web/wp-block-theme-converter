@@ -34,7 +34,7 @@ const VALUES = {
   THEME_DESCRIPTION: 'Reference block theme rendered from the wp-block-theme-converter templates. Used as the doctor.mjs CI fixture.',
   VERSION: '1.0.0',
   REQUIRES_WP: '6.6',
-  TESTED_UP_TO: '6.8',
+  TESTED_UP_TO: '7.0',
   REQUIRES_PHP: '7.4',
   LICENSE: 'GNU General Public License v2 or later',
   LICENSE_URI: 'https://www.gnu.org/licenses/gpl-2.0.html',

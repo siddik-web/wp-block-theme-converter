@@ -17,11 +17,11 @@
 
 - [ ] `node scripts/validate-skill.mjs` passes
 - [ ] `node scripts/doctor.mjs examples/_generated/landing-page-theme` passes _(required for script changes; skip if `examples/_generated/` does not exist yet)_
-- [ ] Affected eval cases pass — list which ones below:
+- [ ] `node scripts/validate-evals.mjs` passes, and affected eval cases pass under `claude plugin eval` — list which ones below:
 
 <!-- Example:
-- evals/convert-to-wp-theme/should-trigger.md — Queries 1–5 all trigger correctly
-- evals/convert-to-wp-theme/should-not-trigger.md — Query 2 correctly does not trigger
+- evals/commands/wp-pattern — score 1.00 (claude plugin eval . --case wp-pattern --runs 1 --ablation none --allow-tools Write Edit)
+- evals/negative/react-hero-component — score 1.00, skill did not fire
 -->
 
 **Eval results:**

@@ -1,0 +1,55 @@
+name: Evals
+
+# Real model calls: counts against the API key's billing, so it only runs when
+# triggered by hand. The free structural check runs on every push in skill-ci.yml.
+on:
+  workflow_dispatch:
+    inputs:
+      case:
+        description: "Case name glob (empty = whole suite)"
+        required: false
+        default: ""
+      runs:
+        description: "Runs per case"
+        required: false
+        default: "1"
+      max_cost_usd:
+        description: "Cost ceiling (list-price estimate)"
+        required: false
+        default: "10"
+
+jobs:
+  eval:
+    name: claude plugin eval
+    runs-on: ubuntu-latest
+    env:
+      # Pinned so a CLI release can't change scores without a commit here.
+      CLAUDE_CODE_VERSION: "2.1.308"
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22" # the Claude Code CLI requires Node >= 22
+
+      - name: Run evals
+        env:
+          # Passed via env, not interpolated into the script, so inputs can't inject shell.
+          EVAL_CASE: ${{ inputs.case }}
+          EVAL_RUNS: ${{ inputs.runs }}
+          EVAL_MAX_COST: ${{ inputs.max_cost_usd }}
+        run: |
+          args=(. --trust-plugin --no-publish --allow-tools Write Edit
+                --runs "$EVAL_RUNS" --max-cost-usd "$EVAL_MAX_COST"
+                --threshold 0.8 --json evals/results/result.json)
+          if [ -n "$EVAL_CASE" ]; then args+=(--case "$EVAL_CASE"); fi
+          npx --yes "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}" plugin eval "${args[@]}"
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: evals/results/

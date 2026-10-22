@@ -1,6 +1,6 @@
 # Modern Block Theme Features (WordPress 6.5+)
 
-Reference for features introduced in WordPress 6.5–6.8+ that production block themes should leverage.
+Reference for features introduced in WordPress 6.5–7.0+ that production block themes should leverage.
 
 ## Table of Contents
 

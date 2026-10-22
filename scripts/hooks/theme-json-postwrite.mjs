@@ -2,20 +2,21 @@
 /**
  * theme-json-postwrite.mjs
  *
- * PostToolUse hook (Write|Edit). When the edited file is a `theme.json`, run the
- * bundled theme.json validator against its directory and surface any failures
- * back to Claude as advisory context.
+ * PostToolUse hook (Write|Edit). When the edited file is a `theme.json` or a
+ * style variation (`styles/*.json`), run the bundled theme.json validator against
+ * the theme directory and surface any failures back to Claude as advisory context.
  *
  * This hook is ALWAYS non-blocking: it exits 0 no matter what, and stays silent
- * unless the touched file is a theme.json with validation problems. Files that
- * are not theme.json return immediately.
+ * unless the touched file is one of those with validation problems. Any other
+ * file returns immediately.
  *
  * Input: PostToolUse event JSON on stdin.
  * Output: optional `hookSpecificOutput.additionalContext` JSON on stdout.
  */
 
 import { spawnSync } from 'node:child_process';
-import { dirname, basename, resolve } from 'node:path';
+import { existsSync } from 'node:fs';
+import { dirname, basename, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -53,11 +54,19 @@ try {
 }
 
 const filePath = event?.tool_input?.file_path;
-if (!filePath || basename(filePath) !== 'theme.json') {
+if (!filePath) process.exit(0);
+
+// theme.json lives in the theme root; a variation lives one level down in styles/.
+const isThemeJson = basename(filePath) === 'theme.json';
+const isVariation = filePath.endsWith('.json') && basename(dirname(filePath)) === 'styles';
+if (!isThemeJson && !isVariation) {
   process.exit(0); // Not a theme.json edit — stay silent.
 }
 
-const themeDir = dirname(filePath);
+const themeDir = isThemeJson ? dirname(filePath) : dirname(dirname(filePath));
+// A variation written before the theme exists has nothing to validate against yet.
+if (isVariation && !existsSync(join(themeDir, 'theme.json'))) process.exit(0);
+
 const result = spawnSync(process.execPath, [VALIDATOR, themeDir], {
   encoding: 'utf8',
 });

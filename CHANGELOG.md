@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased] — v3.0.0
+## [Unreleased]
+
+## [3.0.0] — 2026-10-22
 
 ### Fixed
+
+- Version drift: `SKILL.md`, `plugin.json`, `marketplace.json`, and the README said 2.0.0 while the CHANGELOG documented 3.0.0 and the plugin packaging had already shipped. All now say 3.0.0, with a `[3.0.0]` CHANGELOG heading; `validate-skill.mjs` Check 12 keeps them in step
+- The CHANGELOG named the Elementor example by a filename that does not exist; it now points at `examples/elementor-to-block-theme.md`. Check 13 now verifies backticked repo paths in the docs
+- The `theme.json` PostToolUse hook now also validates `styles/*.json` variations, and exits quietly when `node` is not on `PATH` instead of failing every Write/Edit
+- WordPress baseline: `Tested up to` default raised from 6.8 ("early 2025") to 7.0, and `backward-compatibility.md` gained a release timeline (6.5 → 7.0) with a pointer to verify the current stable release. `wp-env` example no longer pins a 6.8 branch
+- README install options 2–4 told users to drop the repo folder or a misnamed `.skill` into a skills directory, where `${CLAUDE_PLUGIN_ROOT}` paths are not substituted; they now build the standalone package with `scripts/build-skill.sh` and use its real file name
+- `.gitignore` now ignores `evals/results/` and built `*.skill` files
 
 - `lint-block-markup.mjs` no longer rejects valid markup: self-closing blocks with attributes (`<!-- wp:spacer {...} /-->`) were counted as unclosed openers, and inline `style=""` that core generates for block supports was flagged. Block delimiters are now tokenized like core's parser (multi-line attributes included); only hand-written styles (outside blocks, in `core/html`, or on blocks with no attributes) are flagged. The bundled pattern templates went from 94 violations to 0
 - `validate-theme-json.mjs` read `templateParts` from `settings` (and by `slug`) instead of the top-level `templateParts[].name`, so the check never ran; it also missed 8-digit hex and `rgb()`/`hsl()` colors
@@ -20,6 +29,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `validate-skill.mjs` Check 6 claimed a 500-char limit but enforced 2,000; it now enforces 1,024 and requires every slash command to appear in the description
 
 ### Added
+
+#### Evals
+
+- `evals/` rewritten as 21 `claude plugin eval` cases (one per slash command, plus trigger, negative, and ambiguous prompts) with deterministic and `llm` graders, replacing the paste-by-hand Markdown for a single command
+- `scripts/validate-evals.mjs` — free, offline structural check of the suite; fails if any command lacks a case. Runs in CI
+- `.github/workflows/evals.yml` — manually triggered workflow that runs the suite with an `ANTHROPIC_API_KEY` secret (not run automatically; model calls cost money)
 
 #### Doctor coverage
 
@@ -58,7 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `references/page-builder-migration.md` — migration guides for Elementor, Divi, WPBakery, and Beaver Builder to FSE block themes
 - Extended `commands/wp-migrate.md` with page builder detection and migration workflow
-- `examples/elementor-migration.md` — end-to-end worked example: Elementor site → FSE block theme
+- `examples/elementor-to-block-theme.md` — end-to-end worked example: Elementor site → FSE block theme
 
 #### P3 — Production Hardening + Skill Infra
 
@@ -179,6 +194,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic Interactivity API guidance for modals, tabs, and toggles
 - Examples: `northaven-ecommerce.md` (WooCommerce), `landing-page-simple.md` (minimal)
 
-[Unreleased]: https://github.com/siddik-web/wp-block-theme-converter/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/siddik-web/wp-block-theme-converter/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/siddik-web/wp-block-theme-converter/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/siddik-web/wp-block-theme-converter/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/siddik-web/wp-block-theme-converter/releases/tag/v1.0.0
