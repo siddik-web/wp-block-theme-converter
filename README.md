@@ -8,6 +8,20 @@ A Claude Code plugin (and standalone skill) for converting any HTML/CSS/JavaScri
 
 ---
 
+## See it in action
+
+A real run, not a mock-up: one slash command turns a static landing page into a block theme, the bundled doctor checks it (5/5 passing), and the result runs in WordPress.
+
+![Demo: /convert-to-wp-theme converts a static landing page into a WordPress block theme, then the generated theme is shown running in WordPress](docs/demo/demo.gif)
+
+[Watch the full-quality video (MP4)](docs/demo/demo.mp4) · [Source page](examples/demo/source/index.html) · [Generated theme](examples/demo/northstar-theme/) · [How this demo was made](docs/demo/README.md)
+
+| Before: static HTML, CSS and JS | After: the generated theme in WordPress |
+|---|---|
+| ![The source landing page](docs/demo/source-page.png) | ![The generated theme running in WordPress](docs/demo/wordpress-page.png) |
+
+---
+
 ## What This Skill Does
 
 Converts static HTML/CSS/JavaScript projects into complete, production-ready WordPress block themes that are:

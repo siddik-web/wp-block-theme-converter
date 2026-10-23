@@ -461,6 +461,25 @@ console.log('\nCheck 13: backticked repo paths in docs point at files that exist
   if (allOk) pass(`All backticked repo paths in ${docs.length} docs exist`);
 }
 
+// ── Check 14: commands that generate a whole theme tell Claude to run the doctor ──
+// SKILL.md's Step 5 does not drive a slash-command run; the command file does. Without
+// this, a /convert-to-wp-theme run can finish with a theme that fails the doctor.
+console.log('\nCheck 14: theme-generating commands require running doctor.mjs');
+{
+  const GENERATORS = ['convert-to-wp-theme', 'scaffold-wp-theme', 'wp-classic-to-fse'];
+  let allOk = true;
+  for (const name of GENERATORS) {
+    const f = `commands/${name}.md`;
+    if (!exists(f)) continue;
+    const src = readFile(f);
+    if (!/scripts\/doctor\.mjs/.test(src) || !/exits? 0|until it passes/i.test(src)) {
+      fail(`${f} runs doctor.mjs until it passes`, 'Add a Verify step: run the doctor and fix violations until it exits 0');
+      allOk = false;
+    }
+  }
+  if (allOk) pass(`All ${GENERATORS.length} theme-generating commands require a passing doctor run`);
+}
+
 // ─── Summary ─────────────────────────────────────────────────────────────────
 
 console.log('\n─────────────────────────────────────────────');

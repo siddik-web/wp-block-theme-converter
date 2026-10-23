@@ -237,6 +237,24 @@ test('structure: PHP syntax errors are flagged', { skip: !HAS_PHP && 'php not in
 
 // ── check-patterns ─────────────────────────────────────────────────────────────
 
+test('patterns: hidden patterns (Inserter: no) need no Categories, visible ones do', (t) => {
+  const hidden = `<?php
+/**
+ * Title: Hidden
+ * Slug: ${SLUG}/hidden
+ * Inserter: no
+ */
+?>
+<!-- wp:paragraph -->
+<p><?php esc_html_e( 'Nothing found', '${SLUG}' ); ?></p>
+<!-- /wp:paragraph -->
+`;
+  const ok = fixture(t, { 'patterns/hidden.php': hidden });
+  assert.equal(run('check-patterns.mjs', ok).code, 0);
+  const bad = fixture(t, { 'patterns/visible.php': hidden.replace('Inserter: no', 'Description: x').replace('hidden', 'visible') });
+  assert.match(run('check-patterns.mjs', bad).out, /visible\.php: Missing "Categories:"/);
+});
+
 test('patterns: slug namespace must match the text domain', (t) => {
   const dir = fixture(t, { 'patterns/other.php': pattern('other-theme/hero', '') });
   const { code, out } = run('check-patterns.mjs', dir);
@@ -259,6 +277,21 @@ test('i18n: hardcoded text in pattern markup is flagged', (t) => {
   assert.notEqual(code, 0);
   assert.match(out, /raw\.php:9: Hardcoded text in pattern markup: "Hardcoded heading"/);
   assert.doesNotMatch(out, /Translated/);
+});
+
+test('i18n: code samples in <pre>/<code> are not flagged as untranslated copy', (t) => {
+  const dir = fixture(t, {
+    'patterns/code.php': pattern(`${SLUG}/code`, `<!-- wp:code -->
+<pre class="wp-block-code"><code>$ npx tool init
+Found 42 files</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p>Plain untranslated sentence</p>
+<!-- /wp:paragraph -->`),
+  });
+  const { out } = run('check-i18n.mjs', dir);
+  assert.match(out, /Plain untranslated sentence/);
+  assert.doesNotMatch(out, /npx tool init|Found 42 files/);
 });
 
 test('i18n: wrong text domain is flagged', (t) => {

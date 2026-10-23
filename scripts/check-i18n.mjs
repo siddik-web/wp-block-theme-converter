@@ -70,12 +70,15 @@ function splitCallArgs(src, open) {
   return null;
 }
 
-/** Text left after removing PHP, HTML comments, and <script>/<style> bodies. */
+/**
+ * Text left after removing PHP, HTML comments, and <script>/<style> bodies. <pre>/<code>
+ * contents are code samples (a terminal transcript, a snippet), not UI copy to translate.
+ */
 function markupOnly(src) {
   const blank = (m) => m.replace(/[^\n]/g, ' ');
   return blankPhp(src)
     .replace(/<!--[\s\S]*?-->/g, blank)
-    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, blank);
+    .replace(/<(script|style|pre|code)\b[\s\S]*?<\/\1>/gi, blank);
 }
 
 // Regex: any of the i18n function names followed by open-paren

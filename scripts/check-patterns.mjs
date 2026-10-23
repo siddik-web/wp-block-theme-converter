@@ -91,9 +91,11 @@ for (const file of files) {
     }
   }
 
-  // Check: Categories present
+  // Check: Categories present. Hidden patterns (Inserter: no) never appear in the
+  // inserter, so they have no category to belong to.
   const categories = extractField(header, 'Categories');
-  if (!categories) {
+  const hidden = /^(?:no|false)$/i.test(extractField(header, 'Inserter') ?? '');
+  if (!categories && !hidden) {
     report(file, 'Missing "Categories:" in header comment block');
   }
 }

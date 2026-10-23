@@ -63,7 +63,17 @@ Generate at minimum:
 - `package.json`, `vite.config.js` (if Vite chosen)
 - `readme.txt`, `.gitignore`
 
-### Step 4: Closing Output
+### Step 4: Verify with the Doctor (required)
+
+When every file is written, run the bundled checker on the theme directory with the Bash tool. Do not just describe the command:
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" <theme-dir>
+```
+
+It runs five checks: theme structure, `theme.json`, block markup, pattern headers, and i18n. **Do not tell the user the theme is done until it exits 0.** If it reports violations, fix each one in the theme files and run it again, repeating until it passes. Quote its final `Overall: 5/5 scripts passed.` line in your closing summary. If Bash is unavailable, say so plainly and give the user the command to run. Never claim a theme was verified when the doctor did not run.
+
+### Step 5: Closing Output
 
 ```markdown
 ## Scaffold Complete

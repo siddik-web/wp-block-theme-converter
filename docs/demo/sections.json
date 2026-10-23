@@ -1,0 +1,38 @@
+[
+  {
+    "y": 0,
+    "label": "parts/header.html"
+  },
+  {
+    "y": 120,
+    "label": "patterns/hero.php"
+  },
+  {
+    "y": 820,
+    "label": "patterns/features.php"
+  },
+  {
+    "y": 1270,
+    "label": "patterns/stats.php"
+  },
+  {
+    "y": 1418,
+    "label": "patterns/testimonials.php"
+  },
+  {
+    "y": 1799,
+    "label": "patterns/pricing.php"
+  },
+  {
+    "y": 2378,
+    "label": "patterns/faq.php"
+  },
+  {
+    "y": 2751,
+    "label": "patterns/cta.php"
+  },
+  {
+    "y": 2985,
+    "label": "parts/footer.html"
+  }
+]

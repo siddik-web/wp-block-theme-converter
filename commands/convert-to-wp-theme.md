@@ -96,19 +96,29 @@ Generate files in this order:
 10. `package.json`, `vite.config.js`, lint configs
 11. `readme.txt`, `.gitignore`, `.editorconfig`
 
-### Step 5: Multi-Turn Decision
+### Step 5: Verify with the Doctor (required)
+
+When every file is written, run the bundled checker on the theme directory with the Bash tool. Do not just describe the command:
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" <theme-dir>
+```
+
+It runs five checks: theme structure, `theme.json`, block markup, pattern headers, and i18n. **Do not tell the user the theme is done until it exits 0.** If it reports violations, fix each one in the theme files and run it again, repeating until it passes. Quote its final `Overall: 5/5 scripts passed.` line in your closing summary. If Bash is unavailable, say so plainly and give the user the command to run. Never claim a theme was verified when the doctor did not run.
+
+### Step 6: Multi-Turn Decision
 
 If the project has **10+ HTML pages OR WooCommerce OR multiple style variations**, automatically apply the multi-turn strategy from `${CLAUDE_PLUGIN_ROOT}/references/multi-turn-strategy.md`:
 
 - **Turn 1:** Foundation (theme.json, templates, parts, functions.php, inc/) — STOP and ask user to say "continue"
 - **Turn 2:** Patterns + Block Styles + Style Variations
-- **Turn 3:** JavaScript + Assets + Docs
+- **Turn 3:** JavaScript + Assets + Docs, then Step 5 (doctor) once all files exist
 
 For smaller projects (< 10 HTML pages, no WC), do everything in one turn.
 
-### Step 6: Closing Sections
+### Step 7: Closing Sections
 
-After all files, ALWAYS include:
+After the doctor passes, ALWAYS include:
 
 ```markdown
 ## Installation Instructions
@@ -146,7 +156,7 @@ npm run lint:css         # Stylelint check
 
 ## Recommended Next Steps
 
-1. Run validation checks from `${CLAUDE_PLUGIN_ROOT}/references/validation-checklist.md`
+1. Walk through `${CLAUDE_PLUGIN_ROOT}/references/validation-checklist.md` for the checks the doctor cannot do (visual match, Site Editor, Lighthouse)
 2. Test in WP_DEBUG mode to catch any notices
 3. Run Lighthouse audit (target: 90+ Performance, 100 Accessibility)
 
