@@ -37,17 +37,17 @@ Each preset maps to a different default `theme.json` and starter patterns:
 
 ### Step 3: Generate Files
 
-Output the same file structure as `/convert-to-wp-theme`, but with placeholder content rather than converted source. Read `references/file-structure.md`.
+Output the same file structure as `/convert-to-wp-theme`, but with placeholder content rather than converted source. Read `${CLAUDE_PLUGIN_ROOT}/references/file-structure.md`.
 
-Use templates from `templates/` directory:
+Use templates from the `${CLAUDE_PLUGIN_ROOT}/templates/` directory:
 
-- `templates/style.css.tpl` for the theme header
-- `templates/theme.json.tpl` for the theme.json
-- `templates/functions.php.tpl` for functions.php
-- `templates/template-skeleton.html.tpl` for empty templates
-- `templates/pattern-header.php.tpl` for pattern files
-- `templates/package.json.tpl` for package.json
-- `templates/vite.config.js.tpl` for Vite config
+- `${CLAUDE_PLUGIN_ROOT}/templates/style.css.tpl` for the theme header
+- `${CLAUDE_PLUGIN_ROOT}/templates/theme.json.tpl` for the theme.json
+- `${CLAUDE_PLUGIN_ROOT}/templates/functions.php.tpl` for functions.php
+- `${CLAUDE_PLUGIN_ROOT}/templates/template-skeleton.html.tpl` for empty templates
+- `${CLAUDE_PLUGIN_ROOT}/templates/pattern-header.php.tpl` for pattern files
+- `${CLAUDE_PLUGIN_ROOT}/templates/package.json.tpl` for package.json
+- `${CLAUDE_PLUGIN_ROOT}/templates/vite.config.js.tpl` for Vite config
 
 Generate at minimum:
 

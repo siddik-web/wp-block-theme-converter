@@ -327,6 +327,6 @@ a placeholder with a count control (1–6 items).
 
 ## Read Also
 
-- `references/custom-blocks.md` — `block.json` schema deep-dive, advanced patterns, testing
-- `references/modern-blocks.md` — Interactivity API (for adding client-side behaviour to custom blocks)
-- `references/quality-rules.md` — escaping, CSS, and PHP rules that apply inside `render.php`
+- `${CLAUDE_PLUGIN_ROOT}/references/custom-blocks.md` — `block.json` schema deep-dive, advanced patterns, testing
+- `${CLAUDE_PLUGIN_ROOT}/references/modern-blocks.md` — Interactivity API (for adding client-side behaviour to custom blocks)
+- `${CLAUDE_PLUGIN_ROOT}/references/quality-rules.md` — escaping, CSS, and PHP rules that apply inside `render.php`

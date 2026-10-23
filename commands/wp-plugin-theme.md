@@ -28,7 +28,7 @@ Ask (or infer from source HTML / context):
 - Yoast SEO / Rank Math / SEOPress (breadcrumbs, OG tags)
 - WPForms / Gravity Forms / Contact Form 7 (forms)
 - ACF / CMB2 / Meta Box (custom fields)
-- WooCommerce (eCommerce — use `/convert-to-wp-theme` + `references/woocommerce.md` instead for full WooCommerce themes)
+- WooCommerce (eCommerce — use `/convert-to-wp-theme` + `${CLAUDE_PLUGIN_ROOT}/references/woocommerce.md` instead for full WooCommerce themes)
 - Jetpack (social sharing, related posts)
 - WP Rocket / LiteSpeed Cache (caching plugins)
 - Yoast Duplicate Post / WP All Import (content tools)
@@ -68,7 +68,7 @@ WordPress 6.5+ supports declaring required plugins in `style.css` header. Additi
 
 Slugs must match the plugin's **WordPress.org directory slug** — the folder name under `wp-content/plugins/`. For example, WPForms is `wpforms-lite` (free) or `wpforms` (pro); ACF is `advanced-custom-fields` (free) or `advanced-custom-fields-pro` (pro). Verify slugs at `wordpress.org/plugins/{{slug}}` before committing.
 
-> **ACF Block Bindings version requirement:** Using ACF fields with the Block Bindings API requires **ACF PRO 6.3+** (for native binding support) or the custom `register_block_bindings_source()` approach shown in `commands/wp-migrate.md`. The Block Bindings API itself requires **WordPress 6.5+**. Always check both version constraints before declaring ACF as a required plugin for binding-dependent features.
+> **ACF Block Bindings version requirement:** Using ACF fields with the Block Bindings API requires **ACF PRO 6.3+** (for native binding support) or the custom `register_block_bindings_source()` approach shown in `${CLAUDE_PLUGIN_ROOT}/commands/wp-migrate.md`. The Block Bindings API itself requires **WordPress 6.5+**. Always check both version constraints before declaring ACF as a required plugin for binding-dependent features.
 
 **TGMPA-style helper in `inc/plugin-dependencies.php`:**
 
@@ -608,6 +608,6 @@ The Events Calendar to my block theme "cascada".
 
 ## Read Also
 
-- `references/plugin-compatibility.md` — plugin detection patterns, conflict resolution, plugin-specific hooks
-- `references/woocommerce.md` — full WooCommerce theme support (not covered here)
-- `commands/wp-migrate.md` — if migrating ACF fields to Block Bindings
+- `${CLAUDE_PLUGIN_ROOT}/references/plugin-compatibility.md` — plugin detection patterns, conflict resolution, plugin-specific hooks
+- `${CLAUDE_PLUGIN_ROOT}/references/woocommerce.md` — full WooCommerce theme support (not covered here)
+- `${CLAUDE_PLUGIN_ROOT}/commands/wp-migrate.md` — if migrating ACF fields to Block Bindings

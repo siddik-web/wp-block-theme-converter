@@ -2,7 +2,8 @@
 // Scan PHP files for i18n issues: unwrapped strings, double-escaping, missing text-domain.
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
-import { resolve, join, extname, relative } from 'path';
+import { resolve, join, extname, relative, sep } from 'path';
+import { readTextDomain, blankPhp, lineAt } from './lib/theme-utils.mjs';
 
 const themeDir = resolve(process.argv[2] ?? '.');
 
@@ -30,8 +31,52 @@ const files = collectPhpFiles(themeDir);
 // All recognized i18n wrapper functions
 const I18N_FUNCTIONS = [
   '__', '_e', 'esc_html__', 'esc_html_e', 'esc_attr__', 'esc_attr_e',
-  '_n', '_x', '_ex', '_nx',
+  '_n', '_x', '_ex', '_nx', 'esc_html_x', 'esc_attr_x', '_n_noop', '_nx_noop',
 ];
+
+// The theme's text domain (style.css "Text Domain"); domain checks are skipped without it.
+const textDomain = readTextDomain(themeDir);
+
+/**
+ * Split the argument list of a call starting at `open` (the index of its "(")
+ * into top-level argument strings, honouring quotes and nested brackets.
+ * Returns null if the call is not closed.
+ */
+function splitCallArgs(src, open) {
+  const args = [];
+  let depth = 0;
+  let quote = null;
+  let start = open + 1;
+  for (let i = open; i < src.length; i++) {
+    const c = src[i];
+    if (quote) {
+      if (c === '\\') i++;
+      else if (c === quote) quote = null;
+      continue;
+    }
+    if (c === "'" || c === '"') quote = c;
+    else if (c === '(' || c === '[') depth++;
+    else if (c === ')' || c === ']') {
+      depth--;
+      if (depth === 0) {
+        args.push(src.slice(start, i).trim());
+        return args;
+      }
+    } else if (c === ',' && depth === 1) {
+      args.push(src.slice(start, i).trim());
+      start = i + 1;
+    }
+  }
+  return null;
+}
+
+/** Text left after removing PHP, HTML comments, and <script>/<style> bodies. */
+function markupOnly(src) {
+  const blank = (m) => m.replace(/[^\n]/g, ' ');
+  return blankPhp(src)
+    .replace(/<!--[\s\S]*?-->/g, blank)
+    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, blank);
+}
 
 // Regex: any of the i18n function names followed by open-paren
 const I18N_CALL_RE = new RegExp(
@@ -119,6 +164,39 @@ for (const file of files) {
       if (textContent) {
         report(file, lineNum, `Possible un-translated text in HTML context: "${textContent[1].trim().slice(0, 60)}"`);
       }
+    }
+  }
+}
+
+// ── Check 5: text domain matches style.css ─────────────────────────────────
+if (textDomain) {
+  const callRe = new RegExp(`\\b(${I18N_FUNCTIONS.join('|')})\\s*\\(`, 'g');
+  for (const file of files) {
+    const src = readFileSync(file, 'utf8');
+    let m;
+    while ((m = callRe.exec(src)) !== null) {
+      const args = splitCallArgs(src, m.index + m[0].length - 1);
+      if (!args || args.length < 2) continue;
+      const last = /^(['"])(.*)\1$/.exec(args[args.length - 1]);
+      if (last && last[2] !== textDomain) {
+        report(file, lineAt(src, m.index), `${m[1]}() uses text domain "${last[2]}" but style.css declares "${textDomain}"`);
+      }
+    }
+  }
+}
+
+// ── Check 6: hardcoded text in pattern markup ─────────────────────────────
+// Text written directly into a pattern's HTML can't be translated; it must be
+// output through esc_html_e() / esc_html__() etc.
+for (const file of files) {
+  if (!relative(themeDir, file).split(sep).includes('patterns')) continue;
+  const src = markupOnly(readFileSync(file, 'utf8'));
+  const textRe = />([^<>]+)</g;
+  let m;
+  while ((m = textRe.exec(src)) !== null) {
+    const text = m[1].replace(/&[a-z]+;|&#\d+;/gi, ' ').trim();
+    if (/\p{L}{2,}/u.test(text)) {
+      report(file, lineAt(src, m.index + 1 + m[1].search(/\S/)), `Hardcoded text in pattern markup: "${text.slice(0, 60)}" — wrap with esc_html_e( '…', '${textDomain ?? 'text-domain'}' )`);
     }
   }
 }

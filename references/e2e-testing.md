@@ -78,7 +78,7 @@ export default defineConfig( {
 ```json
 // .wp-env.json
 {
-    "core": "WordPress/WordPress#6.8-branch",
+    "core": null, // null = latest stable WordPress; pin e.g. "WordPress/WordPress#7.0" to test an exact release
     "plugins": [],
     "themes": ["."],
     "config": {

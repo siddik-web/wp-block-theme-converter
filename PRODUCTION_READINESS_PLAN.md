@@ -1,9 +1,9 @@
 # Production Readiness Plan — WP Block Theme Converter Skill
 
-**Status:** Proposed roadmap
-**Current version:** 2.0.0
+**Status:** v3.0.0 shipped in the repo; 5 items remain (see [Remaining work](#remaining-work))
+**Current version:** 3.0.0
 **Target version:** 3.0.0 (production-grade)
-**Last updated:** 2026-05-29
+**Last updated:** 2026-10-22
 
 ---
 
@@ -130,16 +130,16 @@ Each milestone is independently shippable and independently valuable.
 
 The skill is production grade when **all** of the following are true:
 
-- [ ] Running `node scripts/doctor.mjs <theme-dir>` exits non-zero on any theme that violates the Quality Rules, and zero on a clean theme.
-- [ ] SKILL.md Step 5 instructs Claude to run `doctor.mjs` and not declare success until it passes.
-- [ ] `/wp-debug` exists and resolves each of the 6 documented top failures end-to-end.
-- [ ] Page-builder migration is documented for Elementor, Divi, and WPBakery with one worked example.
-- [ ] `evals/` contains trigger/no-trigger/ambiguous cases for every command and a documented way to run them.
-- [ ] `scripts/validate-skill.mjs` passes and is enforced in CI on every PR.
-- [ ] `scripts/build-skill.sh` produces an installable artifact matching the README's install instructions.
-- [ ] `CHANGELOG.md`, `LICENSE`, and `CONTRIBUTING.md` exist; version lives in SKILL.md frontmatter.
-- [ ] One complete generated reference theme is committed and is the CI regression fixture.
-- [ ] Everything runs **offline** with **no secrets** (Anthropic self-contained requirement).
+- [x] Running `node scripts/doctor.mjs <theme-dir>` exits non-zero on any theme that violates the Quality Rules, and zero on a clean theme.
+- [x] SKILL.md Step 5 instructs Claude to run `doctor.mjs` and not declare success until it passes.
+- [x] `/wp-debug` exists and resolves each of the 6 documented top failures end-to-end.
+- [x] Page-builder migration is documented for Elementor, Divi, and WPBakery with one worked example.
+- [x] `evals/` contains trigger/no-trigger/ambiguous cases for every command and a documented way to run them.
+- [x] `scripts/validate-skill.mjs` passes and is enforced in CI on every PR.
+- [x] `scripts/build-skill.sh` produces an installable artifact matching the README's install instructions.
+- [x] `CHANGELOG.md`, `LICENSE`, and `CONTRIBUTING.md` exist; version lives in SKILL.md frontmatter.
+- [x] One complete generated reference theme is committed and is the CI regression fixture.
+- [x] Everything in CI runs **offline** with **no secrets**. The behavioral evals (`claude plugin eval`) call a model, so they are a separate, manually triggered workflow (`.github/workflows/evals.yml`) that needs `ANTHROPIC_API_KEY`.
 
 ---
 
@@ -168,50 +168,60 @@ The skill is production grade when **all** of the following are true:
 
 ### P0 — Output reliability
 
-- [ ] Write `scripts/validate-theme-json.mjs` (JSON validity, version 3, no hardcoded hex, defaultPalette set, fontFace paths resolve, offline schema fallback)
-- [ ] Write `scripts/lint-block-markup.mjs` (inline styles/scripts, unescaped echo, physical CSS, block-delimiter integrity)
-- [ ] Write `scripts/check-patterns.mjs` (header, category registration, unique slug)
-- [ ] Write `scripts/check-i18n.mjs` (unwrapped strings, `esc_html(__())` anti-pattern)
-- [ ] Write `scripts/doctor.mjs` umbrella runner with pass/fail report + exit codes
-- [ ] Wire `doctor.mjs` into SKILL.md Step 5 "Verify" with loop-until-pass instruction
-- [ ] Vendor local `theme.json` schema copy for offline validation
+- [x] Write `scripts/validate-theme-json.mjs` (JSON validity, version 3, no hardcoded hex, defaultPalette set, fontFace paths resolve, offline schema fallback)
+- [x] Write `scripts/lint-block-markup.mjs` (inline styles/scripts, unescaped echo, physical CSS, block-delimiter integrity)
+- [x] Write `scripts/check-patterns.mjs` (header, unique slug, slug namespace matches text domain). *Not covered: checking that each `Categories:` value is registered — pattern categories registered in `functions.php` are not cross-checked.*
+- [x] Write `scripts/check-i18n.mjs` (unwrapped strings, `esc_html(__())` anti-pattern)
+- [x] Write `scripts/doctor.mjs` umbrella runner with pass/fail report + exit codes
+- [x] Wire `doctor.mjs` into SKILL.md Step 5 "Verify" with loop-until-pass instruction
+- [ ] Vendor local `theme.json` schema copy for offline validation — *not done: `validate-theme-json.mjs` checks structure and rules by hand and does not validate against the JSON Schema*
 
 ### P1 — Debugging real errors
 
-- [ ] Author `commands/wp-debug.md` (symptom → decision tree → fix)
-- [ ] Author `references/troubleshooting.md` (symptom/cause/fix table for the 6 top failures)
-- [ ] Cross-link troubleshooting from SKILL.md, README, validation-checklist
-- [ ] Add `/wp-debug` to README + SKILL.md command tables
+- [x] Author `commands/wp-debug.md` (symptom → decision tree → fix)
+- [x] Author `references/troubleshooting.md` (symptom/cause/fix table for the 6 top failures)
+- [x] Cross-link troubleshooting from SKILL.md, README, validation-checklist
+- [x] Add `/wp-debug` to README + SKILL.md command tables
 
 ### P2 — Page-builder migration
 
-- [ ] Author `references/page-builder-migration.md` (Elementor, Divi, WPBakery, Beaver Builder, Gutenberg-classic)
-- [ ] Extend `commands/wp-migrate.md` with builder detection + links
-- [ ] Add `examples/elementor-to-block-theme.md` worked example
-- [ ] Add "what cannot be auto-migrated" honesty section
+- [x] Author `references/page-builder-migration.md` (Elementor, Divi, WPBakery, Beaver Builder, Gutenberg-classic)
+- [x] Extend `commands/wp-migrate.md` with builder detection + links
+- [x] Add `examples/elementor-to-block-theme.md` worked example
+- [x] Add "what cannot be auto-migrated" honesty section
 
 ### P3 — Skill quality infrastructure
 
-- [ ] Create `evals/` with trigger/no-trigger/ambiguous cases per command + `evals/README.md`
-- [ ] Write `scripts/validate-skill.mjs` (frontmatter, command/reference existence, dead-link check, description budget)
-- [ ] Write `scripts/build-skill.sh` (produce `.skill`/zip, stamp version from frontmatter)
-- [ ] Add `CHANGELOG.md` (Keep-a-Changelog + semver; backfill history)
-- [ ] Add real `LICENSE` file (MIT)
-- [ ] Add `CONTRIBUTING.md` + `.github/PULL_REQUEST_TEMPLATE.md` (note author≠reviewer)
-- [ ] Add `.github/workflows/skill-ci.yml` (validate-skill, md-lint, link-check, P0 scripts on golden theme, eval smoke test)
-- [ ] Move `Version` into SKILL.md frontmatter as single source of truth
+- [x] Create `evals/` with trigger/no-trigger/ambiguous cases per command + `evals/README.md`
+- [x] Write `scripts/validate-skill.mjs` (frontmatter, command/reference existence, dead-link check, description budget)
+- [x] Write `scripts/build-skill.sh` (produce `.skill`/zip, stamp version from frontmatter)
+- [x] Add `CHANGELOG.md` (Keep-a-Changelog + semver; backfill history)
+- [x] Add real `LICENSE` file (MIT)
+- [x] Add `CONTRIBUTING.md` + `.github/PULL_REQUEST_TEMPLATE.md` (note author≠reviewer)
+- [x] Add `.github/workflows/skill-ci.yml` (validate-skill, md-lint, link-check, P0 scripts on golden theme, eval smoke test)
+- [x] Move `Version` into SKILL.md frontmatter as single source of truth
 
 ### P4 — Golden output & docs polish
 
-- [ ] Commit one complete generated reference theme under `examples/_generated/`
-- [ ] Use the golden theme as the CI regression fixture for P0 scripts
-- [ ] Add "Production / Reliability" section to README
-- [ ] Fix README install instructions to reference the real build artifact
+- [x] Commit one complete generated reference theme under `examples/_generated/`
+- [x] Use the golden theme as the CI regression fixture for P0 scripts
+- [x] Add "Production / Reliability" section to README
+- [x] Fix README install instructions to reference the real build artifact
 
 ### Release
 
-- [ ] Run full eval suite across Haiku/Sonnet/Opus; record results
-- [ ] Tag and release **v3.0.0** with CHANGELOG notes
+- [ ] Run full eval suite across Haiku/Sonnet/Opus; record results — *not done: costs model calls; four cases were run once on one model during development (see `evals/README.md` for the command)*
+- [ ] Tag and release **v3.0.0** with CHANGELOG notes — *versions and CHANGELOG are ready (`[3.0.0] — 2026-10-22`); the git tag and GitHub release are not created*
+
+---
+
+### Remaining work
+
+1. Vendor a `theme.json` JSON Schema and validate against it (offline).
+2. Cross-check pattern `Categories:` against categories registered in `functions.php`.
+3. Run the eval suite across Haiku, Sonnet, and Opus and record the results.
+4. Resolve the findings the evals surfaced (e.g. the skill does not load for a tokens-only `theme.json` request).
+5. Tag and publish v3.0.0.
 
 ---
 

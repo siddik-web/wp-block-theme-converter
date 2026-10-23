@@ -26,7 +26,7 @@ Respond with a short acknowledgment, then check if these inputs are present in t
 | Build system | Default: Vite 6 with HMR |
 | Design tokens | Extract from source CSS (don't ask) |
 
-If any **required** input is missing, ask the user directly in your response with at most 3 clearly numbered questions in one batch. For optional inputs, use sensible defaults from `references/defaults.md` and note them in "Decisions Made".
+If any **required** input is missing, ask the user directly in your response with at most 3 clearly numbered questions in one batch. For optional inputs, use sensible defaults from `${CLAUDE_PLUGIN_ROOT}/references/defaults.md` and note them in "Decisions Made".
 
 ### Step 2: Produce Conversion Plan
 
@@ -52,14 +52,14 @@ Skip the confirmation if the user originally said "just build it" or similar.
 
 ### Step 3: Execute 10-Phase Methodology
 
-Read `references/methodology.md` and execute Phases 1-10 in order. Read also:
+Read `${CLAUDE_PLUGIN_ROOT}/references/methodology.md` and execute Phases 1-10 in order. Read also:
 
-- `references/file-structure.md` for the required output directory layout
-- `references/theme-json-schema.md` for theme.json structure
-- `references/block-conversion-map.md` for HTML→Block lookups
-- `references/quality-rules.md` for non-negotiable rules
+- `${CLAUDE_PLUGIN_ROOT}/references/file-structure.md` for the required output directory layout
+- `${CLAUDE_PLUGIN_ROOT}/references/theme-json-schema.md` for theme.json structure
+- `${CLAUDE_PLUGIN_ROOT}/references/block-conversion-map.md` for HTML→Block lookups
+- `${CLAUDE_PLUGIN_ROOT}/references/quality-rules.md` for non-negotiable rules
 
-If WooCommerce support is requested, also read `references/woocommerce.md`.
+If WooCommerce support is requested, also read `${CLAUDE_PLUGIN_ROOT}/references/woocommerce.md`.
 
 ### Step 4: Output Files
 
@@ -98,7 +98,7 @@ Generate files in this order:
 
 ### Step 5: Multi-Turn Decision
 
-If the project has **10+ HTML pages OR WooCommerce OR multiple style variations**, automatically apply the multi-turn strategy from `references/multi-turn-strategy.md`:
+If the project has **10+ HTML pages OR WooCommerce OR multiple style variations**, automatically apply the multi-turn strategy from `${CLAUDE_PLUGIN_ROOT}/references/multi-turn-strategy.md`:
 
 - **Turn 1:** Foundation (theme.json, templates, parts, functions.php, inc/) — STOP and ask user to say "continue"
 - **Turn 2:** Patterns + Block Styles + Style Variations
@@ -146,7 +146,7 @@ npm run lint:css         # Stylelint check
 
 ## Recommended Next Steps
 
-1. Run validation checks from `references/validation-checklist.md`
+1. Run validation checks from `${CLAUDE_PLUGIN_ROOT}/references/validation-checklist.md`
 2. Test in WP_DEBUG mode to catch any notices
 3. Run Lighthouse audit (target: 90+ Performance, 100 Accessibility)
 

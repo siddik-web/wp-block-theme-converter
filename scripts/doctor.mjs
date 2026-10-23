@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Umbrella runner: executes all four theme-quality scripts and prints a summary table.
+// Umbrella runner: executes all five theme-quality scripts and prints a summary table.
 
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
@@ -9,6 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const themeDir = resolve(process.argv[2] ?? '.');
 
 const SCRIPTS = [
+  { name: 'check-theme-structure', file: 'check-theme-structure.mjs' },
   { name: 'validate-theme-json', file: 'validate-theme-json.mjs' },
   { name: 'lint-block-markup',   file: 'lint-block-markup.mjs'   },
   { name: 'check-patterns',      file: 'check-patterns.mjs'      },

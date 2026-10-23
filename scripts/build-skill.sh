@@ -106,6 +106,11 @@ for f in "${FILES[@]}"; do
   cp "${REPO_ROOT}/${f}" "${dest}"
 done
 
+# Plugin Markdown writes bundled-file paths as ${CLAUDE_PLUGIN_ROOT}/<path>, which
+# only Claude Code substitutes. A standalone .skill resolves paths relative to the
+# skill directory, so drop the prefix in the packaged copy.
+find "${STAGE}" -name '*.md' -exec sed -i 's#\${CLAUDE_PLUGIN_ROOT}/##g' {} +
+
 # ─── Create zip ──────────────────────────────────────────────────────────────
 
 OUT="${REPO_ROOT}/${ARTIFACT_NAME}"

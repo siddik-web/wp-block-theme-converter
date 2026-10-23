@@ -45,7 +45,7 @@ If template parts don't exist yet, generate them too and note that they go in `p
 
 ### Step 3: Convert Body to Block Markup
 
-Apply the conversion map from `references/block-conversion-map.md`. Key rules:
+Apply the conversion map from `${CLAUDE_PLUGIN_ROOT}/references/block-conversion-map.md`. Key rules:
 
 1. Wrap main content area in `<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->`
 2. For `single.html` and `page.html`, use `<!-- wp:post-content /-->` for the editable content area
@@ -58,7 +58,7 @@ Apply the conversion map from `references/block-conversion-map.md`. Key rules:
 
 ### Step 4: Template Structure
 
-A complete template follows this skeleton (from `templates/template-skeleton.html.tpl`):
+A complete template follows this skeleton (from `${CLAUDE_PLUGIN_ROOT}/templates/template-skeleton.html.tpl`):
 
 ```html
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->

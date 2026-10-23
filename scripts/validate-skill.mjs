@@ -16,6 +16,14 @@ import { readdirSync } from 'node:fs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
+// Claude Code substitutes this in skill, command, and agent Markdown with the
+// plugin's install path. It is NOT exported to the Bash tool's environment.
+const PLUGIN_ROOT_VAR = '${CLAUDE_PLUGIN_ROOT}';
+
+// Agent Skills spec limit for `description` (enforced on claude.ai / .skill upload;
+// Claude Code additionally truncates description + when_to_use at 1,536 chars).
+const MAX_DESCRIPTION = 1024;
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 let passed = 0;
@@ -183,7 +191,9 @@ let frontmatter = null;
 if (!exists('SKILL.md')) {
   fail('SKILL.md exists', 'File not found');
 } else {
-  skillSrc = readFile('SKILL.md');
+  // Plugin-file paths are written as ${CLAUDE_PLUGIN_ROOT}/<path> (see Check 11);
+  // strip the prefix so the checks below see repo-relative paths.
+  skillSrc = readFile('SKILL.md').replaceAll(`${PLUGIN_ROOT_VAR}/`, '');
   frontmatter = parseFrontmatter(skillSrc);
   if (!frontmatter) {
     fail('SKILL.md frontmatter', 'Does not start with --- or missing closing ---');
@@ -288,19 +298,28 @@ console.log('\nCheck 5: No dead internal links in any .md file');
   if (!anyDead) pass(`No dead internal links found across ${mdFiles.length} .md files`);
 }
 
-// ── Check 6: SKILL.md description between 50 and 500 chars ──────────────────
-console.log('\nCheck 6: SKILL.md description field length (50–500 chars)');
+// ── Check 6: SKILL.md description length and slash-command coverage ─────────
+console.log(`\nCheck 6: SKILL.md description is 50–${MAX_DESCRIPTION} chars and names every command`);
 {
   if (!frontmatter || !frontmatter.description) {
     fail('description field accessible', 'frontmatter not parsed or missing description');
   } else {
-    const len = frontmatter.description.length;
-    if (len < 50) {
-      fail(`description length ${len}`, `Too short (min 50 chars)`);
-    } else if (len > 2000) {
-      fail(`description length ${len}`, `Too long (max 2000 chars)`);
+    const desc = frontmatter.description;
+    if (desc.length < 50) {
+      fail(`description length ${desc.length}`, 'Too short (min 50 chars)');
+    } else if (desc.length > MAX_DESCRIPTION) {
+      fail(`description length ${desc.length}`, `Too long (max ${MAX_DESCRIPTION} chars, the Agent Skills limit)`);
     } else {
-      pass(`description length OK (${len} chars)`);
+      pass(`description length OK (${desc.length} chars)`);
+    }
+    // Every slash command must appear so natural-language triggers route to it.
+    const missing = listFiles('commands')
+      .map(f => `/${f.replace(/\.md$/, '')}`)
+      .filter(cmd => !new RegExp(`${cmd.replace(/[-/]/g, '\\$&')}(?![\\w-])`).test(desc));
+    if (missing.length > 0) {
+      fail('description names every slash command', `Missing: ${missing.join(', ')}`);
+    } else {
+      pass('description names every slash command');
     }
   }
 }
@@ -358,6 +377,88 @@ console.log('\nCheck 10: .claude-plugin/plugin.json exists (Claude Code plugin)'
       fail('.claude-plugin/plugin.json is valid JSON', err.message);
     }
   }
+}
+
+// ── Check 11: plugin-file paths resolve from the plugin root ────────────────
+// Installed, Claude's working directory is the user's project, so a bare
+// `references/x.md` or `node scripts/x.mjs` points at the wrong place. Paths to
+// plugin files in skill/command/agent Markdown must use ${CLAUDE_PLUGIN_ROOT}.
+console.log(`\nCheck 11: plugin-file paths in SKILL.md, commands/, agents/ use ${PLUGIN_ROOT_VAR}`);
+{
+  const PLUGIN_PATH = String.raw`(?:references/[\w-]+\.md|commands/[\w-]+\.md|examples/[\w-]+\.md|templates/[\w/.-]+\.tpl|scripts/[\w/.-]+\.(?:mjs|sh))`;
+  const bareRe = new RegExp(String.raw`(?<![\[/])\`` + PLUGIN_PATH + '`|node scripts/', 'g');
+  const files = ['SKILL.md', ...collectMdFiles('commands'), ...collectMdFiles('agents')];
+  let allOk = true;
+  for (const f of files) {
+    const lines = readFile(f).split('\n');
+    lines.forEach((line, i) => {
+      for (const m of line.matchAll(bareRe)) {
+        fail(`${f}:${i + 1} uses ${PLUGIN_ROOT_VAR}`, `Bare plugin path ${m[0]} — write ${PLUGIN_ROOT_VAR}/${m[0].replace(/^`|`$/g, '').replace(/^node /, '')}`);
+        allOk = false;
+      }
+      // $CLAUDE_PLUGIN_ROOT (no braces) is neither substituted nor set in Bash.
+      if (/\$CLAUDE_PLUGIN_ROOT\b/.test(line)) {
+        fail(`${f}:${i + 1} uses ${PLUGIN_ROOT_VAR}`, 'Write ${CLAUDE_PLUGIN_ROOT} with braces; $CLAUDE_PLUGIN_ROOT is not substituted');
+        allOk = false;
+      }
+    });
+  }
+  if (allOk) pass(`All plugin-file paths in ${files.length} files use ${PLUGIN_ROOT_VAR}`);
+}
+
+// ── Check 12: version is identical everywhere and has a CHANGELOG entry ─────
+console.log('\nCheck 12: SKILL.md, plugin.json, marketplace.json, README, and CHANGELOG agree on the version');
+{
+  const versions = {};
+  versions['SKILL.md'] = frontmatter?.version;
+  try { versions['.claude-plugin/plugin.json'] = JSON.parse(readFile('.claude-plugin/plugin.json')).version; } catch { /* Check 10 reports */ }
+  try {
+    const entry = JSON.parse(readFile('.claude-plugin/marketplace.json')).plugins?.[0];
+    versions['.claude-plugin/marketplace.json'] = entry?.version;
+  } catch { /* validate-plugin reports */ }
+  versions['README.md'] = /\*\*Version:\*\*\s*(\S+)/.exec(readFile('README.md'))?.[1];
+
+  const distinct = new Set(Object.values(versions));
+  if (distinct.size !== 1 || distinct.has(undefined)) {
+    fail('versions match', Object.entries(versions).map(([f, v]) => `${f}=${v}`).join(', '));
+  } else {
+    const version = [...distinct][0];
+    pass(`all four files say ${version}`);
+    const changelog = readFile('CHANGELOG.md');
+    if (new RegExp(`^## \\[${version.replace(/\./g, '\\.')}\\]`, 'm').test(changelog)) {
+      pass(`CHANGELOG.md has a [${version}] entry`);
+    } else {
+      fail(`CHANGELOG.md has a [${version}] entry`, 'Add a "## [x.y.z] — date" heading (not only [Unreleased]) for the version you are shipping');
+    }
+  }
+}
+
+// ── Check 13: repo paths named in prose exist ───────────────────────────────
+// The link checker only sees [text](url) links, so a stale `examples/foo.md` in
+// backticks (as CHANGELOG once had) slipped through.
+console.log('\nCheck 13: backticked repo paths in docs point at files that exist');
+{
+  const PATH_RE = /^(?:examples|references|templates|scripts|commands|agents|evals|hooks|\.claude-plugin|\.github)\/[\w./-]+\.\w+$/;
+  const docs = ['README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'scripts/README.md', 'evals/README.md', 'SKILL.md',
+    ...collectMdFiles('commands'), ...collectMdFiles('agents')];
+  let allOk = true;
+  for (const f of docs) {
+    if (!exists(f)) continue;
+    // Changelog history may legitimately name files that were later removed or renamed.
+    const text = readFile(f).replaceAll(`${PLUGIN_ROOT_VAR}/`, '');
+    const section = f === 'CHANGELOG.md' ? text.split(/^## \[2\.0\.0\]/m)[0] : text;
+    for (const m of section.matchAll(/`([^`\s]+)`/g)) {
+      const ref = m[1];
+      if (!PATH_RE.test(ref) || /[*<>{}]|_generated|\/results\//.test(ref)) continue;
+      // templates/ in prose usually means the generated theme's templates/*.html; only .tpl files live here.
+      if (ref.startsWith('templates/') && !ref.endsWith('.tpl')) continue;
+      if (!exists(ref)) {
+        fail(`${f} references ${ref}`, 'File does not exist');
+        allOk = false;
+      }
+    }
+  }
+  if (allOk) pass(`All backticked repo paths in ${docs.length} docs exist`);
 }
 
 // ─── Summary ─────────────────────────────────────────────────────────────────

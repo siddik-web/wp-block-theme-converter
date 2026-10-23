@@ -3,7 +3,7 @@
 A Claude Code plugin (and standalone skill) for converting any HTML/CSS/JavaScript project into a production-ready WordPress Block Theme (Full Site Editing).
 
 **Author:** Md Siddiqur Rahman
-**Version:** 2.0.0
+**Version:** 3.0.0
 **License:** MIT
 
 ---
@@ -60,13 +60,22 @@ Installing the plugin registers everything at once:
 
 Manage or disable it any time with `/plugin`.
 
+### Build the standalone `.skill` (Options 2–4)
+
+Options 2–4 install the skill without the plugin system. Cloning the repo into a skills folder is **not** enough: the Markdown refers to bundled files as `${CLAUDE_PLUGIN_ROOT}/…`, which only Claude Code's plugin loader fills in. Build the standalone package, which rewrites those paths to plain relative ones:
+
+```bash
+bash scripts/build-skill.sh
+# → wp-block-theme-converter-v3.0.0.skill and wp-block-theme-converter-latest.skill
+```
+
 ### Option 2: Claude Code skill (manual)
 
-1. Download or clone this repository
-2. Place the folder in your Claude Code skills directory:
+1. Build the package as above
+2. Unzip it into your Claude Code skills directory:
 
    ```bash
-   ~/.claude/skills/wp-block-theme-converter/
+   unzip wp-block-theme-converter-latest.skill -d ~/.claude/skills/
    ```
 
 3. Restart Claude Code or run `claude reload`
@@ -74,14 +83,15 @@ Manage or disable it any time with `/plugin`.
 
 ### Option 3: Claude.ai (Project Skills)
 
-1. Open a Claude.ai Project
-2. Project settings → Skills → Upload Skill
-3. Upload `wp-block-theme-converter.skill`
-4. The skill will be available in all conversations within that project
+1. Build the package as above
+2. Open a Claude.ai Project
+3. Project settings → Skills → Upload Skill
+4. Upload `wp-block-theme-converter-latest.skill`
+5. The skill will be available in all conversations within that project
 
 ### Option 4: Manual (Cowork / Other Environments)
 
-Place the `wp-block-theme-converter/` folder in your skills directory. Path varies by environment:
+Unzip the built `.skill` so the `wp-block-theme-converter/` folder sits in your skills directory. Path varies by environment:
 
 - Cowork: `~/skills/`
 - Custom: Configure via `CLAUDE_SKILLS_DIR` environment variable
@@ -226,7 +236,7 @@ wp-block-theme-converter/                 # Plugin root (also a marketplace)
 │   └── landing-page-simple.md            # Simple SaaS landing page
 │
 └── scripts/                              # Validation + packaging tooling
-    ├── doctor.mjs                        # Runs all four theme-quality checks
+    ├── doctor.mjs                        # Runs all five theme-quality checks
     ├── validate-skill.mjs                # Skill integrity linter
     ├── validate-plugin.mjs               # Plugin packaging linter
     └── hooks/
@@ -341,12 +351,12 @@ Moving off Elementor, Divi, WPBakery, or Beaver Builder? Use `/wp-migrate` — i
 
 The plugin ships with:
 
-- **`evals/`** — trigger/no-trigger/ambiguous test cases per command (see `evals/README.md`)
+- **`evals/`** — 21 `claude plugin eval` cases: one per command plus trigger, no-trigger, and ambiguous prompts (see `evals/README.md`)
 - **`scripts/validate-skill.mjs`** — structural linter for the skill itself (checks command files exist, no dead links, frontmatter valid)
 - **`scripts/validate-plugin.mjs`** — packaging linter for the plugin manifest, marketplace entry, and components
 - **`scripts/build-skill.sh`** — produces the distributable `.skill` zip artifact
 - **`CHANGELOG.md`** — full version history
-- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, validate-plugin, lint-scripts, doctor against golden theme, markdown lint
+- **`.github/workflows/skill-ci.yml`** — CI: validate-skill, validate-plugin, official `claude plugin validate --strict`, lint-scripts, doctor against golden theme, theme-check regression tests, markdown lint
 
 ## Compatibility
 

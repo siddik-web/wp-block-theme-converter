@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Validate a WordPress block theme's theme.json against production-readiness rules.
 
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 
 const themeDir = resolve(process.argv[2] ?? '.');
@@ -50,11 +50,14 @@ if (theme.version === 3) {
   fail(`version must be 3, got: ${JSON.stringify(theme.version)}`);
 }
 
-// ── Check 4: $schema present ────────────────────────────────────────────────
-if (typeof theme.$schema === 'string' && theme.$schema.length > 0) {
-  pass('$schema key is present');
-} else {
+// ── Check 4: $schema points at the official WordPress schema ─────────────────
+const SCHEMA_RE = /^https:\/\/schemas\.wp\.org\/(?:trunk|wp\/\d+\.\d+)\/theme\.json$/;
+if (typeof theme.$schema !== 'string' || theme.$schema.length === 0) {
   fail('$schema key is missing or empty');
+} else if (SCHEMA_RE.test(theme.$schema)) {
+  pass('$schema points at schemas.wp.org');
+} else {
+  fail(`$schema should be https://schemas.wp.org/trunk/theme.json (or /wp/X.Y/theme.json), got: ${theme.$schema}`);
 }
 
 // ── Check 5: settings.appearanceTools === true ──────────────────────────────
@@ -71,8 +74,9 @@ if (theme.settings?.useRootPaddingAwareAlignments === true) {
   fail(`settings.useRootPaddingAwareAlignments must be true, got: ${JSON.stringify(theme.settings?.useRootPaddingAwareAlignments)}`);
 }
 
-// ── Check 7: No hardcoded hex colors in styles ───────────────────────────────
-const HEX_RE = /#[0-9a-fA-F]{3,6}\b/;
+// ── Check 7: No hardcoded colors in styles ──────────────────────────────────
+// Hex (#rgb, #rgba, #rrggbb, #rrggbbaa) and functional notation (rgb/hsl/…).
+const HEX_RE = /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b|\b(?:rgba?|hsla?|hwb|oklch|oklab|lab|lch)\s*\(/i;
 
 function collectStringValues(obj, path = '') {
   const hits = [];
@@ -90,9 +94,9 @@ function collectStringValues(obj, path = '') {
 
 const stylesHexHits = collectStringValues(theme.styles ?? {});
 if (stylesHexHits.length === 0) {
-  pass('No hardcoded hex colors found in styles');
+  pass('No hardcoded colors found in styles');
 } else {
-  fail(`Hardcoded hex colors found in styles (use var:preset|color| or CSS custom properties):`);
+  fail(`Hardcoded colors found in styles (use var:preset|color| or CSS custom properties):`);
   for (const h of stylesHexHits) {
     console.log(`         styles.${h.path}: ${h.val}`);
   }
@@ -134,21 +138,82 @@ if (fontFaceFailures === 0) {
   pass('All fontFace file:// src entries resolve to existing files');
 }
 
-// ── Check 10: templateParts slugs have matching .html files ──────────────────
-const templateParts = theme.settings?.templateParts ?? [];
+// ── Check 10: templateParts names have matching .html files ──────────────────
+// templateParts / customTemplates are top-level keys; WordPress ignores them under settings.
+for (const key of ['templateParts', 'customTemplates']) {
+  if (theme.settings?.[key] !== undefined) {
+    fail(`settings.${key} is ignored by WordPress — move it to the top level of theme.json`);
+  }
+}
+const templateParts = theme.templateParts ?? [];
 let tplFailures = 0;
 for (const part of templateParts) {
-  if (!part.slug) continue;
-  const htmlPath = join(themeDir, 'parts', `${part.slug}.html`);
+  // theme.json keys template parts by "name" (the parts/ filename without .html).
+  const name = part.name ?? part.slug;
+  if (!name) continue;
+  const htmlPath = join(themeDir, 'parts', `${name}.html`);
   if (!existsSync(htmlPath)) {
-    fail(`templateParts slug "${part.slug}" has no matching file: parts/${part.slug}.html`);
+    fail(`templateParts name "${name}" has no matching file: parts/${name}.html`);
     tplFailures++;
   }
 }
 if (tplFailures === 0 && templateParts.length > 0) {
-  pass(`All ${templateParts.length} templateParts slug(s) have matching .html files in parts/`);
+  pass(`All ${templateParts.length} templateParts have matching .html files in parts/`);
 } else if (templateParts.length === 0) {
   pass('No templateParts defined (check skipped)');
+}
+
+// ── Check 11: customTemplates names have matching .html files ────────────────
+const customTemplates = theme.customTemplates ?? [];
+let customTplFailures = 0;
+for (const tpl of customTemplates) {
+  if (!tpl.name) continue;
+  if (!existsSync(join(themeDir, 'templates', `${tpl.name}.html`))) {
+    fail(`customTemplates name "${tpl.name}" has no matching file: templates/${tpl.name}.html`);
+    customTplFailures++;
+  }
+}
+if (customTplFailures === 0) {
+  pass(customTemplates.length > 0
+    ? `All ${customTemplates.length} customTemplates have matching .html files in templates/`
+    : 'No customTemplates defined (check skipped)');
+}
+
+// ── Check 12: style variations (styles/*.json) ───────────────────────────────
+const stylesDir = join(themeDir, 'styles');
+const variationFiles = existsSync(stylesDir)
+  ? readdirSync(stylesDir, { recursive: true }).filter(f => String(f).endsWith('.json'))
+  : [];
+let variationFailures = 0;
+for (const f of variationFiles) {
+  const rel = `styles/${f}`;
+  let variation;
+  try {
+    variation = JSON.parse(readFileSync(join(stylesDir, String(f)), 'utf8'));
+  } catch (err) {
+    fail(`${rel} is not valid JSON: ${err.message}`);
+    variationFailures++;
+    continue;
+  }
+  if (variation.version !== 3) {
+    fail(`${rel}: version must be 3, got: ${JSON.stringify(variation.version)}`);
+    variationFailures++;
+  }
+  if (!variation.title) {
+    fail(`${rel}: missing "title" (required for the variation to appear in the Site Editor)`);
+    variationFailures++;
+  }
+  const hits = collectStringValues(variation.styles ?? {});
+  if (hits.length > 0) {
+    fail(`${rel}: hardcoded colors found in styles (use var:preset|color|):`);
+    for (const h of hits) console.log(`         styles.${h.path}: ${h.val}`);
+    variationFailures++;
+  }
+}
+if (variationFailures === 0) {
+  pass(variationFiles.length > 0
+    ? `All ${variationFiles.length} style variation(s) in styles/ are valid`
+    : 'No style variations in styles/ (check skipped)');
 }
 
 // ── Summary ───────────────────────────────────────────────────────────────────

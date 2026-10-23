@@ -36,7 +36,7 @@ if ( ! class_exists( 'WooCommerce' ) ) {
         <!-- wp:woocommerce/product-rating {"isDescendentOfQueryLoop":true,"style":{"spacing":{"margin":{"top":"0","bottom":"0"}}}} /-->
 
         <!-- Price -->
-        <!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"style":{"typography":{"fontSize":"var:preset|font-size|large","fontWeight":"800"},"spacing":{"margin":{"top":"0","bottom":"0"}}},"textColor":"foreground"} /-->
+        <!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"style":{"typography":{"fontSize":"var:preset|font-size|large","fontWeight":"800"},"spacing":{"margin":{"top":"0","bottom":"0"}}},"textColor":"text"} /-->
 
         <!-- Add to Cart button -->
         <!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true,"width":100,"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}}} /-->

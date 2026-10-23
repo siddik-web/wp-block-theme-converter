@@ -18,24 +18,25 @@ folder containing `style.css`, `theme.json`, `templates/`, `parts/`, and
 ## Step 1 — Run the deterministic checks
 
 The plugin ships validation scripts. Run the umbrella runner against the theme
-directory using the plugin root env var:
+directory. Claude Code replaces `${CLAUDE_PLUGIN_ROOT}` with the plugin's
+install path when it loads this agent (it is not a shell environment variable):
 
 ```bash
-node "$CLAUDE_PLUGIN_ROOT/scripts/doctor.mjs" <theme-dir>
+node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" <theme-dir>
 ```
 
-`doctor.mjs` runs four checks (theme.json validity, block-markup linting,
-pattern headers, and i18n). Capture its output verbatim — it is the spine of
+`doctor.mjs` runs five checks (theme structure, theme.json validity,
+block-markup linting, pattern headers, and i18n). Capture its output verbatim — it is the spine of
 your report. A non-zero exit means at least one check failed.
 
 ## Step 2 — Read the quality bar
 
 Read the bundled references so your manual review matches the plugin's
-standards (use the same env var to locate them):
+standards:
 
-- `$CLAUDE_PLUGIN_ROOT/references/quality-rules.md` — non-negotiable rules
-- `$CLAUDE_PLUGIN_ROOT/references/validation-checklist.md` — full checklist
-- `$CLAUDE_PLUGIN_ROOT/references/accessibility.md` — WCAG 2.1 AA expectations
+- `${CLAUDE_PLUGIN_ROOT}/references/quality-rules.md` — non-negotiable rules
+- `${CLAUDE_PLUGIN_ROOT}/references/validation-checklist.md` — full checklist
+- `${CLAUDE_PLUGIN_ROOT}/references/accessibility.md` — WCAG 2.1 AA expectations
 
 ## Step 3 — Manual review
 

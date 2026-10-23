@@ -9,8 +9,8 @@
  * Description: Full-width hero section with headline, subtext, and call-to-action buttons.
  */
 ?>
-<!-- wp:group {"tagName":"section","align":"full","className":"is-style-hero","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"backgroundColor":"foreground","textColor":"background","layout":{"type":"constrained"}} -->
-<section class="wp-block-group alignfull is-style-hero has-foreground-background-color has-background-color has-background has-text-color" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)">
+<!-- wp:group {"tagName":"section","align":"full","className":"is-style-hero","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"backgroundColor":"text","textColor":"background","layout":{"type":"constrained"}} -->
+<section class="wp-block-group alignfull is-style-hero has-text-background-color has-background-color has-background has-text-color" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)">
 
     <!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"},"style":{"spacing":{"rowGap":"var:preset|spacing|40"}}} -->
     <div class="wp-block-group">
