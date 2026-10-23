@@ -67,7 +67,7 @@ wp-block-theme-converter/
 
 ### Scripts (`scripts/`)
 
-- **Pure Node standard library only.** No `npm install`, no third-party packages, no `require()` of anything outside `node:*` built-ins.
+- **Pure Node standard library only.** No `npm install`, no third-party packages, no `require()` of anything outside `node:*` built-ins. The one exception is `scripts/demo/`, the dev-only video tooling, which needs Playwright and ffmpeg.
 - Every script must pass `node --check scripts/your-script.mjs` before submitting.
 - Scripts must print clear PASS/FAIL output with a summary exit code (0 = all pass, 1 = any fail).
 - Use ES module syntax (`import`/`export`). File extension must be `.mjs`.

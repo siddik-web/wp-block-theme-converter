@@ -1,0 +1,300 @@
+/*
+ * Northstar front-end styles.
+ * Colors, type and spacing come from theme.json presets; this file only adds
+ * what theme.json cannot express (layout glue, component details).
+ */
+
+/* Page chrome: template parts and main stack with no gap between them. */
+body .wp-site-blocks > * + * {
+	margin-block-start: 0;
+}
+
+.skip-link {
+	position: absolute;
+	inset-inline-start: -999px;
+}
+
+.skip-link:focus {
+	inset-inline-start: var(--wp--preset--spacing--30);
+	inset-block-start: var(--wp--preset--spacing--30);
+	z-index: 10;
+	padding: var(--wp--preset--spacing--20) var(--wp--preset--spacing--30);
+	background: var(--wp--preset--color--background);
+	color: var(--wp--preset--color--text);
+}
+
+:focus-visible {
+	outline: 2px solid var(--wp--preset--color--accent);
+	outline-offset: 2px;
+}
+
+/* Header */
+header.wp-block-template-part {
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 5;
+}
+
+.admin-bar header.wp-block-template-part {
+	inset-block-start: var(--wp-admin--admin-bar--height, 0);
+}
+
+.northstar-header {
+	border-block-end: 1px solid var(--wp--preset--color--border);
+}
+
+.northstar-logo,
+.northstar-logo img {
+	margin: 0;
+}
+
+.northstar-logo img {
+	inline-size: 32px;
+	block-size: 32px;
+}
+
+.northstar-btn-small .wp-block-button__link {
+	padding: var(--wp--preset--spacing--20) 1.1rem;
+	font-size: var(--wp--preset--font-size--small);
+}
+
+/* Buttons */
+.wp-block-button .wp-block-button__link:hover,
+.wp-block-button .wp-block-button__link:focus {
+	border-color: var(--wp--preset--color--accent);
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link.wp-element-button {
+	background: transparent;
+	color: var(--wp--preset--color--primary);
+	border: 2px solid var(--wp--preset--color--primary);
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link.wp-element-button:hover,
+.wp-block-button.is-style-outline > .wp-block-button__link.wp-element-button:focus {
+	background: var(--wp--preset--color--accent);
+	border-color: var(--wp--preset--color--accent);
+	color: var(--wp--preset--color--background);
+}
+
+.wp-block-button.is-style-light > .wp-block-button__link.wp-element-button {
+	background: var(--wp--preset--color--background);
+	border-color: var(--wp--preset--color--background);
+	color: var(--wp--preset--color--accent);
+}
+
+.wp-block-button.is-style-light > .wp-block-button__link.wp-element-button:hover,
+.wp-block-button.is-style-light > .wp-block-button__link.wp-element-button:focus {
+	background: var(--wp--preset--color--surface);
+	border-color: var(--wp--preset--color--surface);
+	color: var(--wp--preset--color--accent);
+}
+
+/* Hero */
+.northstar-hero {
+	text-align: center;
+}
+
+.northstar-badge {
+	inline-size: fit-content;
+	margin-inline: auto;
+	padding: 0.25rem 0.9rem;
+	border-radius: var(--wp--custom--radius-pill);
+	font-weight: 600;
+}
+
+.northstar-hero .northstar-badge {
+	margin-block-end: var(--wp--preset--spacing--40);
+}
+
+.northstar-hero > h1 + p {
+	margin-block-end: var(--wp--preset--spacing--50);
+}
+
+.northstar-code-card {
+	margin-block-start: var(--wp--preset--spacing--50);
+	padding: var(--wp--preset--spacing--40);
+	background: var(--wp--preset--color--dark);
+	color: var(--wp--preset--color--border);
+	border-radius: var(--wp--custom--radius);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.95rem;
+	text-align: start;
+	overflow-x: auto;
+}
+
+/* Section headings */
+.northstar-section-heading {
+	margin-block-end: var(--wp--preset--spacing--50);
+}
+
+.northstar-section-lead {
+	margin-block-end: var(--wp--preset--spacing--50);
+}
+
+/* Grids and cards */
+.northstar-grid.is-layout-grid {
+	gap: var(--wp--preset--spacing--40);
+}
+
+.wp-block-group.northstar-grid.is-layout-grid {
+	margin-block-start: 0;
+}
+
+.northstar-card {
+	padding: var(--wp--preset--spacing--40);
+	background: var(--wp--preset--color--background);
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: var(--wp--custom--radius);
+}
+
+.northstar-icon,
+.northstar-icon img {
+	margin: 0;
+}
+
+.northstar-icon img {
+	inline-size: 48px;
+	block-size: 48px;
+}
+
+/* Stats */
+.northstar-stats .northstar-grid.is-layout-grid {
+	gap: var(--wp--preset--spacing--40);
+}
+
+/* Testimonials */
+.northstar-quote .wp-block-quote {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: var(--wp--preset--font-size--medium);
+}
+
+.northstar-quote .wp-block-quote p {
+	margin: 0;
+}
+
+.northstar-author {
+	margin-block-start: var(--wp--preset--spacing--40);
+}
+
+.northstar-author strong {
+	color: var(--wp--preset--color--text);
+}
+
+.northstar-author p {
+	margin: 0;
+}
+
+.northstar-avatar,
+.northstar-avatar img {
+	margin: 0;
+}
+
+.northstar-avatar img {
+	inline-size: 48px;
+	block-size: 48px;
+	border-radius: 50%;
+}
+
+/* Pricing */
+.northstar-plan > * {
+	margin-block: 0;
+}
+
+.northstar-plan .northstar-badge {
+	align-self: flex-start;
+	margin-inline: 0;
+}
+
+.northstar-plan-featured {
+	border: 2px solid var(--wp--preset--color--primary);
+	box-shadow: 0 12px 32px color-mix(in srgb, var(--wp--preset--color--primary) 18%, transparent);
+}
+
+.northstar-price-unit {
+	font-size: var(--wp--preset--font-size--normal);
+	font-weight: 500;
+	color: var(--wp--preset--color--secondary);
+}
+
+.northstar-plan-list {
+	flex: 1;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.northstar-plan-list li {
+	padding-block: 0.35rem;
+	border-block-end: 1px solid var(--wp--preset--color--border);
+}
+
+.northstar-plan .wp-block-buttons,
+.northstar-plan .wp-block-button {
+	inline-size: 100%;
+}
+
+.northstar-plan .wp-block-button__link {
+	display: block;
+	text-align: center;
+}
+
+/* FAQ */
+.wp-block-details {
+	margin-block: 0;
+	padding-block: var(--wp--preset--spacing--30);
+	border-block-end: 1px solid var(--wp--preset--color--border);
+}
+
+.wp-block-details summary {
+	cursor: pointer;
+	font-size: var(--wp--preset--font-size--medium);
+	font-weight: 600;
+}
+
+.wp-block-details p {
+	margin-block: var(--wp--preset--spacing--20) 0;
+	color: var(--wp--preset--color--secondary);
+}
+
+/* Call to action */
+.northstar-cta p {
+	opacity: 0.9;
+}
+
+.northstar-cta h2 + p {
+	margin-block-end: var(--wp--preset--spacing--40);
+}
+
+/* Footer */
+.northstar-footer a {
+	text-decoration: none;
+}
+
+.northstar-footer a:hover,
+.northstar-footer a:focus {
+	color: var(--wp--preset--color--background);
+}
+
+.northstar-footer h3 {
+	margin-block-end: var(--wp--preset--spacing--20);
+}
+
+.northstar-copyright {
+	margin-block-start: var(--wp--preset--spacing--50);
+	border-block-start: 1px solid var(--wp--preset--color--divider);
+}
+
+/* Generic content templates */
+.northstar-content > * + * {
+	margin-block-start: var(--wp--preset--spacing--40);
+}
+
+/* Narrow screens: the three- and four-column grids stack. */
+@media (max-width: 800px) {
+	.wp-block-group.northstar-grid.is-layout-grid {
+		grid-template-columns: 1fr;
+	}
+}

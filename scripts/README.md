@@ -31,3 +31,13 @@ node --test scripts/tests/*.test.mjs        # regression tests for every check
 node scripts/build-golden-theme.mjs         # re-render examples/_generated/landing-page-theme from templates/
 node scripts/build-golden-theme.mjs --check # exit 1 if the committed golden theme is stale
 ```
+
+## Demo tooling (dev-only)
+
+`scripts/demo/` builds the README demo video from a real recorded run. Unlike everything above it is not part of the theme-quality checks and is not pure Node stdlib: it needs Playwright (with Chromium) and ffmpeg. See `docs/demo/README.md`.
+
+| Script | Purpose |
+|---|---|
+| `build-session.mjs` | Condenses a `claude -p --output-format stream-json` recording into a path-scrubbed `session.json` |
+| `capture.mjs` | Screenshots a rendered page and maps its sections to the pattern files in the theme's `front-page.html` |
+| `render-demo.mjs` | Renders the terminal, before/after, and scroll scenes and encodes MP4 and GIF |

@@ -283,6 +283,14 @@ For large classic themes (10+ template files), use the multi-turn strategy from 
 
 ### Step 10: Verification
 
+First run the bundled doctor on the converted theme with the Bash tool and fix every violation until it exits 0. Do not report the conversion as done before that:
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" <theme-dir>
+```
+
+Then walk the checks the doctor cannot do:
+
 ```
 VERIFICATION:
 ✅ Theme activates without PHP errors (check debug.log)

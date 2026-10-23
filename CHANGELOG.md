@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Demo: `docs/demo/` (GIF, MP4, stills) and the README "See it in action" section, built from a real non-interactive run of `/convert-to-wp-theme` on `examples/demo/source/`; the generated theme is committed unedited at `examples/demo/northstar-theme/`, and CI runs the doctor on it. `scripts/demo/` holds the dev-only tooling that renders the video from the recording. See `docs/demo/README.md`
+
+### Fixed
+
+- `/convert-to-wp-theme`, `/scaffold-wp-theme`, and `/wp-classic-to-fse` never told Claude to run `doctor.mjs`; the "don't declare success until it passes" rule lived only in `SKILL.md`, which does not drive a slash-command run. A recorded run finished with a theme that failed 2 of 5 checks. The three commands now have a required run-fix-repeat Verify step, and `validate-skill.mjs` Check 14 keeps it there
+- `check-patterns.mjs` demanded `Categories:` on hidden patterns (`Inserter: no`), which never appear in the inserter
+- `check-i18n.mjs` flagged the contents of `<pre>`/`<code>` (code samples, terminal transcripts) as untranslated copy
+
 ## [3.0.0] — 2026-10-22
 
 ### Fixed

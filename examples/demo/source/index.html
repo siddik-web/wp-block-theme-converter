@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northstar — Documentation that ships with your code</title>
+  <meta name="description" content="Northstar keeps your docs in sync with your code, so they are never out of date.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top"><img src="images/logo.svg" alt="" width="32" height="32"> Northstar</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#docs">Docs</a>
+      </nav>
+      <a class="btn btn-small" href="#pricing">Get started</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="container hero-inner">
+        <p class="badge">New: pull-request previews</p>
+        <h1>Documentation that ships with your code.</h1>
+        <p class="lead">Northstar turns your repository into a searchable docs site and keeps it in sync on every merge, so your docs are never a release behind.</p>
+        <div class="button-row">
+          <a class="btn" href="#pricing">Start free trial</a>
+          <a class="btn btn-outline" href="#features">See how it works</a>
+        </div>
+        <pre class="code-card"><code>$ npx northstar init
+✔ Found 42 Markdown files
+✔ Built search index in 1.2s
+✔ Preview ready: https://docs.acme.dev</code></pre>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <h2>Everything you need to keep docs honest</h2>
+        <p class="section-lead">Three ideas, done well.</p>
+        <div class="grid grid-3">
+          <article class="card">
+            <img src="images/icon-sync.svg" alt="" width="48" height="48">
+            <h3>Always in sync</h3>
+            <p>Docs build from the same commit as your code. Merge a change and the site updates in under a minute.</p>
+          </article>
+          <article class="card">
+            <img src="images/icon-search.svg" alt="" width="48" height="48">
+            <h3>Instant search</h3>
+            <p>Full-text search that understands your API names, with keyboard shortcuts and typo tolerance.</p>
+          </article>
+          <article class="card">
+            <img src="images/icon-shield.svg" alt="" width="48" height="48">
+            <h3>Versioned and safe</h3>
+            <p>Every release gets its own docs. Roll back with one click and keep old versions available.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Northstar in numbers">
+      <div class="container grid grid-4">
+        <div><p class="stat-number">12k+</p><p class="stat-label">Teams using Northstar</p></div>
+        <div><p class="stat-number">48M</p><p class="stat-label">Pages served monthly</p></div>
+        <div><p class="stat-number">99.99%</p><p class="stat-label">Uptime, last 12 months</p></div>
+        <div><p class="stat-number">&lt; 60s</p><p class="stat-label">Merge to published</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Loved by engineering teams</h2>
+        <div class="grid grid-3">
+          <figure class="card quote">
+            <blockquote><p>We deleted our wiki. Northstar made the docs part of code review, and they finally stay accurate.</p></blockquote>
+            <figcaption><img src="images/avatar-maya.svg" alt="Maya Chen" width="48" height="48"><span><strong>Maya Chen</strong><br>Staff Engineer, Lumen</span></figcaption>
+          </figure>
+          <figure class="card quote">
+            <blockquote><p>Search alone paid for it. New hires find answers without pinging the team.</p></blockquote>
+            <figcaption><img src="images/avatar-jonas.svg" alt="Jonas Weber" width="48" height="48"><span><strong>Jonas Weber</strong><br>CTO, Fieldwork</span></figcaption>
+          </figure>
+          <figure class="card quote">
+            <blockquote><p>Versioned docs for every release took us from a week of work to zero.</p></blockquote>
+            <figcaption><img src="images/avatar-priya.svg" alt="Priya Nair" width="48" height="48"><span><strong>Priya Nair</strong><br>Head of DX, Orbit</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="pricing">
+      <div class="container">
+        <h2>Simple, predictable pricing</h2>
+        <p class="section-lead">Start free. Upgrade when your team grows.</p>
+        <div class="grid grid-3 pricing">
+          <article class="card plan">
+            <h3>Starter</h3>
+            <p class="price">$0<span>/month</span></p>
+            <ul>
+              <li>1 project</li>
+              <li>Community support</li>
+              <li>Public docs</li>
+            </ul>
+            <a class="btn btn-outline" href="#">Start free</a>
+          </article>
+          <article class="card plan plan-featured">
+            <p class="badge">Most popular</p>
+            <h3>Team</h3>
+            <p class="price">$29<span>/month</span></p>
+            <ul>
+              <li>Unlimited projects</li>
+              <li>Pull-request previews</li>
+              <li>Private docs and SSO</li>
+            </ul>
+            <a class="btn" href="#">Start 14-day trial</a>
+          </article>
+          <article class="card plan">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+            <ul>
+              <li>Audit logs</li>
+              <li>Dedicated support</li>
+              <li>99.99% uptime SLA</li>
+            </ul>
+            <a class="btn btn-outline" href="#">Talk to sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container narrow">
+        <h2>Frequently asked questions</h2>
+        <details>
+          <summary>Which Markdown formats do you support?</summary>
+          <p>CommonMark, GitHub-flavored Markdown, and MDX. Front matter is optional.</p>
+        </details>
+        <details>
+          <summary>Can I host the docs on my own domain?</summary>
+          <p>Yes. Point a CNAME at Northstar and we provision the certificate automatically.</p>
+        </details>
+        <details>
+          <summary>Is there a free plan?</summary>
+          <p>The Starter plan is free forever for one project with public docs.</p>
+        </details>
+        <details>
+          <summary>How do pull-request previews work?</summary>
+          <p>Every pull request gets its own preview URL, posted as a comment on the PR.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="cta" id="docs">
+      <div class="container cta-inner">
+        <h2>Ready to ship docs that never go stale?</h2>
+        <p>Set up takes about five minutes. No credit card required.</p>
+        <a class="btn btn-light" href="#pricing">Start free trial</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="brand brand-footer">Northstar</p>
+        <p class="footer-note">Documentation that ships with your code.</p>
+      </div>
+      <nav aria-label="Product">
+        <h3>Product</h3>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <nav aria-label="Company">
+        <h3>Company</h3>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+    <div class="container copyright"><p>© 2026 Northstar, Inc. All rights reserved.</p></div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
